@@ -15,15 +15,60 @@
 # in the templates via {{ site.myvariable }}.
 title: Boris Leistedt
 email: boris.leistedt@gmail.com
+author: Boris Leistedt
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Academic website of Boris Leistedt
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://example.com" # the base hostname & protocol for your site
+permalink: /:year/:title/
+url: "http://ixkael.com" # the base hostname & protocol for your site
 twitter_username: ixkael
 github_username:  ixkael
 
-# Build settings
-markdown: kramdown
 theme: minima
+
+# Pagination settings
+paginate: 50
+paginate_path: "/articles/page:num/"
+
+# Navigation settings
+navigation:
+  - title: Blog
+    url: /articles/
+    desc: Time-ordered thoughts and random links that could be useful
+  - title: Projects
+    url: /projects/
+    desc: Some of my projects
+  - title: Advice
+    url: /advice/
+    desc: Advice on various work-related tasks such as refereing or job applications
+  - title: About
+    url: /about/
+    desc: More about me and my research
+  - title: Travel
+    url: /travel/
+    desc: My travel schedule
+
+# Front Matter settings
+defaults:
+  -
+    scope:
+      path: ''
+      type: posts
+    values:
+      layout: post
+
+# Markdown parser settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  parse_block_html: true
+
+# Build settings
+include:
+  - _pages
+exclude:
+  - README.md
+  - vendor
+gems:
+  - jekyll-paginate

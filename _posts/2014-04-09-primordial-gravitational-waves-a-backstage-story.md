@@ -1,0 +1,29 @@
+---
+id: 27
+title: 'Primordial gravitational waves: a backstage story'
+date: 2014-04-09T23:11:36+00:00
+author: admin
+layout: post
+guid: http://ixkael.com/blog/?p=27
+permalink: /primordial-gravitational-waves-a-backstage-story/
+categories:
+  - Physics and Outreach
+tags:
+  - galaxies
+  - inflation
+---
+_This is a copy of an article I wrote for the newsletter of the [T.I.M.E. Alumni Association](http://www.time-alumni.org/). For the record, [T.I.M.E](https://www.time-association.org/) is a network of universities organising international joint degrees in engineering in the best universities in Europe. I was lucky enough to be part of this program, and concurrently study in University of Mons (Mons, Belgium), Supélec (Paris, France), and Univ. Orsay Paris 11 (France)._
+
+<!--more-->
+
+A few weeks ago, as I was having a meeting with my supervisor, we received an intriguing call from a BBC journalist. He asked us if we had heard about a rumour that started to spread in the scientific community just a few hours earlier. A surprise press conference was organised at Harvard University, to announce a “major discovery that would change our understanding of the universe”. We were very sceptical at first, but when the journalist mentioned the words “Primordial B-modes”, I saw a spark in my supervisor’s eyes. It turns out that if such B-modes were detected, they would be the first observational evidence of a process called inflation, a crucial part of the Big Bang Theory. Cosmologists think that this inflation generated microscopic fluctuations (so-called “quantum” because ruled by quantum mechanics) and almost instantaneously stretched them to macroscopic scales, creating the seeds for all the stuff in the universe.
+
+After answering the journalist’s questions and hanging up, my supervisor stared at me, and I immediately knew that our meeting was rescheduled. She worked most of her career on inflation and the Big Bang Theory, and these rumours were too important to be ignored. The rest of the day (and most of the week-end in fact) involved calculations on the whiteboard, brainstorming sessions, and video calls with other cosmologists, in an attempt to make sense of the rumours. We wanted to prepare for one of the most important cosmological discoveries of the decade.
+
+The press conference took place three days later, on March 19, and was broadcast online. The BICEP collaboration, a team of scientists operating a telescope based in the South pole, publicly announced their findings. After extensive analysis of their three years of data, they believed they finally detected a signal that cosmologists had craved for decades. They found that the polarisation of the microwave background light had a specific “curly” pattern, which was not known to be produced by any astrophysical object. However, it was a good match for the so-called primordial B-modes, produced in the very beginning of the Big Bang during inflation. BICEP kept the secret for several months, but was now confident enough to announce this detection and to release their data so that all of us could play with them. A new Facebook group quickly became a vibrant arena where hundreds of experts and young researchers like me started to comment, analyse and share the excitement of this amazing discovery (not your average Facebook group, given the technicity of the comments!).
+
+<img class="size-large wp-image-1848" src="{{ site.baseurl }}/wp-content/uploads/2014/04/b_over_b_rect_BICEP2-550x314.png" alt="Figure: BICEP2 studied for over three years the cosmic microwave background (CMB), a faint radiation afterglow left over from when the universe was just 400,000 years old. The polarization of the light is characteristic of gravitational waves produced even early, in the very beginning of the Big Bang. Credit: BICEP-KECK." width="550" height="314" />
+
+The BICEP detection has stunning implications for our understanding of the universe and how it started. Primordial B-modes are thought to be the imprints of gravitational waves, ripples in the fabric of space-time, produced in the very beginning of the Big Bang. In fact, this is due to the violence of inflation, which perturbed space-time itself, according to modern theories of gravity such as Einstein’s General Relativity. Dozens of versions of this process of inflation have now been tested against the BICEP measurements. Unfortunately for theoretical physicists, the simplest versions of string theory are struggling to predict what BICEP observed. This is a bad surprise because string theory is our best attempt to unify quantum physics and general relativity so far, and to explain the origin of the Big Bang. Therefore our avenues of research will have to change. But history tells us that scientific breakthroughs often arise from conflicts between theory and observation. In any case, this discovery has stunning implications: we now have evidence that all the stuff in the universe, galaxies, stars, planets, originated from microscopic fluctuations which were stretched during inflation. But how did inflation start in the first place? Well, that this we don’t know yet, but we’re working on it.
+
+<img class="size-large wp-image-1847" src="{{ site.baseurl }}/wp-content/uploads/2014/04/history_universe-550x412.jpg" alt="Figure: Inflation creates and stretches quantum fluctuations to large scales and creates gravitational waves. These waves create primordial B-modes, a specific pattern in the polarisation of the background light emitted when the universe is 380,000 years old. This light travels 13.7 billion years old to reach our microwave telescopes, and create extreme excitement among cosmologists. Credit: WMAP." width="550" height="412" />

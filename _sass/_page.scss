@@ -74,11 +74,12 @@
 
   .post-title {
     color: $brand-color;
+    font-size: 1.3rem;
     margin-bottom: $spacer0;
   }
 
   .post {
-    margin-bottom: $spacer2;
+    margin-bottom: $spacer0;
   }
 }
 
@@ -123,8 +124,8 @@ p.post-desc {
 
 .post-link:focus::after,
 .post-link:hover::after {
-  -webkit-transform: scaleX(3);
-  transform: scaleX(3);
+  -webkit-transform: scaleX(6);
+  transform: scaleX(6);
 }
 
 // PAGE WORK & PROJECTS ====================================
@@ -168,15 +169,18 @@ p.post-desc {
 
 .site-profile {
   float: right;
-  width: 96px;
-  height: 96px;
-  margin: -.4rem 1rem 0 $spacer;
+  width: 166px;
+  height: 166px;
+  border-width: 2px;
+  border-style: solid;
+  margin: 0.5rem 0rem 7rem 2rem;
 }
 
 @include mq-up(md) {
   .site-profile {
-    width: 144px;
-    height: 144px;
-    margin: -1.2rem 1rem 0 2rem;
+    width: 224px;
+    height: 224px;
+    border-width: 2px;
+    border-style: solid;
   }
 }

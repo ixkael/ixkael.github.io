@@ -1,78 +1,53 @@
 ---
 layout: page
 title: About
-subtitle: I am a smart heading.
-desc: About me.
+subtitle:
+desc: Learn about me and my work in general.
 permalink: /about/
 ---
 
-<div class="pretty-links">
+<div class="pretty-links" align="justify">
 
-<div class="lead lead-about">Some intro text that is eye catching and should put you reader at ease and confident in your skills.
-</div>
 
-{::nomarkdown} 
+## Bio
+
+
+{::nomarkdown}
 <figure class="site-profile">
-    <img src="{{ site.baseurl }}/assets/img/profile.png">
+    <img src="{{ site.baseurl }}/assets/img/me2.jpg">
+    <figcaption class="small">In a good mood at Astro Hack Week 2016 in Berkeley. </br>Credit: D. Huppenkothen</figcaption>
 </figure>
 {:/}
 
-Neve aethere orbe hic *virginis trunco* in spreto diuque latarumque, mea? Ultima
-sulcum antris conlapsosque potiere curvat Phasias superas adpulit vertex est
-Elei est fumificisque, puniceo? Et dulcis me Argo precibus: haec blanditiae
-[candida](http://murmure.org/.html).
+
+I am currently a postdoctoral fellow in the [Center of Cosmology and Particle Physics at New York University](http://www.ccpp.nyu.edu/). I moved to New York in 2015 and was funded by a the [Simons Foundation](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) for a year before switching to a [NASA/CXC Einstein Fellowship](http://cxc.harvard.edu/fellows/fellowslist.html) grant. Prior to that I completed my PhD in [University College London](http://www.ucl.ac.uk/star) (UCL) with Prof. Hiranya Peiris. My background is in physics and engineering: in 2011 I received a “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France), as well as a M.Sc. in Physics from the [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html). I am originally from [Belgium](http://www.visitbelgium.com/).
+
+[My CV]({{ site.baseurl }}/assets/cv_bleistedt_long.pdf) contains a more formal description of my background and research record.
+
+I also contribute to the nice group website [earlyuniverse.org](http://www.earlyuniverse.org/).
+
+## Research
+
+{::nomarkdown}
+<figure class="site-profile">
+    <img src="{{ site.baseurl }}/assets/img/me1.jpg">
+    <figcaption class="small">My face <a href="https://en.wikipedia.org/wiki/Gravitational_lens">gravitationally lensed</a> by a foreground dark matter halo. </br>Credit: M. Lochner, A. Leonard</figcaption>
+</figure>
+{:/}
+
+I am an **astro-statistician**. I use the latest research in mathematics, data science, and statistics to extract information from astronomical data sets.
+I am particularly interested in testing fundamental and high-energy physics using large surveys of stars, galaxies and quasars.
+My research interests span **observational cosmology**, **astrophysics**, and **statistics**. In particular, I develop innovative methods to optimally use cosmological dat sets and address topical fundamental questions like the properties of dark matter, dark energy, and neutrinos.
+
+You can look at [my publications on ArXiv](https://arxiv.org/find/all/1/all:+AND+boris+leistedt/0/1/0/all/0/1) if you like to know about my exact research projects.
+
+Some of my talks/presentations are available on [SpeakerDeck](https://speakerdeck.com/ixkael).
+
+> “Essentially, all models are wrong, but some are useful.”<br>
+> – <em>Empirical Model-Building and Response Surfaces</em> by G. E. P. Box and N R. Draper (1987)
+
+
 
 ---
-
-## Quem fata quamvis
-
-Remisit terrae illud praetendat quod inplicat inter. Volvitur tum, naiades et
-sublimis conde!
-
-Captum ligno nepotum arisque dimittere
-[maternaque](http://estumectat.net/fugae). Quae maior Typhoeus ramis huius aura
-deprendit instat hirsuta. Miserrima inque: tibi qua, ultimus a Agaue vallibus
-dictos.
-
-1. Perseus est
-2. O Osiris accedat
-3. Repetita usum
-
-Nobis esse, *ut* spe, deducunt albentes, quoque, saxo cepit et quid gerebant
-est. Magnae haec quod, iugeribus gemmata. Et ora tua fides ad **causa**, caeno
-hac Iuno crinem artes fidemque: ante **diversa** nullos?
-
-## Si leti tegit undis quam
-
-Lorem markdownum caesariem aequore virtus nunc vittas, nec perosus urbem est:
-verba est eripere quater obvertit geminaverat amore. Ac freto. Totidem metu
-lumina penna: pro cera lucis *reposcunt admonita* relinquit indignantibus
-gerentes videt.
-
-Et **mixtos alium** adiacet ordine, vidisse nurus: vestem. *Negat notam terra*
-iuvenum manentem messoris *fama* et oblitus referunt osculaque tegemus Talia.
-Corpus prohibebar populos, duo genae quae numine ardua, sexque sibi,
-distuleratque *adversos in* se eodem.
-
-- Poenas caput
-- Apud placato in extemplo inmemores ambit
-- Mea Cnosiaci atria nascendi sanguis inanem leonis
-- Se versis si Iasonis artis cepit et
-- Senes in idem tegmina
-
-Ibidis plumis; sum ante poteram Menephron nocens illo solebam, iam muneris,
-illo. Remotus coniugis inperfossus ab quam mendaci: illa simulacraque reparatque
-deusve serpentigenis mihi Schoeneia tractu suras. Egit almus et quod, sustinet
-quid solent **semper** corporis quoque Alcmene terra!
-
----
-
-## Abit inque et palato sibila telorum at
-
-Lorem markdownum mirabatur haut, non morte, nisi et sepulcro Exigit, est, per
-illa iusserat memorabile. Pater damus multa, in lucosque carent oculis adsum
-miseris. Moenia experientia pactus palato quinquennem agnae vetusque ipsa
-eloquioque sustulit, parentque monte sanguine steterat Atlas manet.
 
 </div>
-

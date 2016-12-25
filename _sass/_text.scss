@@ -95,6 +95,15 @@ blockquote {
 }
 
 
+.squareimg {
+  float: right;
+  width: 200px;
+  height: 200px;
+  border-width: 1px;
+  border-style: solid;
+  margin: 0.5rem 0rem 7rem 2rem;
+}
+
 @include mq-up(md) {
   blockquote {
     margin: $spacer2 0 $spacer2 $spacer2;

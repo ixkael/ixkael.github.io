@@ -1,8 +1,8 @@
 ---
 layout: page
 title: Articles
-subtitle: Stuffs I write about
-desc: Stuffs I write about
+subtitle: News, articles, and useful stuff
+desc: Blog
 ---
 {% if paginator.page == 1 %}
   {% for post in site.posts limit: 2 %}
@@ -27,7 +27,7 @@ desc: Stuffs I write about
         {% when '1' or '21' or '31' %}{{ d }}st{% when '2' or '22' %}{{ d }}nd{% when '3' or '23' %}{{ d }}rd{% else %}{{ d }}th{% endcase %},
       {{ post.date | date: "%Y" }}
       </time>
-      <p class="post-desc">{% if post.desc %}{{ post.desc }}{% else %}{{ post.excerpt }}{% endif %}</p>
+      <p class="post-desc">{% if post.desc %}{{ post.desc }}{% endif %}</p>
     </a>
   </li>
   {% endfor %}

@@ -3,9 +3,14 @@ layout: default
 ---
 
 <div class="lead pretty-links">
-  Hi! this is just a sample **intro text**. You would normally put your [full name](about/) here and say something *smart* about yourself.
 
-  This could also be the good place to say were you are coming from, what you [do for a living](work/) and maybe what you are [interested in](projects/). You might also be [writing](articles/) about stuff.
+{::nomarkdown}
+<figure class="site-profile">
+    <img src="{{ site.baseurl }}/assets/img/me3.jpg">
+</figure>
+{:/}
+Hi there! I am **Boris Leistedt**, I'm a researcher in New York University working in the fields of astronomy, cosmology, and statistics. Broadly speaking, I test models of the universe using data collected with satellites and telescopes.
 
-  But after all this is your site and I'm just a **placeholder text** so what would i know about some *home page content*.
+I care a lot about diversity and equality in sciences and society in general.
+
 </div>
