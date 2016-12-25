@@ -1,0 +1,74 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing these this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: Boris Leistedt
+email: boris.leistedt@gmail.com
+author: Boris Leistedt
+description: > # this means to ignore newlines until "baseurl:"
+  Academic website of Boris Leistedt
+baseurl: "" # the subpath of your site, e.g. /blog
+permalink: /:year/:title/
+url: "http://ixkael.com" # the base hostname & protocol for your site
+twitter_username: ixkael
+github_username:  ixkael
+
+theme: minima
+
+# Pagination settings
+paginate: 50
+paginate_path: "/articles/page:num/"
+
+# Navigation settings
+navigation:
+  - title: Blog
+    url: /articles/
+    desc: Time-ordered thoughts and random links that could be useful
+  - title: Projects
+    url: /projects/
+    desc: Some of my projects
+  - title: Advice
+    url: /advice/
+    desc: Advice on various work-related tasks such as refereing or job applications
+  - title: About
+    url: /about/
+    desc: More about me and my research
+  - title: Travel
+    url: /travel/
+    desc: My travel schedule
+
+# Front Matter settings
+defaults:
+  -
+    scope:
+      path: ''
+      type: posts
+    values:
+      layout: post
+
+# Markdown parser settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  parse_block_html: true
+
+# Build settings
+include:
+  - _pages
+exclude:
+  - README.md
+  - vendor
+gems:
+  - jekyll-paginate
