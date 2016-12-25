@@ -35,9 +35,9 @@ navigation:
   - title: Blog
     url: /articles/
     desc: Time-ordered thoughts and random links that could be useful
-  - title: Projects
-    url: /projects/
-    desc: Some of my projects
+#  - title: Projects
+#    url: /projects/
+#    desc: Some of my projects
   - title: Advice
     url: /advice/
     desc: Advice on various work-related tasks such as refereing or job applications
