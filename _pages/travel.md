@@ -10,6 +10,14 @@ I am currently based in New York University and I frequently visit University Co
 
 <div class="pretty-links">
 
+
+### 2017
+
+| Dates & locations       |            |
+|: ------------- |:-------------|
+|Feb 13-18 |LSST DESC collab. meeting @ SLAC/Stanford University (USA)|
+|Jan 26-31|BASP Frontiers workshop @ Villars (Switzerland)|
+
 ### 2016
 
 | Dates & locations        |            |
