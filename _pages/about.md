@@ -35,11 +35,11 @@ I also contribute to the nice group website [earlyuniverse.org](http://www.early
 </figure>
 {:/}
 
-I am an **astro-statistician**. I use the latest research in mathematics, data science, and statistics to extract information from astronomical data sets.
+I am an **astro-statistician**: I use the latest research in data science and statistics to extract information from astronomical data sets.
 I am particularly interested in testing fundamental and high-energy physics using large surveys of stars, galaxies, and quasars.
-My research interests span **observational cosmology**, **astrophysics**, and **statistics**. In particular, I develop innovative methods to optimally use cosmological dat sets and address topical fundamental questions like the properties of dark matter, dark energy, and neutrinos.
+My research interests span **observational cosmology** and **astrophysics**: I develop innovative methods to optimally use cosmological data sets and address fundamental questions like measuring the properties of dark matter, dark energy, and neutrinos.
 
-You can look at [my publications on ArXiv](https://arxiv.org/find/all/1/all:+AND+boris+leistedt/0/1/0/all/0/1) if you like to know about my exact research projects.
+If you'd like to know more about my exact research projects, you can check out [my publications on ArXiv](https://arxiv.org/find/all/1/all:+AND+boris+leistedt/0/1/0/all/0/1).
 
 Some of my talks/presentations are available on [SpeakerDeck](https://speakerdeck.com/ixkael).
 
