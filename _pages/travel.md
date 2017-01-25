@@ -6,7 +6,7 @@ desc: Travel schedule
 permalink: /travel/
 ---
 
-I am currently based in New York University and I frequently visit University College London. So your best chances to catch me are in New York City or London. Below is a quasi-exhaustive list of past and upcoming (professional) travel plans.
+I am currently based in New York University and I frequently visit University College London and Imperial College London. So your best chances to catch me are in New York City or London. Below is a quasi-exhaustive list of past and upcoming (professional) travel plans.
 
 <div class="pretty-links">
 
@@ -15,6 +15,7 @@ I am currently based in New York University and I frequently visit University Co
 
 | Dates & locations       |            |
 |: ------------- |:-------------|
+|Apr 10-13 |Visit @ IPMU Tokyo (Japan)|
 |Feb 13-18 |LSST DESC collab. meeting @ SLAC/Stanford University (USA)|
 |Jan 26-31|BASP Frontiers workshop @ Villars (Switzerland)|
 
