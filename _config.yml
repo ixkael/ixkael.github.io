@@ -58,11 +58,12 @@ defaults:
       layout: post
 
 # Markdown parser settings
-markdown: kramdown
-kramdown:
-  input: GFM
-  hard_wrap: false
-  parse_block_html: true
+markdown: redcarpet
+#markdown: kramdown
+#kramdown:
+#  input: GFM
+#  hard_wrap: false
+#  parse_block_html: true
 
 # Build settings
 include:
