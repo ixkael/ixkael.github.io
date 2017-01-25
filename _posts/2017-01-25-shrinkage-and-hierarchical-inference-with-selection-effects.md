@@ -43,27 +43,27 @@ import daft
 
 ## Setup
 Our model will consist of:
-- one population parameter $\alpha$, describing the distribution of values $x$ via $p(x|\alpha)$,
-- a set of $N$ true (unobserverd, or latent) variables $\{x_i\}_{i=1, \cdots, N}$ drawn from $p(x|\alpha)$,
-- a set of $N$ noisy, observed variables $\{y_i\}_{i=1, \cdots, N}$ drawn from $p(y|x, sigma)$,
-- a set of noise levels, described by $\sigma_i$, which are given / fixed,
-- a selection effect S, for example a cut on signal-to-noise ratio (SNR) applied to the noisy variables $\{y_i\}$.
+- one population parameter $$\alpha$$, describing the distribution of values $$x$$ via $$p(x|\alpha)$$,
+- a set of $$N$$ true (unobserverd, or latent) variables $$\{x_i\}_{i=1, \cdots, N}$$ drawn from $$p(x|\alpha)$$,
+- a set of $$N$$ noisy, observed variables $$\{y_i\}_{i=1, \cdots, N}$$ drawn from $$p(y|x, sigma)$$,
+- a set of noise levels, described by $$\sigma_i$$, which are given / fixed,
+- a selection effect S, for example a cut on signal-to-noise ratio (SNR) applied to the noisy variables $$\{y_i\}$$.
 
 Let us draw the model corresponding to this description:
 
 
 ```python
 pgm = daft.PGM([2.3, 2.25], origin=[0.3, 0.3], grid_unit=3)
-pgm.add_node(daft.Node("alpha", r"$\alpha$", 1, 2.2))
-pgm.add_node(daft.Node("S", r"$S$", 2, 2.1, fixed=True))
-pgm.add_node(daft.Node("sigma_i", r"$\sigma_i$", 1.5, 1.5, fixed=True))
-pgm.add_node(daft.Node("x_i", r"$x_i$", 1, 1))
-pgm.add_node(daft.Node("y_i", r"$y_i$", 2, 1, observed=True))
+pgm.add_node(daft.Node("alpha", r"$$\alpha$$", 1, 2.2))
+pgm.add_node(daft.Node("S", r"$$S$$", 2, 2.1, fixed=True))
+pgm.add_node(daft.Node("sigma_i", r"$$\sigma_i$$", 1.5, 1.5, fixed=True))
+pgm.add_node(daft.Node("x_i", r"$$x_i$$", 1, 1))
+pgm.add_node(daft.Node("y_i", r"$$y_i$$", 2, 1, observed=True))
 pgm.add_edge("S", "y_i")
 pgm.add_edge("alpha", "x_i")
 pgm.add_edge("x_i", "y_i")
 pgm.add_edge("sigma_i", "y_i")
-pgm.add_plate(daft.Plate([0.5, 0.5, 2, 1.3], label=r"$i = 1, \cdots, N$", shift=-0.1))
+pgm.add_plate(daft.Plate([0.5, 0.5, 2, 1.3], label=r"$$i = 1, \cdots, N$$", shift=-0.1))
 pgm.render(interactive=False)
 pgm.figure.set_size_inches(3, 3)
 ```
@@ -79,35 +79,35 @@ rc("font", family="serif", size=10)
 
 ## Parameter inference (without selection effects)
 
-We want to infer $\alpha$ and $\{ x_i \}_{i=1, \cdots, N}$ from $\{ y_i \}_{i=1, \cdots, N}$.
+We want to infer $$\alpha$$ and $$\{ x_i \}_{i=1, \cdots, N}$$ from $$\{ y_i \}_{i=1, \cdots, N}$$.
 
 The posterior distribution on those parameters, via Bayes' theorem applied to the hierarchical model, is:
 
-$p(\alpha, \{ x_i \} | \{ y_i \}, S) \propto p(\alpha) \prod_{i=1}^N p(x_i|\alpha)p(y_i|x_i)$
+$$p(\alpha, \{ x_i \} | \{ y_i \}, S) \propto p(\alpha) \prod_{i=1}^N p(x_i|\alpha)p(y_i|x_i)$$
 
 The denominator (the evidence, or marginalized likelihood) can be dropped since it is constant w.r.t. the parameters of interest. We are only interested in exploring the interesting region of the posterior distribution, not its overall scale (which we would need for model comparison/selection).
 
-$p(y_i|x_i)$ is the likelihood function. $p(x_i|\alpha)p$ is the population model, $p(\alpha)$ the prior.
+$$p(y_i|x_i)$$ is the likelihood function. $$p(x_i|\alpha)p$$ is the population model, $$p(\alpha)$$ the prior.
 
 ## Parameter inference (with selection effects)
 
-We now assume that the data $\{ y_i \}_{i=1, \cdots, N}$ have been selected according to a selection effect or cut which will affect the parameters of interest (otherwise it would not affect any of the probabilisties and it could be dropped).
+We now assume that the data $$\{ y_i \}_{i=1, \cdots, N}$$ have been selected according to a selection effect or cut which will affect the parameters of interest (otherwise it would not affect any of the probabilisties and it could be dropped).
 
 The posterior distribution on the parameters is now:
 
-$p(\alpha, \{ x_i \} | \{ y_i \}, S) \propto p(\alpha) \prod_{i=1}^N p(x_i|\alpha)p(y_i|x_i,S)$
+$$p(\alpha, \{ x_i \} | \{ y_i \}, S) \propto p(\alpha) \prod_{i=1}^N p(x_i|\alpha)p(y_i|x_i,S)$$
 
-The term $p(y_i|x_i,S)$ is a new likelihood function (a slight abuse of terminology), modified by selection effects:
+The term $$p(y_i|x_i,S)$$ is a new likelihood function (a slight abuse of terminology), modified by selection effects:
 
-$p(y_i|x_i,S) = \frac{ p(S | y_i) p(y_i|x_i) }{ p(S | x_i ) }$
+$$p(y_i|x_i,S) = \frac{ p(S | y_i) p(y_i|x_i) }{ p(S | x_i ) }$$
 
 The term
-$p(S | y_i) = \frac{ p(y_i | S) p(S) }{p(y_i)}$
-is constant. The real selection function is implemented in $p(y_i | S)$.
+$$p(S | y_i) = \frac{ p(y_i | S) p(S) }{p(y_i)}$$
+is constant. The real selection function is implemented in $$p(y_i | S)$$.
 
 The other term,
 
-$p(S | x_i ) = \int \mathrm{d}y^\prime_i p(S | y^\prime_i) p(y^\prime_i|x_i)$,
+$$p(S | x_i ) = \int \mathrm{d}y^\prime_i p(S | y^\prime_i) p(y^\prime_i|x_i)$$,
 
 captures the way the original likelihood function is modified due to selection effects.
 
@@ -115,39 +115,39 @@ captures the way the original likelihood function is modified due to selection e
 
 In many cases, we will have
 
-$p(y_i|x_i,S) \propto \frac{ p(y_i|x_i) } { \int \mathrm{d}y^\prime_i p(y^\prime_i | S) p(y^\prime_i|x_i)}$,
+$$p(y_i|x_i,S) \propto \frac{ p(y_i|x_i) } { \int \mathrm{d}y^\prime_i p(y^\prime_i | S) p(y^\prime_i|x_i)}$$,
 
 when the selection effects are simple and deterministic.
 
-We now consider a simple signal-to-noise ratio (SNR) cut, with some threshold $C$:
+We now consider a simple signal-to-noise ratio (SNR) cut, with some threshold $$C$$:
 
-$p(y_i | S) = 1$ if $y_i/\sigma_i > C$, otherwise $0$.
+$$p(y_i | S) = 1$$ if $$y_i/\sigma_i > C$$, otherwise $$0$$.
 
 We also consider Gaussian noise, so that the likelihood function is simply
 
-$p(y_i|x_i) = \mathcal{N}(y_i-x_i;\sigma_i)$.
+$$p(y_i|x_i) = \mathcal{N}(y_i-x_i;\sigma_i)$$.
 
-With this deterministic cut, the correction term of interest, $p( S | x_i )$, is a convolution:
+With this deterministic cut, the correction term of interest, $$p( S | x_i )$$, is a convolution:
 
-$p(S | x_i ) = \int_{C\sigma_i}^{\infty} \mathrm{d}y^\prime_i \mathcal{N}(y^\prime_i-x_i;\sigma_i)$,
+$$p(S | x_i ) = \int_{C\sigma_i}^{\infty} \mathrm{d}y^\prime_i \mathcal{N}(y^\prime_i-x_i;\sigma_i)$$,
 
 leading to
 
-$p( S | x_i ) \propto 1 - \mathrm{erf}( \frac{C\sigma_i - x_i}{\sqrt{2}\sigma_i} ) $
+$$p( S | x_i ) \propto 1 - \mathrm{erf}( \frac{C\sigma_i - x_i}{\sqrt{2}\sigma_i} ) $$
 
 So the final result, our new likelihood function for the hierarchical model, is
 
-$p(y_i|x_i,S) \propto \frac{ \exp(-\frac{1}{2}(\frac{y_i-x_i}{\sigma_i})^2) }{ 1 - \mathrm{erf}( \frac{C\sigma_i - x_i}{\sqrt{2}\sigma_i} ) }$
+$$p(y_i|x_i,S) \propto \frac{ \exp(-\frac{1}{2}(\frac{y_i-x_i}{\sigma_i})^2) }{ 1 - \mathrm{erf}( \frac{C\sigma_i - x_i}{\sqrt{2}\sigma_i} ) }$$
 
 where are have dropped irrelevant multiplicative constant terms everywhere.
 
 ## Lets test that with a simulation!
 
-Let's generate $x_i$'s from a Gaussian centered at $\alpha$, then add noise.
+Let's generate $$x_i$$'s from a Gaussian centered at $$\alpha$$, then add noise.
 
 Let's also apply a SNR cut, i.e. only keep objects that satisfy some SNR criterion.
 
-We will infer $\alpha$ (and the $\{x_i\}_{i=1, \cdots, N}$) with the framework presented above.
+We will infer $$\alpha$$ (and the $$\{x_i\}_{i=1, \cdots, N}$$) with the framework presented above.
 
 We will check that neglecting the selection effects leads to a biased answer,
 and that the formulae above correctly mitigates this bias.
@@ -171,17 +171,17 @@ p_x_alpha_grid = np.exp(-0.5*((x_grid-alpha)/sigma_alpha)**2)/np.sqrt(2*np.pi)/s
 
 ```python
 fig, axs = plt.subplots(1, 2, figsize=(8, 4))
-axs[0].axvline(alpha, label=r'$\alpha$', color=next(axs[0]._get_lines.prop_cycler)['color'])
-axs[0].hist(x_i, histtype='step', label=r'Noiseless samples $x_i$', normed=True)
-axs[0].hist(y_i, histtype='step', label=r'Noisy samples $y_i$', normed=True)
-axs[0].plot(x_grid, p_x_alpha_grid, label=r'$p(x | \alpha)$')
+axs[0].axvline(alpha, label=r'$$\alpha$$', color=next(axs[0]._get_lines.prop_cycler)['color'])
+axs[0].hist(x_i, histtype='step', label=r'Noiseless samples $$x_i$$', normed=True)
+axs[0].hist(y_i, histtype='step', label=r'Noisy samples $$y_i$$', normed=True)
+axs[0].plot(x_grid, p_x_alpha_grid, label=r'$$p(x | \alpha)$$')
 axs[0].legend(frameon=True).get_frame().set_linewidth(0)
 axs[0].set_ylim([0, axs[0].get_ylim()[1]*1.7])
-axs[0].set_ylabel(r'$p(x|\alpha)$')
-axs[0].set_xlabel(r'$x$')
+axs[0].set_ylabel(r'$$p(x|\alpha)$$')
+axs[0].set_xlabel(r'$$x$$')
 axs[1].scatter(y_i/sigma_i, x_i-y_i, lw=0.5, s=5)
-axs[1].set_xlabel(r'SNR$=y_i/\sigma_i$')
-axs[1].set_ylabel(r'$x_i-y_i$')
+axs[1].set_xlabel(r'SNR$$=y_i/\sigma_i$$')
+axs[1].set_ylabel(r'$$x_i-y_i$$')
 fig.tight_layout()
 ```
 
@@ -204,16 +204,16 @@ print(sel.size, "objects on", nobj, 'satisfy the SNR cut')
 fig, axs = plt.subplots(1, 2, figsize=(8, 4))
 axs[0].axhline(snrcut, color=next(axs[0]._get_lines.prop_cycler)['color'], label='SNR cut')
 axs[0].scatter(y_i, y_i / sigma_i, lw=0.5, s=5)
-axs[0].set_ylabel(r'SNR$=y_i/\sigma_i$')
-axs[0].set_xlabel(r'$y$')
+axs[0].set_ylabel(r'SNR$$=y_i/\sigma_i$$')
+axs[0].set_xlabel(r'$$y$$')
 
-axs[1].axvline(alpha, label=r'$\alpha$', color=next(axs[1]._get_lines.prop_cycler)['color'])
-axs[1].hist(y_i, histtype='step', label=r'Noisy samples $\{y_i\}$ before cut', normed=False)
-axs[1].hist(y_i[sel], histtype='step', label=r'Noisy samples $\{y_i\}$ after cut', normed=False)
+axs[1].axvline(alpha, label=r'$$\alpha$$', color=next(axs[1]._get_lines.prop_cycler)['color'])
+axs[1].hist(y_i, histtype='step', label=r'Noisy samples $$\{y_i\}$$ before cut', normed=False)
+axs[1].hist(y_i[sel], histtype='step', label=r'Noisy samples $$\{y_i\}$$ after cut', normed=False)
 axs[1].legend(frameon=True).get_frame().set_linewidth(0)
 axs[1].set_ylim([0, axs[1].get_ylim()[1]*1.7])
-axs[1].set_ylabel(r'$N_\mathrm{obj}$')
-axs[1].set_xlabel(r'$y$')
+axs[1].set_ylabel(r'$$N_\mathrm{obj}$$')
+axs[1].set_xlabel(r'$$y$$')
 fig.tight_layout()
 ```
 
@@ -222,12 +222,12 @@ fig.tight_layout()
 
 
 ## Intuition
-We can already see that by applying the cut we are biasing ourselves towards higher values of $\alpha$.
-However, there is enough data (think coverage in $x$ or $y$) and we know enough about the selection cut that we could hope that this effect is invertible. And indeed, the equations we derived above show that it is possible in theory.
+We can already see that by applying the cut we are biasing ourselves towards higher values of $$\alpha$$.
+However, there is enough data (think coverage in $$x$$ or $$y$$) and we know enough about the selection cut that we could hope that this effect is invertible. And indeed, the equations we derived above show that it is possible in theory.
 
 ## Parameter inference
 
-Let us now write and test the various ingredients we need for the inference: the likelihood function $p(y|x,\sigma)$, the population model $p(x|\alpha)$, and the selection effect $p(S|x)$.
+Let us now write and test the various ingredients we need for the inference: the likelihood function $$p(y|x,\sigma)$$, the population model $$p(x|\alpha)$$, and the selection effect $$p(S|x)$$.
 
 Note that we will use minus log probabilities, and that we will also need their gradients for the Hamiltonian Monte Carlo sampler.
 
@@ -344,7 +344,7 @@ for i in range(nobj + 1):
 
 ## The new likelihoods
 
-Let us now look at the new likelihood functions $p(y_i|x_i, S)$ and compare them to the original ones, $p(y_i|x_i)$, which ignore selection effects. As expected, the correction term boosts the distribution at the low values of $x$.
+Let us now look at the new likelihood functions $$p(y_i|x_i, S)$$ and compare them to the original ones, $$p(y_i|x_i)$$, which ignore selection effects. As expected, the correction term boosts the distribution at the low values of $$x$$.
 
 
 ```python
@@ -354,12 +354,12 @@ axs = axs.ravel()
 for ax, i in zip(axs, np.random.choice(sel, axs.size, replace=False)):
     like = np.exp(-0.5*((y_i[i] - x_grid)/sigma_i[i])**2) / np.sqrt(2*np.pi) / sigma_i[i]
     like2 = 2 * like / (1 - scipy.special.erf((snrcut*sigma_i[i] - x_grid)/np.sqrt(2)/sigma_i[i]))
-    ax.plot(x_grid, p_x_alpha_grid, label=r'$p(x | \alpha)$', ls='dashed')
-    ax.axvline(x_i[i], label='True $x_i$', color='gray', ls='dashed')
-    ax.plot(x_grid, like, label='Original likelihood $p(y_i|x_i)$')
-    ax.plot(x_grid, like2, label='New likelihood $p(y_i|x_i, S)$')
+    ax.plot(x_grid, p_x_alpha_grid, label=r'$$p(x | \alpha)$$', ls='dashed')
+    ax.axvline(x_i[i], label='True $$x_i$$', color='gray', ls='dashed')
+    ax.plot(x_grid, like, label='Original likelihood $$p(y_i|x_i)$$')
+    ax.plot(x_grid, like2, label='New likelihood $$p(y_i|x_i, S)$$')
     ax.set_yticklabels([])
-    ax.set_xlabel('$x$')
+    ax.set_xlabel('$$x$$')
 axs[0].legend(ncol=2, frameon=False, loc='upper left', bbox_to_anchor=(0.0, 1.7), fontsize=14)
 fig.tight_layout()
 ```
@@ -443,39 +443,39 @@ And check that the results make sense
 ```python
 fig, axs = plt.subplots(2, 2, figsize=(8, 6))
 axs = axs.ravel()
-axs[0].axvline(alpha, label='True $\\alpha$', color=next(axs[0]._get_lines.prop_cycler)['color'])
+axs[0].axvline(alpha, label='True $$\\alpha$$', color=next(axs[0]._get_lines.prop_cycler)['color'])
 axs[0].hist(params_samples_without_seffect[:, 0], normed=True, histtype='step', label='Post. samples')
-axs[0].axvline(y_i.mean(), label='$y_i$ mean', color=next(axs[0]._get_lines.prop_cycler)['color'])
-axs[0].axvline(x_i.mean(), label='$x_i$ mean', color=next(axs[0]._get_lines.prop_cycler)['color'])
+axs[0].axvline(y_i.mean(), label='$$y_i$$ mean', color=next(axs[0]._get_lines.prop_cycler)['color'])
+axs[0].axvline(x_i.mean(), label='$$x_i$$ mean', color=next(axs[0]._get_lines.prop_cycler)['color'])
 axs[0].legend(ncol=2).get_frame().set_linewidth(0)
 axs[0].set_ylim([0, axs[0].get_ylim()[1]*1.7])
-axs[0].set_ylabel(r'$p(\alpha | \{ y_i\})$')
-axs[0].set_xlabel(r'$\alpha$')
+axs[0].set_ylabel(r'$$p(\alpha | \{ y_i\})$$')
+axs[0].set_xlabel(r'$$\alpha$$')
 
-axs[1].hist(x_i, histtype="step", label='True $x_i$')
-axs[1].hist(y_i, histtype="step", label='$y_i$')
+axs[1].hist(x_i, histtype="step", label='True $$x_i$$')
+axs[1].hist(y_i, histtype="step", label='$$y_i$$')
 axs[1].hist(params_samples_without_seffect_mean[1:],
-            histtype="step", label='$x_i^\mathrm{MAP}$')
+            histtype="step", label='$$x_i^\mathrm{MAP}$$')
 axs[1].legend(ncol=2).get_frame().set_linewidth(0)
 axs[1].set_ylim([0, axs[1].get_ylim()[1]*1.6])
-axs[1].set_ylabel(r'$N_\mathrm{obj}$')
-axs[1].set_xlabel(r'$x$')
+axs[1].set_ylabel(r'$$N_\mathrm{obj}$$')
+axs[1].set_xlabel(r'$$x$$')
 
 x_min, x_max = x_i.min(), x_i.max()
 axs[2].plot([x_min, x_max], [x_min, x_max])
 axs[2].errorbar(x_i, y_i, yerr=sigma_i, fmt="o", markersize=5, lw=1)
 axs[2].set_xlim([x_min, x_max])
 axs[2].set_ylim([x_min, x_max])
-axs[2].set_xlabel(r'$x$')
-axs[2].set_ylabel(r'$y$')
+axs[2].set_xlabel(r'$$x$$')
+axs[2].set_ylabel(r'$$y$$')
 
 axs[3].plot([x_min, x_max], [x_min, x_max])
 axs[3].errorbar(x_i, params_samples_without_seffect_mean[1:],
                 yerr=params_samples_without_seffect_std[1:], fmt="o", markersize=5, lw=1)
 axs[3].set_xlim([x_min, x_max])
 axs[3].set_ylim([x_min, x_max])
-axs[3].set_xlabel(r'$x$')
-axs[3].set_ylabel(r'$y$')
+axs[3].set_xlabel(r'$$x$$')
+axs[3].set_ylabel(r'$$y$$')
 
 fig.tight_layout()
 ```
@@ -486,9 +486,9 @@ fig.tight_layout()
 
 ### Interpretation
 
-We see from the first panel that indeed the recover a nice posterior distribution for $\alpha$ (with the $\{ x_i \}$s all marginalized out) capturing the true value.
+We see from the first panel that indeed the recover a nice posterior distribution for $$\alpha$$ (with the $$\{ x_i \}$$s all marginalized out) capturing the true value.
 
-The other panels show that the $\{ x_i \}$ are also recover, and how the uncertainties significantly shrinkage around the true value, compared to the original likelihood $p(y_i|x_i)$. All we have done is connecting them via the population model $p(x|\alpha)$ and simultaneously infer all the parameters.
+The other panels show that the $$\{ x_i \}$$ are also recover, and how the uncertainties significantly shrinkage around the true value, compared to the original likelihood $$p(y_i|x_i)$$. All we have done is connecting them via the population model $$p(x|\alpha)$$ and simultaneously infer all the parameters.
 This is a nice example of the typical Bayesian Shrinkage (tm) of uncertainties in hierarchical models.
 
 ### Second and third runs
@@ -539,7 +539,7 @@ params_samples_with_seffect_std = params_samples_with_seffect.std(axis=0)
 ```python
 fig, axs = plt.subplots(2, 1, figsize=(9, 6))
 axs = axs.ravel()
-axs[0].axvline(alpha, label='True $\\alpha$',
+axs[0].axvline(alpha, label='True $$\\alpha$$',
                color=next(axs[0]._get_lines.prop_cycler)['color'])
 axs[0].hist(params_samples_without_seffect[:, 0], histtype='step',
             label='Post. samples (no sel effects)')
@@ -548,20 +548,20 @@ axs[0].hist(params_samples_with_seffect_negl[:, 0], histtype='step',
 axs[0].hist(params_samples_with_seffect[:, 0], histtype='step',
             label='Post. samples (sel effects, accounted)')
 axs[0].set_ylim([0, axs[0].get_ylim()[1]*1.7])
-axs[0].set_ylabel(r'$p(\alpha | \{ y_i\})$')
-axs[0].set_xlabel(r'$\alpha$')
+axs[0].set_ylabel(r'$$p(\alpha | \{ y_i\})$$')
+axs[0].set_xlabel(r'$$\alpha$$')
 axs[0].legend(ncol=2).get_frame().set_linewidth(0)
 axs[0].set_ylim([0, axs[0].get_ylim()[1]*1.7])
 
-axs[1].hist(x_i[sel], histtype="step", label='True $x_i$ (selected)')
+axs[1].hist(x_i[sel], histtype="step", label='True $$x_i$$ (selected)')
 axs[1].hist(params_samples_with_seffect_negl_mean[1:], histtype="step",
-            label='$x_i^\mathrm{MAP}$ (sel effects, but neglected)')
+            label='$$x_i^\mathrm{MAP}$$ (sel effects, but neglected)')
 axs[1].hist(params_samples_with_seffect_mean[1:], histtype="step",
-            label='$x_i^\mathrm{MAP}$ (sel effects, accounted)')
+            label='$$x_i^\mathrm{MAP}$$ (sel effects, accounted)')
 axs[1].legend(ncol=2).get_frame().set_linewidth(0)
 axs[1].set_ylim([0, axs[1].get_ylim()[1]*1.6])
-axs[1].set_ylabel(r'$N_\mathrm{obj}$')
-axs[1].set_xlabel(r'$x$')
+axs[1].set_ylabel(r'$$N_\mathrm{obj}$$')
+axs[1].set_xlabel(r'$$x$$')
 ```
 
 
@@ -577,7 +577,7 @@ axs[1].set_xlabel(r'$x$')
 
 ### Interpretation
 
-We see that indeed, running the standard likelihood on the SNR-selected objects leads to biased answers for $\alpha$!
+We see that indeed, running the standard likelihood on the SNR-selected objects leads to biased answers for $$\alpha$$!
 
 This gets fixed when using the correct likelihood function, which is aware of the SNR cut and attempts to correct it.
 
