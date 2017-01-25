@@ -1,7 +1,7 @@
 ---
 id: 228
 title: Shrinkage and hierarchical inference with selection effects
-date: 2017-25-01T18:39:31+00:00
+date: 2017-25-01
 author: admin
 guid:
 desc:  
