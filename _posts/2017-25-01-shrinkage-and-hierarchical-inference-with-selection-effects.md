@@ -1,8 +1,11 @@
 ---
-id: 2292
+id: 228
 title: Shrinkage and hierarchical inference with selection effects
 date: 2017-25-01T18:39:31+00:00
 author: admin
+guid:
+desc:  
+permalink: /hierarchical-models-with-selection-effects/
 layout: post
 ---
 
