@@ -84,7 +84,7 @@ rc("font", family="serif", size=10)
 ```
 
 
-![png]({{ site.baseurl }}/assets/img/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_files/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_3_0.png =100x)
+![png]({{ site.baseurl }}/assets/img/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_files/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_3_0.png)
 
 
 ## Parameter inference (without selection effects)
