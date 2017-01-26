@@ -8,7 +8,7 @@ permalink: /hierarchical-models-with-selection-effects/
 layout: post
 ---
 
-This notebook is available at [this location on Github](https://github.com/ixkael/Prob-tools/blob/master/notebooks/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects.ipynb). 
+This notebook is available at [this location on Github](https://github.com/ixkael/Prob-tools/blob/master/notebooks/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects.ipynb).
 
 In this notebook we will make a simple hierarchical probabilistic model and illustrate:
 
@@ -57,7 +57,7 @@ Our model will consist of:
 - a set of noise levels, described by $$\sigma_i$$, which are given / fixed,
 - a selection effect S, for example a cut on signal-to-noise ratio (SNR) applied to the noisy variables $$\{y_i\}$$.
 
-Let us draw the model corresponding to this description: 
+Let us draw the model corresponding to this description:
 
 
 ```python
@@ -84,7 +84,7 @@ rc("font", family="serif", size=10)
 ```
 
 
-![png]({{ site.baseurl }}/assets/img/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_files/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_3_0.png)
+![png]({{ site.baseurl }}/assets/img/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_files/Shrinkage%20and%20hierarchical%20inference%20with%20selection%20effects_3_0.png =100x)
 
 
 ## Parameter inference (without selection effects)
@@ -111,7 +111,7 @@ The term $$p(y_i\vert x_i,S)$$ is a new likelihood function (a slight abuse of t
 
 $$p(y_i\vert x_i,S) = \frac{ p(S \vert  y_i) p(y_i\vert x_i) }{ p(S \vert  x_i ) }$$
 
-The term 
+The term
 $$p(S \vert  y_i) = \frac{ p(y_i \vert  S) p(S) }{p(y_i)}$$
 is constant. The real selection function is implemented in $$p(y_i \vert  S)$$.
 
@@ -123,14 +123,14 @@ captures the way the original likelihood function is modified due to selection e
 
 ## Example: Gaussian noise and SNR cut
 
-In many cases, we will have 
+In many cases, we will have
 
 $$p(y_i\vert x_i,S) \propto \frac{ p(y_i\vert x_i) } { \int \mathrm{d}y^\prime_i p(y^\prime_i \vert  S) p(y^\prime_i\vert x_i)}$$,
 
 when the selection effects are simple and deterministic.
 
-We now consider a simple signal-to-noise ratio (SNR) cut, with some threshold $$C$$: 
-    
+We now consider a simple signal-to-noise ratio (SNR) cut, with some threshold $$C$$:
+
 $$p(y_i \vert  S) = 1$$ if $$y_i/\sigma_i > C$$, otherwise $$0$$.
 
 We also consider Gaussian noise, so that the likelihood function is simply
@@ -159,14 +159,14 @@ Let's also apply a SNR cut, i.e. only keep objects that satisfy some SNR criteri
 
 We will infer $$\alpha$$ (and the $$\{x_i\}_{i=1, \cdots, N}$$) with the framework presented above.
 
-We will check that neglecting the selection effects leads to a biased answer, 
+We will check that neglecting the selection effects leads to a biased answer,
 and that the formulae above correctly mitigates this bias.
 
 
 ```python
-nobj = 1000 
+nobj = 1000
 alpha, sigma_alpha = 10, 1 # some arbitrary values
-x_i = alpha + sigma_alpha * np.random.randn(nobj) # Gaussian draws 
+x_i = alpha + sigma_alpha * np.random.randn(nobj) # Gaussian draws
 sigma_i = np.random.uniform(sigma_alpha, sigma_alpha * 2, size=nobj) # uniform draws
 y_i = x_i + sigma_i * np.random.randn(nobj)  # Gaussian draws from N(x_i, sigma_i)
 # some grid for computing and plotting p(x\vert alpha), here a Gaussian.
@@ -242,13 +242,13 @@ fig.tight_layout()
 ## Intuition
 We can already see that by applying the cut we are biasing ourselves towards higher values of $$\alpha$$.
 
-However, there is enough data (think coverage in $$x$$ or $$y$$) and we the selection cut, so we could hope to invert this effect. 
+However, there is enough data (think coverage in $$x$$ or $$y$$) and we the selection cut, so we could hope to invert this effect.
 
 And indeed, the equations we derived above show that it is possible in theory.
 
-## Parameter inference 
+## Parameter inference
 
-Let us now write and test the various ingredients we need for the inference: the likelihood function $$p(y\vert x,\sigma)$$, the population model $$p(x\vert \alpha)$$, and the selection effect $$p(S\vert x)$$. 
+Let us now write and test the various ingredients we need for the inference: the likelihood function $$p(y\vert x,\sigma)$$, the population model $$p(x\vert \alpha)$$, and the selection effect $$p(S\vert x)$$.
 
 Note that we will use minus log probabilities, and that we will also need their gradients for the Hamiltonian Monte Carlo sampler.
 
@@ -312,7 +312,7 @@ def lnprob_with_seffect_grad(params, ys=y_i, sigmas=sigma_i,
     return res
 ```
 
-Let's now run a set of numerical tests to check that our analytic gradients 
+Let's now run a set of numerical tests to check that our analytic gradients
 match the numerical gradients of the likelihood functions.
 
 
@@ -328,7 +328,7 @@ grads_seffect = lnselectioneffect_grad(x_i, sigma_i, snrcut)
 minval = 1e-10
 
 for i in range(nobj + 1):
-    
+
     def f(v):
         params2 = 1*params
         params2[i] = v
@@ -339,7 +339,7 @@ for i in range(nobj + 1):
         np.testing.assert_allclose(grads2,
                                    grads_without_seffect[i],
                                    rtol=relative_accuracy)
-    
+
     if i < nobj:
         def f(v):
             x_i2 = 1*x_i
@@ -351,7 +351,7 @@ for i in range(nobj + 1):
             np.testing.assert_allclose(grads2,
                                        grads_seffect[i],
                                        rtol=relative_accuracy)
-    
+
     def f(v):
         params2 = 1*params
         params2[i] = v
@@ -366,7 +366,7 @@ for i in range(nobj + 1):
 
 ## The new likelihoods
 
-Let us now look at the new likelihood functions $$p(y_i\vert x_i, S)$$ and compare them to the original ones, $$p(y_i\vert x_i)$$, which ignore selection effects. 
+Let us now look at the new likelihood functions $$p(y_i\vert x_i, S)$$ and compare them to the original ones, $$p(y_i\vert x_i)$$, which ignore selection effects.
 
 As expected, the correction term boosts the distribution at the low values of $$x$$.
 
@@ -405,7 +405,7 @@ Given that our model is very simple, has a lot of parameters, and admits simple 
 
 
 ```python
-# This is the function that performs one HMC sample, 
+# This is the function that performs one HMC sample,
 # with num_steps steps of size step_size relative to the gradient.
 # x0 is the initial point, lnprob the posterior distribution, lnprobgrad is gradients.
 def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
@@ -617,7 +617,7 @@ axs[1].set_xlabel(r'$$x$$')
 
 ### Interpretation
 
-We see that indeed, running the standard likelihood on the SNR-selected objects leads to biased answers for $$\alpha$$! 
+We see that indeed, running the standard likelihood on the SNR-selected objects leads to biased answers for $$\alpha$$!
 
 This gets fixed when using the correct likelihood function, which is aware of the SNR cut and attempts to correct it.
 
