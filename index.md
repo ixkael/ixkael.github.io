@@ -13,10 +13,8 @@ Hi there! I am **Boris Leistedt**, I'm a researcher in New York University worki
 
 I care a lot about diversity and equality in sciences and society in general.
 
-<br>
-
 *Undergraduate/graduate students*: if you are looking for a project feel free to email me.
-I have a number of well-defined projects (of small and moderate size) which can lead to impactful, publishable results.
-All of them involve a balance of theoretical, methodological, and data analysis work, at the intersection of theoretical physics, astrophysics, and computer science. Experience in any of those is a plus but not a requirement.
+I have a number of well-defined projects which can lead to impactful, publishable results.
+All of them involve a balance of theoretical, methodological, and data analysis work, at the intersection of theoretical physics, astrophysics, and statistics/computer science. Experience in any of those is a plus but not a requirement.
 
 </div>
