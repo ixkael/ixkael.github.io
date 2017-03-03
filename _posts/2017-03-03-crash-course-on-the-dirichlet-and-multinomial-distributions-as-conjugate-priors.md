@@ -8,7 +8,8 @@ permalink: /dirichlet-multinomial-conjugate-priors/
 layout: post
 ---
 
-*This is a concise introduction to the Dirichlet distribution and its connection to Multinomial-distributions counts, based on work and discussions with [Daniel Mortlock](http://astro.ic.ac.uk/dmortlock/home) (Imperial College), [Hiranya Peiris](http://zuserver2.star.ucl.ac.uk/~hiranya/) (UCL), [Josh Speagle](https://joshspeagle.github.io/) (Harvard), and [Jo Bovy](http://astro.utoronto.ca/~bovy/) (Toronto).*
+*This is a concise introduction to the Dirichlet distribution and its connection to Multinomial-distributions counts, based on work and discussions with [Daniel Mortlock](http://astro.ic.ac.uk/dmortlock/home) (Imperial College), [Hiranya Peiris](http://zuserver2.star.ucl.ac.uk/~hiranya/) (UCL), [Josh Speagle](https://joshspeagle.github.io/) (Harvard), and [Jo Bovy](http://astro.utoronto.ca/~bovy/) (Toronto).
+Everything below is very simple but for some reason misunderstood and massively under-exploited outside of the statistics literature.*
 
 The **Dirichlet distribution** is a very useful tool in probability and statistics. It is a natural choice for constructing a prior on a set of $$K$$ positive unit-normalized weights, denoted by $$\vec{f}=\{f_i \vert  i=1, \cdots, K\}$$ with $$f_i > 0\ \forall i$$ and $$\sum_if_i = 1$$.
 
