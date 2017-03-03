@@ -1,6 +1,6 @@
 ---
-id: 229
-title: Crash course on conjugate priors: the Dirichlet and multinomial distribution
+id: 230
+title: Crash course on the Dirichlet and Multinomial distributions as conjugate priors
 author: admin
 guid:
 desc:
