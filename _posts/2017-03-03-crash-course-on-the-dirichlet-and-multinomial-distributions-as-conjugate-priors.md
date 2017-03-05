@@ -16,7 +16,7 @@ The **Dirichlet distribution** is a very useful tool in probability and statisti
 To use a Dirichlet prior for those weights, one needs a set of (positive, real) *hyperparameters* $$\vec{\alpha}=\{\alpha_i \vert  \alpha_i i=1, \cdots, K\}$$ with $$\alpha_i > 0 \ \forall i$$. Neglecting the normalization (i.e. the terms which do not depend on $$\vec{f}$$, which you can find [here](https://en.wikipedia.org/wiki/Dirichlet_distribution)), the prior reads
 
 $$
-\vec{f} \vert  \vec{\alpha} \sim \mathrm{Dir}(\vec{\alpha}) \quad \Leftrightarrow \quad p(\vec{f} \vert  \vec{\alpha})\propto \prod_i \frac{f_i^{\alpha_i-1}}{}\Gamma(\alpha_i)}
+\vec{f} \vert  \vec{\alpha} \sim \mathrm{Dir}(\vec{\alpha}) \quad \Leftrightarrow \quad p(\vec{f} \vert  \vec{\alpha})\propto \prod_i \frac{f_i^{\alpha_i-1}}{\Gamma(\alpha_i)}
 $$.
 
 Note that this is a prior on the simplex, and that it is easy to draw values (weights $$\vec{f}$$) from this distribution, like you would do from uniform or Gaussian distributions. By changing the hyperparameters, one can affect the statistical properties of the weights. For example, if we write $$A = \sum_i \alpha_i$$, their mean, variance and covariance read
