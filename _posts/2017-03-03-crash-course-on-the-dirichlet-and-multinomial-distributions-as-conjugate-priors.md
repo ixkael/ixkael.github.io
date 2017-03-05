@@ -47,7 +47,7 @@ $$.
 **Let us take a concrete, classic example**: I observe a set of categorical counts $$\vec{n}$$, and I want to estimate the weights $$\vec{f}$$, subject to a Dirichlet prior controlled by fixed hyperparameters $$\vec{\alpha}$$. Applying Bayes theorem gives
 
 $$
-p(\vec{f}\vert \vec{n}, \alpha, N) \propto p(\vec{n} \vert  \vec{f}, N) p(\vec{f} \vert  \vec{\alpha}) \propto   \prod_i f_i^{n_i+\alpha_i-1}
+p(\vec{f}\vert \vec{n}, \alpha, N) \propto p(\vec{n} \vert  \vec{f}, N) p(\vec{f} \vert  \vec{\alpha}) \propto   \prod_i \frac{f_i^{n_i+\alpha_i-1}}{\Gamma(n_i+\alpha_i)}
 $$,
 
 **which is a Dirichlet distribution**! So we can write $$\vec{f} \vert  \vec{n}, \vec{\alpha}  \sim \mathrm{Dir}(\vec{n} + \vec{\alpha})$$.
