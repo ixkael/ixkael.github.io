@@ -16,7 +16,7 @@ The **Dirichlet distribution** is a very useful tool in probability and statisti
 To use a Dirichlet prior for those weights, one needs a set of (positive, real) *hyperparameters* $$\vec{\alpha}=\{\alpha_i \vert  \alpha_i i=1, \cdots, K\}$$ with $$\alpha_i > 0 \ \forall i$$. Neglecting the normalization (i.e. the terms which do not depend on $$\vec{f}$$, which you can find [here](https://en.wikipedia.org/wiki/Dirichlet_distribution)), the prior reads
 
 $$
-\vec{f} \vert  \vec{\alpha} \sim \mathrm{Dir}(\vec{\alpha}) \quad \Leftrightarrow \quad p(\vec{f} \vert  \vec{\alpha})\propto \prod_i f_i^{\alpha_i-1}
+\vec{f} \vert  \vec{\alpha} \sim \mathrm{Dir}(\vec{\alpha}) \quad \Leftrightarrow \quad p(\vec{f} \vert  \vec{\alpha})\propto \prod_i \frac{f_i^{\alpha_i-1}}{}\Gamma(\alpha_i)}
 $$.
 
 Note that this is a prior on the simplex, and that it is easy to draw values (weights $$\vec{f}$$) from this distribution, like you would do from uniform or Gaussian distributions. By changing the hyperparameters, one can affect the statistical properties of the weights. For example, if we write $$A = \sum_i \alpha_i$$, their mean, variance and covariance read
@@ -33,7 +33,7 @@ This is the most general, *uninformative prior* you can place on a set of unit-n
 One of those has to do with what these sorts of weights are used for: drawing objects from categories. Indeed, $$\vec{f}$$ can be interpreted as a set of probabilities over $$K$$ classes. Drawing objects from those classes (one by one) is known as a [categorical](https://en.wikipedia.org/wiki/Categorical_distribution) draw. The generalization of these draws is the well-known [Multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution), which corresponds to drawing $$N$$ objects from $$K$$ categories/classes with probabilities $$\vec{f}$$. We are interested in the probability of drawing some the numbers of objects the classes, $$\vec{n}=\{n_i \vert  i=1, \cdots, K\}$$, with $$\sum_i n_i = N$$. The Multinomial distribution is
 
 $$
-\vec{n} \vert  \vec{f}, N \sim \textrm{Mult}(\vec{f}) \quad \Leftrightarrow \quad p(\vec{n} \vert  \vec{f}, N)\propto \prod_i f_i^{n_i}
+\vec{n} \vert  \vec{f}, N \sim \textrm{Mult}(\vec{f}) \quad \Leftrightarrow \quad p(\vec{n} \vert  \vec{f}, N)\propto \prod_i \frac{f_i^{n_i}}{n_i!}
 $$.
 
 where I have, again, neglected the normalization constants that do not depend on $$\vec{n}$$. Note that we have conditioned on $$N$$ here (things get *much* more complicated if the number of objects varies!).
