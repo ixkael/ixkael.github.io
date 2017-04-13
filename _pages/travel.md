@@ -18,7 +18,7 @@ I am currently based in New York University and I frequently visit University Co
 |Sep 4-9 |Lecturing @ TIARA (Taiwan)|
 |July 17-21 |Gaia Sprint @ MPIA Heidelberg (Germany)|
 |July 10-14 |LSST DESC collab. meeting @ Brookhaven Laboratory (USA)|
-|Apr 10-13 |Seminar @ IPMU Tokyo (Japan)|
+|Apr 10-13 |Visit and seminar @ IPMU Tokyo (Japan)|
 |Ma 26-Ap 7 |Annual leave |
 |Feb 13-18 |LSST DESC collab. meeting @ SLAC/Stanford University (USA)|
 |Jan 26-31|BASP Frontiers workshop @ Villars (Switzerland)|
