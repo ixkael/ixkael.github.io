@@ -16,8 +16,10 @@ I am currently based in New York University and I frequently visit University Co
 | Dates & locations       |            |
 |: ------------- |:-------------|
 |Sep 4-9 |Lecturing @ TIARA (Taiwan)|
+|Aug 29-Se 2|Astro-hack week @  Univ. Washington, Seattle (USA)|
 |July 17-21 |Gaia Sprint @ MPIA Heidelberg (Germany)|
 |July 10-14 |LSST DESC collab. meeting @ Brookhaven Laboratory (USA)|
+|June 10-20 |Retreat @ KITP, Santa Barbara (USA)|
 |Apr 10-13 |Visit and seminar @ IPMU Tokyo (Japan)|
 |Ma 26-Ap 7 |Annual leave |
 |Feb 13-18 |LSST DESC collab. meeting @ SLAC/Stanford University (USA)|
