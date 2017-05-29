@@ -44,8 +44,7 @@ If you want to run this notebook, you will need `matplotlib`, `scipy`, `numpy`, 
 - [Stochastic Gradient HMC](https://arxiv.org/abs/1402.4102)
 
 
-<span style="color:red">
-```python
+<pre>
 %matplotlib inline
 %config IPython.matplotlib.backend = 'retina'
 %config InlineBackend.figure_format = 'retina'
@@ -73,9 +72,8 @@ matplotlib.rcParams['patch.linewidth'] = 2
 matplotlib.rcParams['axes.prop_cycle'] =\
     cycler("color", ['k', 'c', 'm', 'y'])
 matplotlib.rcParams['axes.labelsize'] = 16
-```
+</pre>
 
-</span>
 
 ## What are mixture models?
 
@@ -112,7 +110,6 @@ The variables $$\alpha_b$$ are such that $$0 \leq \alpha_b \leq 1$$ and $$\sum_{
 Let us start by making a simulated data set.
 
 
-<span style="color:red">
 ```python
 # Those two functions establish a mapping between the B-dimensional simplex 
 # and the (B-1)-dimensional unit hypercube. This will be described later on.
@@ -154,7 +151,6 @@ p_x_grid = alphas[None, :] *\
 </span>
 
 
-<span style="color:red">
 ```python
 fig, axs = plt.subplots(1, 2, figsize=(8, 4))
 axs[0].hist(xis, histtype='step', normed=True,
@@ -212,7 +208,6 @@ Minor comment: we have integrated each $$x_i$$ in $$[-\infty, \infty]$$, but we 
 We will try sampling both of those posterior distributions below. This is because in many real-world problems this analytic simplification is not possible, and one has to work with the full posterior distribution, which might involve many latent variables and integrals. This would be the case if our population model and/or our noise were not Gaussian. We will work with this toy model because we have the simplified posterior distribution to verify our results.
 
 
-<span style="color:red">
 ```python
 # Let's first define a few basic functions we will need.
 def alphaszs_jacobian(fs, zs):
@@ -262,7 +257,6 @@ def test_derivative(x0, fun, fun_grad, relative_accuracy, n=1, lim=0, order=9, d
 Let us sample the simplified posterior distribution (which, for our fake data set, has 6 parameters: the amplitudes, means, and standard deviations of the two Gaussian components) with a very good sampler: emcee. The reasons why emcee is a good sampler are beyond the scope of this tutorial (but scale invariance and speed are two of them!). As mentioned before, we adopt uniform priors in $$[0,1]$$ for all parameters. We will manually impose $$\sum_b \alpha_b = 1$$ by renormalizing them systematically at each random draw.
 
 
-<span style="color:red">
 ```python
 # The simplified posterior distribution is easy to code up:
 def lnprob_hyperonly1(params):
@@ -279,7 +273,6 @@ def lnprob_hyperonly1(params):
 </span>
 
 
-<span style="color:red">
 ```python
 def lnprob(params):  # log posterior distribution to be given to emcee
     alphas = params[0:n_mixture]
@@ -313,7 +306,6 @@ _ = sampler.run_mcmc(pos, 1000)
 </span>
 
 
-<span style="color:red">
 ```python
 param_names = [r'$$\alpha_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
@@ -343,7 +335,6 @@ Moreover, there is an additional complication that made our sampling failed: the
 We will now order the component locations and use the hypercube-to-simplex mapping to run the emcee sampler once again. We will also make some tighted assumptions about the component amplitudes and widths. We don't want those to be too small in order to avoid new sources of degeneracies in the posterior distribution, like the mode collapse. (This point will be illustrated in the next section). 
 
 
-<span style="color:red">
 ```python
 def lnprob(params):
     zs = params[0:n_mixture-1]
@@ -385,7 +376,6 @@ pos,_,_ = sampler.run_mcmc(pos, 1000)
 </span>
 
 
-<span style="color:red">
 ```python
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
@@ -408,7 +398,6 @@ Note that our sampling procedure is very quick: the two runs merely took a few s
 A nice visualization of the result is in data space, where we evaluate our model for a few hundred samples of the posterior distribution, and see that they are nicely around the truth.
 
 
-<span style="color:red">
 ```python
 fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 for i in np.random.choice(sampler.flatchain.shape[0], 1000, replace=False):
@@ -445,7 +434,6 @@ There is a cost: nested sampling typically requires many more function evaluatio
 Let us run PolyChord on our data set, with the same posterior, no ordering constraints, and two components only.
 
 
-<span style="color:red">
 ```python
 # Save the data to numpy arrays since we will run polychord outside of this notebook.
 np.save("yis", yis)
@@ -455,7 +443,6 @@ np.save("sigmais", sigmais)
 </span>
 
 
-<span style="color:red">
 ```python
 # The code we will write to a file and execute to run PolyChord.
 # the only parameter of this string is the number of components.
@@ -514,7 +501,6 @@ PolyChord.run_nested_sampling(mixturemodellnprob, ndim, nderived, prior=prior,
 span>
 
 
-<span style="color:red">
 ```python
 text_file = open("run_PyPolyChord.py", "w")
 text_file.write(code1 % 2 + code2 % True)
@@ -531,7 +517,6 @@ text_file.close()
 Let's visualize the posterior distribution. In this figure we will also plot all the ordering permutations of our true parameter values.
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
@@ -561,7 +546,6 @@ for ind in itertools.permutations(range(n_mixture)):
 We can now see the two modes caused by the labelling degeneracy! PolyChord nicely finds and map them. Since we have activated the clustering algorithm, we can restrict our attention to one of the modes and plot posterior samples. Indeed, we check that our inference is correct.
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/clusters/mixturemodellnprob_1_equal_weights.txt')
 mus = np.mean(samples[:, 2:], axis=0)
@@ -599,7 +583,6 @@ You may wonder, since the mapping between the two modes is predictable, why we d
 Note that this trick must be very carefully applied. One cannot just post-processed any MCMC chain to alleviate the multimodality problem (for mixture models only!). This will only work if the MCMC sampler has converged and properly explored the multiple modes it has mapped (though it is insensitive the the relative amplitudes in this exploration, for obvious geometrical reasons). In our case this is valid.
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 unordered_samples = samples[:, 2:]
@@ -618,7 +601,6 @@ for i in range(unordered_samples.shape[0]):
 </span>
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 truths = np.concatenate((zs, betas, gammas))
@@ -641,7 +623,6 @@ Note that this PolyChord run took a few minutes. This is because nested sampling
 Let's do a more difficult run: perform the inference via PolyChord and three components instead of two. What will we see? Unfortunately, this run will be even slower and take several minutes, but the comments above apply again: this could be made more efficient if necessary.
 
 
-<span style="color:red">
 ```python
 n_mixture2 = 3
 text_file = open("run_PyPolyChord.py", "w")
@@ -660,7 +641,6 @@ text_file.close()
 If we plot the posterior distribution, we immediately see that the labeling degeneracy has gotten worse (since it scales as factorial $$B$$), and that the two-component model is clearly preferred (we nicely recover our input parameters). In other words, one of the components is constrained to be zero.
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture2-1)] +\
@@ -696,7 +676,6 @@ If we try the previous trick and post-process the chains to reorder the componen
 Unfortunately, we can only conclude that the labeling degeneracy is not that easily killed. We have seen that nested sampling is a natural solution to map out the full posterior distribution. But isn't there another way to do standard MCMC and map a single of the modes? This is what we will do now with HMC.
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 unordered_samples = samples[:, 2:]
@@ -715,7 +694,6 @@ for i in range(unordered_samples.shape[0]):
 </span>
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 alphas2 = np.concatenate((alphas, np.repeat(0.00, n_mixture2-n_mixture)))
@@ -750,7 +728,6 @@ One of the peculiarities of HMC is that it requires gradients of the posterior w
 We will now ask autograd to create a function that computes the analytic gradient of our posterior distribution with automatic differentiation! At the moment, we will focus on our simplified posterior distribution and check that the HMC approach works, before moving to the full posterior distribution.
 
 
-<span style="color:red">
 ```python
 lnprob_hyperonly1_grad = grad(lnprob_hyperonly1)
 ```
@@ -760,7 +737,6 @@ lnprob_hyperonly1_grad = grad(lnprob_hyperonly1)
 We can numerically verify that it is indeed the gradient of our function: 
 
 
-<span style="color:red">
 ```python
 params = np.concatenate([alphas, betas, gammas])
 
@@ -783,7 +759,6 @@ If you try to apply autograd to the latter, you will get an error message saying
 Note that autograd also allows us to extract the Hessian of our distribution of interest. We will use that to tune our HMC run and make it blazingly efficient. This is explained in arxiv:1206.1901 and also many other HMC papers.
 
 
-<span style="color:red">
 ```python
 def sublnprob_hyperonly(params):
     alphas = params[0:n_mixture]
@@ -872,7 +847,6 @@ Because this approach tells the algorithm about the local curvature, it will imp
 Note that our sampler will throw a warning every time it rejects a sample (which is possible due to numerical approximations involved in the HMC algorithm). But this will be very rare; our acceptance rate will be very close to one. 
 
 
-<span style="color:red">
 ```python
 # This is the function that performs one HMC sample, 
 # with num_steps steps of size step_size relative to the gradient.
@@ -954,7 +928,6 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
 </span>
 
 
-<span style="color:red">
 ```python
 num_samples, burnin = 10000, 2000
 
@@ -986,7 +959,6 @@ param_samples_hyperonly = param_samples_hyperonly[burnin:, :]
     500 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500 6000 6500 7000 7500 8000 8500 9000 9500 
 
 
-<span style="color:red">
 ```python
 _ = corner.corner(param_samples_hyperonly, truths=params, labels=param_names)
 ```
@@ -1000,7 +972,6 @@ _ = corner.corner(param_samples_hyperonly, truths=params, labels=param_names)
 The marginalized posterior distribution for pairs of parameters looks good. Let's look at the marginalized posterior for the individual parameters and compare with the results we obtained with emcee.
 
 
-<span style="color:red">
 ```python
 fig, axs = plt.subplots(2, 3, figsize=(11, 5))
 axs = axs.ravel()
@@ -1035,7 +1006,6 @@ $$p(\vec{f},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert  \{y_i, \sigma_i\})\propt
 using HMC with the settings described before.
 
 
-<span style="color:red">
 ```python
 def sublnprob_withxis(params):
     alphas = params[0:n_mixture]
@@ -1114,7 +1084,6 @@ test_derivative(params, fun, fun_hess, relative_accuracy, superverbose=False, n=
 </span>
 
 
-<span style="color:red">
 ```python
 num_samples, burnin = 10000, 2000
 
@@ -1144,7 +1113,6 @@ param_samples_withxis = param_samples_withxis[burnin:, :]
 </span>
 
 
-<span style="color:red">
 ```python
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
@@ -1209,7 +1177,6 @@ This brings us to our final point of discussion and experiment.
 Let's run PolyChord with more components - say four - and show the result in data space, i.e., plot the true density of objects and that infered with our Gaussian mixture model.  
 
 
-<span style="color:red">
 ```python
 code4 = """
 PolyChord.run_nested_sampling(mixturemodellnprob, ndim, nderived, prior=prior,
@@ -1233,7 +1200,6 @@ text_file.close()
 </span>
 
 
-<span style="color:red">
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')[:, 2:]
 print(np.min(samples, axis=0))
