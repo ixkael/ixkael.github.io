@@ -44,7 +44,9 @@ If you want to run this notebook, you will need `matplotlib`, `scipy`, `numpy`, 
 - [Stochastic Gradient HMC](https://arxiv.org/abs/1402.4102)
 
 
-<pre>
+<blockquote>
+  <pre>
+    <code>
 %matplotlib inline
 %config IPython.matplotlib.backend = 'retina'
 %config InlineBackend.figure_format = 'retina'
@@ -72,8 +74,9 @@ matplotlib.rcParams['patch.linewidth'] = 2
 matplotlib.rcParams['axes.prop_cycle'] =\
     cycler("color", ['k', 'c', 'm', 'y'])
 matplotlib.rcParams['axes.labelsize'] = 16
-</pre>
-
+    </code>
+  </pre>
+</blockquote>
 
 ## What are mixture models?
 
