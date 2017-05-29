@@ -94,13 +94,13 @@ One of the main restrictions of this notebook is to focus on one-dimensional mix
 
 We will consider a set of $$N$$ points $$\{x_i ; i=1,\cdots,N\}$$ generated from the mixture of $$B$$ Gaussians, with amplitudes, means, and standard deviations denoted by $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$. Thus, each $$x_i$$ is drawn from
 
-$$p(x_i|\vec{\alpha},\vec{\beta}, \vec{\gamma}) = \sum_{b=1}^B \alpha_b \mathcal{N}(x_i|\beta_b,\gamma^2_b)$$
+$$p(x_i\vert\vec{\alpha},\vec{\beta}, \vec{\gamma}) = \sum_{b=1}^B \alpha_b \mathcal{N}(x_i\vert\beta_b,\gamma^2_b)$$
 
 We use the notation $$\mathcal{N}(x\vert\mu,\sigma^2) = (\sqrt{2\pi}\sigma)^{-1} \exp\left(-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2\right)$$
 
 For each $$x_i$$, we observe a noisy version $$y_i$$, with Gaussian noise of standard deviation $$\sigma_i$$, such that
 
-$$p(y_i|x_i, \sigma_i) = \mathcal{N}(y_i|x_i,\sigma^2_i)$$
+$$p(y_i\vertx_i, \sigma_i) = \mathcal{N}(y_i\vertx_i,\sigma^2_i)$$
 
 which is our likelihood function for each data point.
 
@@ -159,7 +159,7 @@ for t in range(n_mixture):
 axs[0].legend(frameon=True).get_frame().set_linewidth(0)
 axs[0].set_xlim([0, 1])
 axs[0].set_ylim([0, axs[0].get_ylim()[1]*1.7])
-axs[0].set_ylabel(r'$$p(x|\vec{\alpha}, \vec{\beta}, \vec{\gamma})$$')
+axs[0].set_ylabel(r'$$p(x\vert\vec{\alpha}, \vec{\beta}, \vec{\gamma})$$')
 axs[0].set_xlabel(r'$$x$$')
 axs[1].errorbar(yis/sigmais, xis-yis, sigmais, fmt="o", lw=1,
                 markersize=2, ecolor='#888888', alpha=0.75)
@@ -178,25 +178,25 @@ As we can see, our noisy samples span a wider domain than the initial density. B
 
 Let us now write the posterior distribution of the parameters of this model. We are interested in recovering $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ from the noisy data and their errors, $$\{y_i, \sigma_i\}$$. Unfortunately, the noiseless values $$\{ x_i \}$$ are not observed; they must be modeled and marginalized over. By applying Bayes' theorem twice and introducing latent $$x_i$$'s, we can write the posterior distribution of interest:
 
-$$p(\vec{\alpha},\vec{\beta}, \vec{\gamma} | \{y_i, \sigma_i\}) \propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N \int \mathrm{d}x_i p(y_i|x_i, \sigma_i)p(x_i|\vec{\alpha},\vec{\beta}, \vec{\gamma})$$
+$$p(\vec{\alpha},\vec{\beta}, \vec{\gamma} \vert \{y_i, \sigma_i\}) \propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N \int \mathrm{d}x_i p(y_i\vertx_i, \sigma_i)p(x_i\vert\vec{\alpha},\vec{\beta}, \vec{\gamma})$$
 
 We have dropped the evidence at the denominator, since it is a normalization constant. It would be important if we were comparing models or fitting parameters accross models. For parameter estimation within one model (here with two components), it is unimportant.
 
 By making the distributions explicit, our full posterior distribution reads
 
-$$p(\vec{f},\vec{\beta}, \vec{\gamma} | \{y_i, \sigma_i\})\propto p(\vec{f},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B f_b \int  \mathrm{d}x_i\mathcal{N}(x_i|\beta_b,\gamma^2_b)\mathcal{N}(y_i|x_i,\sigma^2_i)$$
+$$p(\vec{f},\vec{\beta}, \vec{\gamma} \vert \{y_i, \sigma_i\})\propto p(\vec{f},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B f_b \int  \mathrm{d}x_i\mathcal{N}(x_i\vert\beta_b,\gamma^2_b)\mathcal{N}(y_i\vertx_i,\sigma^2_i)$$
 
 However, notice that we are in a very special context: both our distribution model and our likelihood are Gaussian. In other words, the expression for the
 posterior probability contains an integral over a product of two
 Gaussians. This can be resolved analytically, and leads to
 
-$$p(\vec{\alpha},\vec{\beta}, \vec{\gamma} | \{y_i, \sigma_i\}) \propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N \sum_{b=1}^B \alpha_b \mathcal{N}(y_i|\beta_b,\sigma^2_i + \gamma^2_b)$$
+$$p(\vec{\alpha},\vec{\beta}, \vec{\gamma} \vert \{y_i, \sigma_i\}) \propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N \sum_{b=1}^B \alpha_b \mathcal{N}(y_i\vert\beta_b,\sigma^2_i + \gamma^2_b)$$
 
 If you are note sure how to do that, please look at the Matrix Cookbook! The reference is above.
 
 This is a very convenient result since we have once and for all removed the latent variables and integrals, and we obtained a simple expression for the posterior distribution of interest. We will refer to this expression as the "simplified" posterior, while the previous one, with the set of latent variables and integrals, is the "full" posterior. Because this analytical elimination of the latent variables is not always possible, and because sometimes one does want to explicitly sample them, the full posterior is of great interest. Below we will see to correctly sample it and deal with the large number of parameters.
 
-Why would we want to explore the full set of parameters, especially if we are able to eliminate a large number of them? This is because we might be interested in recovering the true noiseless values $$x_i$$'s. More precisely, we may want to look at the join posterior distribution on the $$x_i$$'s and the mixture model. We may find that some values are well recovered regardless of the mixture, while some other might not. More generally, this is because of a **shrinkage** property of Bayesian hierarchical models: by simulatenously recovering the population parameters $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ and the object parameters $$x_i$$'s, we will obtain stronger constraints on $$x_i$$ than by using the objects individually (i.e., the likelihood function $$p(y_i|x_i, \sigma_i)$$). This is a natural yet powerful consequence of the hierarchical nature of the model and the parameter inference, which we cannot quite access if we analytically marginalize over the latent variables. We will illustrate this shrinkage property below. 
+Why would we want to explore the full set of parameters, especially if we are able to eliminate a large number of them? This is because we might be interested in recovering the true noiseless values $$x_i$$'s. More precisely, we may want to look at the join posterior distribution on the $$x_i$$'s and the mixture model. We may find that some values are well recovered regardless of the mixture, while some other might not. More generally, this is because of a **shrinkage** property of Bayesian hierarchical models: by simulatenously recovering the population parameters $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ and the object parameters $$x_i$$'s, we will obtain stronger constraints on $$x_i$$ than by using the objects individually (i.e., the likelihood function $$p(y_i\vertx_i, \sigma_i)$$). This is a natural yet powerful consequence of the hierarchical nature of the model and the parameter inference, which we cannot quite access if we analytically marginalize over the latent variables. We will illustrate this shrinkage property below. 
 
 Minor comment: we have integrated each $$x_i$$ in $$[-\infty, \infty]$$, but we will adopt bounded priors $$[0,1]$$ in the other numerical tests below. This difference does not affect our investigations. If we wanted to be very precise, we could easily include truncated gaussians in the simplified posterior distribution.
 
@@ -395,7 +395,7 @@ for i in np.random.choice(sampler.flatchain.shape[0], 1000, replace=False):
 ax.plot(x_grid, p_x_grid[:, :].sum(axis=1), c='k')
 ax.set_xlim([0, 1])
 ax.set_ylim([0, axs[0].get_ylim()[1]*1.7])
-ax.set_ylabel(r'$$p(x|\vec{\alpha}, \vec{\beta}, \vec{\gamma})$$')
+ax.set_ylabel(r'$$p(x\vert\vec{\alpha}, \vec{\beta}, \vec{\gamma})$$')
 ax.set_xlabel(r'$$x$$')
 fig.tight_layout()
 ```
@@ -674,9 +674,9 @@ fig = corner.corner(ordered_samples, labels=param_names, truths=truths)
 
 On top of our wish to efficiently sample one single mode of the posterior distribution, let's return to a comment we made at the start: there are few real-world situations where the population and likelihood probabilities are Gaussian and one can integrate over the latent variables analytically. Therefore, we would like to see if we can sample from the full posterior distribution. In other words, we will sample from 
 
-$$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})\propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B \alpha_b \mathcal{N}(x_i|\beta_b,\gamma^2_b)\mathcal{N}(y_i|x_i,\sigma^2_i)$$
+$$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert \{y_i, \sigma_i\})\propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B \alpha_b \mathcal{N}(x_i\vert\beta_b,\gamma^2_b)\mathcal{N}(y_i\vertx_i,\sigma^2_i)$$
 
-By histogramming the samples only in the $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ dimensions, we should recover the previous results from the simplified posterior distribution $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})$$ since this is equivalent to numerically integrating out the $$x_i$$'s. This is a classic MCMC trick: if one draws samples from a distribution $$p(a,b)$$ and only look at the $$a$$ dimension (by histogramming the $$a$$ values and ignoring $$b$$), one is effectively looking at the marginalized posterior $$p(a) = \int p(a,b) \mathrm{d}b$$.
+By histogramming the samples only in the $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ dimensions, we should recover the previous results from the simplified posterior distribution $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert \{y_i, \sigma_i\})$$ since this is equivalent to numerically integrating out the $$x_i$$'s. This is a classic MCMC trick: if one draws samples from a distribution $$p(a,b)$$ and only look at the $$a$$ dimension (by histogramming the $$a$$ values and ignoring $$b$$), one is effectively looking at the marginalized posterior $$p(a) = \int p(a,b) \mathrm{d}b$$.
 
 Since this model has many more parameters ($$3B+N-1$$ instead of $$3B-1$$), standard MCMC methods like emcee will struggle. This is because those have a typical acceptance rate of $$\approx 0.3$$ (at best), which is the cornerstone of standard MCMC algorithms like Metropolis-Hastings. This can only be increased by using extra information such as gradients, which we will do below. Moreover, due to volume effects, the space to explore is very large, so there is a chance the relevant portions of the full posterior distribution will rarely be explored. This is known as the curse of dimensionality.
 
@@ -946,7 +946,7 @@ However, we will now sample the full posterior distribution, which emcee cannot 
 
 We will now sample 
 
-$$p(\vec{f},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})\propto p(\vec{f},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B f_b \mathcal{N}(x_i|\beta_b,\gamma^2_b)\mathcal{N}(y_i|x_i,\sigma^2_i)$$
+$$p(\vec{f},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert \{y_i, \sigma_i\})\propto p(\vec{f},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B f_b \mathcal{N}(x_i\vert\beta_b,\gamma^2_b)\mathcal{N}(y_i\vertx_i,\sigma^2_i)$$
 
 using HMC with the settings described before.
 
@@ -1087,7 +1087,7 @@ The marginalized posterior distribution looks good. For the population parameter
 
 ## Hierarchical uncertainty shrinkage 
 
-The other panels in the figure above show a comparison of the posterior distribution on each $$x_i$$ versus the likelihood function $$p(y_i | x_i)$$. This is a typical illustration of Bayesian shrinkage: by fitting a model to the population of objects, we in turn improve the individual estimates. It doesn't matter that those parameters are latent - they are connected via a hierarchical probabilistic model, so the information gained in one part of the model might actually affect the rest of the model. This is a theme that we have explored (and will continue to explore) in other tutorials.
+The other panels in the figure above show a comparison of the posterior distribution on each $$x_i$$ versus the likelihood function $$p(y_i \vert x_i)$$. This is a typical illustration of Bayesian shrinkage: by fitting a model to the population of objects, we in turn improve the individual estimates. It doesn't matter that those parameters are latent - they are connected via a hierarchical probabilistic model, so the information gained in one part of the model might actually affect the rest of the model. This is a theme that we have explored (and will continue to explore) in other tutorials.
 
 ## Number of components and multimodality
 
@@ -1101,7 +1101,7 @@ Another related question is how to find a suitable prior to alleviate labelling 
 
 But the most critical question we have not  mentioned so far is the choice of number of components. In most real-world problems, one does not know how many components to use. This is a vast, deep question which is addressed in countless papers, many of them beyond the scope of this tutorial. The classical approach boils down to doing multiple runs with different number of components, and performing model selection (in a Bayesian fashion) or cross-validation (in a frequentist fashion) to select the best number of components. Indeed, the denominator of our full posterior distribution (neglected previously) is the evidence
 
-$$E = p( \{y_i, \sigma_i\}) = \int p(\vec{f},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\}) \mathrm{d} \vec{f} \mathrm{d}\vec{\beta} \mathrm{d} \vec{\gamma} \mathrm{d} \{ x_i \}$$
+$$E = p( \{y_i, \sigma_i\}) = \int p(\vec{f},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert \{y_i, \sigma_i\}) \mathrm{d} \vec{f} \mathrm{d}\vec{\beta} \mathrm{d} \vec{\gamma} \mathrm{d} \{ x_i \}$$
 
 In other words, one way or another, a huge multidimensional integral is needed. Calculating evidences accurately is a research topic on its own. One can run a very long MCMC chain and perform this integral numerically. Or adopt a more adequate sampler that explicitly targets the evidence (e.g., via nested sampling). Those options are good. For two runs with two different numbers of components $$B_1$$ and $$B_2$$, the evidence ratio (also called Bayes factor) will allow one to perform model selection and pick the preferred number of components. Even better, one could simply consider both models simultaneously, and weight the samples in each model by their respective evidences. All of those could be performed with nested sampling.
 
