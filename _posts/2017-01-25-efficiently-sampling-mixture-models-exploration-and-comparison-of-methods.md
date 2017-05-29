@@ -450,7 +450,9 @@ def prior(cube):
 def mixturemodellnprob(params):
 
     phi = [0.0] * 0
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     fac = np.array([1.0]*n_mixture)
     zsb = np.array([1.0]*n_mixture)
     for i in range(n_mixture-1):
@@ -674,7 +676,7 @@ On top of our wish to efficiently sample one single mode of the posterior distri
 
 $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})\propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B \alpha_b \mathcal{N}(x_i|\beta_b,\gamma^2_b)\mathcal{N}(y_i|x_i,\sigma^2_i)$$
 
-By histogramming the samples only in the $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ dimensions, we should recover the previous results --- from the simplified posterior distribution $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})$$ --- since this is equivalent to numerically integrating out the $$x_i$$'s. This is a classic MCMC trick: if one draws samples from a distribution $$p(a,b)$$ and only look at the $$a$$ dimension (by histogramming the $$a$$ values and ignoring $$b$$), one is effectively looking at the marginalized posterior $$p(a) = \int p(a,b) \mathrm{d}b$$.
+By histogramming the samples only in the $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ dimensions, we should recover the previous results from the simplified posterior distribution $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})$$ since this is equivalent to numerically integrating out the $$x_i$$'s. This is a classic MCMC trick: if one draws samples from a distribution $$p(a,b)$$ and only look at the $$a$$ dimension (by histogramming the $$a$$ values and ignoring $$b$$), one is effectively looking at the marginalized posterior $$p(a) = \int p(a,b) \mathrm{d}b$$.
 
 Since this model has many more parameters ($$3B+N-1$$ instead of $$3B-1$$), standard MCMC methods like emcee will struggle. This is because those have a typical acceptance rate of $$\approx 0.3$$ (at best), which is the cornerstone of standard MCMC algorithms like Metropolis-Hastings. This can only be increased by using extra information such as gradients, which we will do below. Moreover, due to volume effects, the space to explore is very large, so there is a chance the relevant portions of the full posterior distribution will rarely be explored. This is known as the curse of dimensionality.
 
