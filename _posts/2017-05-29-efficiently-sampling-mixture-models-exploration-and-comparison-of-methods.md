@@ -14,7 +14,7 @@ This notebook is available at [this location on Github](https://github.com/ixkae
 
 We will consider the problem of efficiently inferring the parameters of mixture models. We will touch upon the following topics:
 - density modelling with Gaussian mixtures
-- a first (but incorrect) go at parameter inference with an ensemble sampler (emcee)
+- first (but incorrect) parameter inference with an ensemble sampler (emcee)
 - degeneracies, re-parametrization, and correct parameter sampling with emcee
 - mapping the full multimodal solution with nested sampling (PolyChord)
 - efficient (but unimodal) sampling with Hamiltonian Monte Carlo (HMC) 
