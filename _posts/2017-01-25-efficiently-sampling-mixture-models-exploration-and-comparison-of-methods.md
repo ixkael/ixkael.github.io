@@ -1,5 +1,5 @@
 ---
-id: 228
+id: 239
 title: Efficiently sampling mixture models - exploration and comparison of methods
 author: admin
 guid:
@@ -135,13 +135,15 @@ betas = np.array([0.4, 0.6])
 betas.sort()  # sorts them
 gammas = np.array([0.05, 0.05])  # fixed to some small values
 typecounts = np.random.multinomial(nobj, alphas)
-types = np.concatenate([np.repeat(i, ni) for i, ni in enumerate(typecounts)]).astype(int)
+types = np.concatenate([np.repeat(i, ni)
+                        for i, ni in enumerate(typecounts)]).astype(int)
 xis = betas[types] + gammas[types] * np.random.randn(nobj) # Gaussian draws 
-xis = np.array([betas[t] + gammas[t] * np.random.randn() for t in types]) # Gaussian draws 
+xis = np.array([betas[t] + gammas[t] * np.random.randn() for t in types]) # Gaussian  
 sigmais = np.random.uniform(0.01, 0.15, size=nobj) 
 yis = xis + sigmais * np.random.randn(nobj)  # Gaussian draws from N(x_i, sigma_i)
 x_grid = np.linspace(0, 1, 100)
-p_x_grid = alphas[None, :] * np.exp(-0.5*((x_grid[:, None] - betas[None, :])/gammas[None, :])**2)/\
+p_x_grid = alphas[None, :] *\
+    np.exp(-0.5*((x_grid[:, None] - betas[None, :])/gammas[None, :])**2)/\
     np.sqrt(2*np.pi)/gammas[None, :]
 ```
 
@@ -159,7 +161,8 @@ axs[0].set_xlim([0, 1])
 axs[0].set_ylim([0, axs[0].get_ylim()[1]*1.7])
 axs[0].set_ylabel(r'$$p(x|\vec{\alpha}, \vec{\beta}, \vec{\gamma})$$')
 axs[0].set_xlabel(r'$$x$$')
-axs[1].errorbar(yis/sigmais, xis-yis, sigmais, fmt="o", lw=1, markersize=2, ecolor='#888888', alpha=0.75)
+axs[1].errorbar(yis/sigmais, xis-yis, sigmais, fmt="o", lw=1,
+                markersize=2, ecolor='#888888', alpha=0.75)
 axs[1].set_xlabel(r'SNR$$=y_i/\sigma_i$$')
 axs[1].set_ylabel(r'$$x_i-y_i$$')
 fig.tight_layout()
@@ -250,7 +253,9 @@ Let us sample the simplified posterior distribution (which, for our fake data se
 ```python
 # The simplified posterior distribution is easy to code up:
 def lnprob_hyperonly1(params):
-    alphas, betas, gammas = params[0:n_mixture], params[n_mixture:2*n_mixture], params[2*n_mixture:3*n_mixture]
+    alphas = params[0:n_mixture]
+    betas = params[n_mixture:2*n_mixture]
+    gammas = params[2*n_mixture:3*n_mixture]
     alphas /= np.sum(alphas)  # to enforce the normalization
     likes = np.log(alphas[None, :]) +\
         lngaussian(yis[:, None], betas[None, :], 
@@ -261,7 +266,9 @@ def lnprob_hyperonly1(params):
 
 ```python
 def lnprob(params):  # log posterior distribution to be given to emcee
-    alphas, betas, gammas = params[0:n_mixture], params[n_mixture:2*n_mixture], params[2*n_mixture:3*n_mixture]
+    alphas = params[0:n_mixture]
+    betas = params[n_mixture:2*n_mixture]
+    gammas = params[2*n_mixture:3*n_mixture]
      # some reasonnable parameter bounds
     if np.any(params <= 0.0) or np.any(params >= 1.0): 
         return -np.inf
@@ -330,7 +337,9 @@ We will now order the component locations and use the hypercube-to-simplex mappi
 
 ```python
 def lnprob(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     if np.any(zs < 0.1) or np.any(zs > 0.8):
         return -np.inf
     alphas = zs_to_alphas(zs)
@@ -391,8 +400,9 @@ for i in np.random.choice(sampler.flatchain.shape[0], 1000, replace=False):
     alphas2 = zs_to_alphas(sampler.flatchain[i, 0:n_mixture-1])
     betas2 = sampler.flatchain[i, n_mixture-1:2*n_mixture-1]
     gammas2 = sampler.flatchain[i, 2*n_mixture-1:3*n_mixture-1]
-    p_x_grid2 = alphas2[None, :] * np.exp(-0.5*((x_grid[:, None] - betas2[None, :])/gammas2[None, :])**2)/\
-    np.sqrt(2*np.pi)/gammas2[None, :]
+    p_x_grid2 = alphas2[None, :] *\
+        np.exp(-0.5*((x_grid[:, None] - betas2[None, :])/gammas2[None, :])**2)/\
+        np.sqrt(2*np.pi)/gammas2[None, :]
     p_x_grid2 = np.sum(p_x_grid2, axis=1)
     ax.plot(x_grid, p_x_grid2, color='r', alpha=0.01, lw=1)
 ax.plot(x_grid, p_x_grid[:, :].sum(axis=1), c='k')
@@ -500,7 +510,8 @@ param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture)]
 fig = corner.corner(samples[:, 2:], ranges=[[0, 1]*(3*n_mixture-1)], labels=param_names)
 #samples = np.genfromtxt('chains/mixturemodellnprob_phys_live.txt')
-#fig = corner.corner(samples[:, :-1]) # If you want to plot the live points while PolyChord runs.
+#fig = corner.corner(samples[:, :-1]) 
+# If you want to plot the live points while PolyChord runs.
 axs = np.array(fig.axes).reshape((3*n_mixture - 1, 3*n_mixture - 1))
 for ind in itertools.permutations(range(n_mixture)):
     order = np.array(ind)
@@ -561,7 +572,8 @@ Note that this trick must be very carefully applied. One cannot just post-proces
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 unordered_samples = samples[:, 2:]
-ordered_samples = np.zeros((unordered_samples.shape[0], unordered_samples.shape[1]))
+ordered_samples = np.zeros((unordered_samples.shape[0], 
+                            unordered_samples.shape[1]))
 for i in range(unordered_samples.shape[0]):
     thealphas = zs_to_alphas(unordered_samples[i, 0:n_mixture-1])
     thebetas = unordered_samples[i, n_mixture-1:2*n_mixture-1]
@@ -596,7 +608,8 @@ Let's do a more difficult run: perform the inference via PolyChord and three com
 ```python
 n_mixture2 = 3
 text_file = open("run_PyPolyChord.py", "w")
-text_file.write(code1 % n_mixture2 + code2 % False) # run without clustering to speed it up.
+text_file.write(code1 % n_mixture2 + code2 % False) 
+# run without clustering to speed it up.
 text_file.close()
 
 # go in the terminal and run
@@ -615,7 +628,8 @@ param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture2-1)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture2)]
 fig = corner.corner(samples[:, 2:], ranges=[[0, 1]*(3*n_mixture2-1)], labels=param_names)
 #samples = np.genfromtxt('chains/mixturemodellnprob_phys_live.txt')
-#fig = corner.corner(samples[:, :-1]) # If you want to plot the live points while PolyChord runs.
+#fig = corner.corner(samples[:, :-1]) 
+# If you want to plot the live points while PolyChord runs.
 axs = np.array(fig.axes).reshape((3*n_mixture2 - 1, 3*n_mixture2 - 1))
 alphas2 = np.concatenate((alphas, np.repeat(0.00, n_mixture2-n_mixture)))
 betas2 = np.concatenate((betas, np.repeat(0.00, n_mixture2-n_mixture)))
@@ -656,7 +670,8 @@ Unfortunately, we can only conclude that the labeling degeneracy is not that eas
 ```python
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 unordered_samples = samples[:, 2:]
-ordered_samples = np.zeros((unordered_samples.shape[0], unordered_samples.shape[1] + 1))
+ordered_samples = np.zeros((unordered_samples.shape[0], 
+                            unordered_samples.shape[1] + 1))
 for i in range(unordered_samples.shape[0]):
     thealphas = zs_to_alphas(unordered_samples[i, 0:n_mixture2-1])
     thebetas = unordered_samples[i, n_mixture2-1:2*n_mixture2-1]
@@ -746,29 +761,38 @@ Note that autograd also allows us to extract the Hessian of our distribution of 
 
 ```python
 def sublnprob_hyperonly(params):
-    alphas, betas, gammas = params[0:n_mixture], params[n_mixture:2*n_mixture], params[2*n_mixture:3*n_mixture]
+    alphas = params[0:n_mixture]
+    betas = params[n_mixture:2*n_mixture]
+    gammas = params[2*n_mixture:3*n_mixture]
     xis = params[3*n_mixture:3*n_mixture+nobj]
-    lnlikes = np.log(alphas[None, :]) + lngaussian(yis[:, None], betas[None, :], 
-                                      np.sqrt(gammas[None, :]**2. + sigmais[:, None]**2.))
+    lnlikes = np.log(alphas[None, :]) +\
+        lngaussian(yis[:, None], betas[None, :],
+                   np.sqrt(gammas[None, :]**2. + sigmais[:, None]**2.))
     res = - np.sum(logsumexp(lnlikes, axis=1))
     if ~np.isfinite(res):
         print("Infinite likelihood call with", params)
     return res
 
 def lnprob_hyperonly(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     alphas = zs_to_alphas(zs)
-    res = sublnprob_hyperonly(np.concatenate([alphas, params[n_mixture-1:]]))
+    res = sublnprob_hyperonly(
+        np.concatenate([alphas, params[n_mixture-1:]]))
     return res
 
 sublnprob_hyperonly_grad = grad(sublnprob_hyperonly)
 sublnprob_hyperonly_hessian = hessian(sublnprob_hyperonly)
 
 def lnprob_hyperonly_grad(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]    
     alphas = zs_to_alphas(zs)
     jac = alphaszs_jacobian(alphas, zs)
-    subgrads = sublnprob_hyperonly_grad(np.concatenate([alphas, params[n_mixture-1:]]))
+    subgrads = sublnprob_hyperonly_grad(
+        np.concatenate([alphas, params[n_mixture-1:]]))
     grads = 1*subgrads[1:]
     grads[0:n_mixture-1] = np.dot(jac, subgrads[0:n_mixture])
     if np.any(~np.isfinite(grads)):
@@ -777,20 +801,23 @@ def lnprob_hyperonly_grad(params):
 
 
 def lnprob_hyperonly_hessian(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     alphas = zs_to_alphas(zs)
     jac = alphaszs_jacobian(alphas, zs)
-    subhess = sublnprob_hyperonly_hessian(np.concatenate([alphas, params[n_mixture-1:]]))
+    subhess = sublnprob_hyperonly_hessian(
+        np.concatenate([alphas, params[n_mixture-1:]]))
     subhessdiag = np.diag(subhess)
     hess = 1*subhessdiag[1:]
-    hess[0:n_mixture-1] = np.diag(np.dot(np.dot(jac, subhess[0:n_mixture, 0:n_mixture]), jac.T))
+    hess[0:n_mixture-1] = np.diag(
+        np.dot(np.dot(jac,subhess[0:n_mixture, 0:n_mixture]), jac.T))
     if np.any(~np.isfinite(hess)):
         print("Infinite likelihood hessian call with", params)
     return hess
 
 
 params = np.concatenate([zs, betas, gammas])
-#print(lnprob_hyperonly(params), lnprob_hyperonly_grad(params), lnprob_hyperonly_hessian(params))
 
 def fun(params):
     return lnprob_hyperonly(params)
@@ -848,7 +875,8 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
     ind_bad = np.logical_or(ind_lower, ind_upper)
     if ind_bad.sum() > 0:
         print('Error: could not confine samples within bounds!')
-        print('Number of problematic parameters:', ind_bad.sum(), 'out of', ind_bad.size)
+        print('Number of problematic parameters:', ind_bad.sum(), 
+              'out of', ind_bad.size)
         return x0
                 
     for i in range(num_steps):
@@ -865,7 +893,8 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
         ind_bad = np.logical_or(ind_lower, ind_upper)
         if ind_bad.sum() > 0:
             print('Error: could not confine samples within bounds!')
-            print('Number of problematic parameters:', ind_bad.sum(), 'out of', ind_bad.size)
+            print('Number of problematic parameters:', ind_bad.sum(), 
+                  'out of', ind_bad.size)
             return x0
 
     v = v - 0.5 * step_size * lnprobgrad(x, **kwargs)
@@ -880,14 +909,15 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
         
     p_accept = min(1.0, np.exp(orig - current))
     if(np.any(~np.isfinite(x))):
-        print('Error: some parameters are infinite!', np.sum(~np.isfinite(x)), 'out of', x.size)
+        print('Error: some parameters are infinite!', 
+              np.sum(~np.isfinite(x)), 'out of', x.size)
         print('HMC steps and stepsize:', num_steps, step_size)
         return x0
     if p_accept > np.random.uniform():
         return x
     else:
         if p_accept < 0.01:
-            print('Sample rejected due to small acceptance probability (', p_accept, ')')
+            print('Sample rejected due to small acceptance prob (', p_accept, ')')
             print('HMC steps and stepsize:', num_steps, step_size)
             #stop
         return x0
@@ -940,7 +970,8 @@ axs = axs.ravel()
 for i in range(5):
     axs[i].hist(param_samples_hyperonly[:, i], histtype='step', normed=True, label='HMC')
     rr = axs[i].get_xlim()
-    axs[i].hist(sampler.flatchain[:, i], range=rr, histtype='step', normed=True, label='emcee')
+    axs[i].hist(sampler.flatchain[:, i], range=rr, 
+                histtype='step', normed=True, label='emcee')
     axs[i].axvline(params[i], c='b', label='truth')
     axs[i].set_xlabel(param_names[i])
 axs[-3].legend(frameon=True, loc='upper right')
@@ -967,9 +998,12 @@ using HMC with the settings described before.
 
 ```python
 def sublnprob_withxis(params):
-    alphas, betas, gammas = params[0:n_mixture], params[n_mixture:2*n_mixture], params[2*n_mixture:3*n_mixture]
+    alphas = params[0:n_mixture]
+    betas = params[n_mixture:2*n_mixture]
+    gammas = params[2*n_mixture:3*n_mixture]
     xis = params[3*n_mixture:3*n_mixture+nobj]
-    lnlikes = np.log(alphas[None, :]) + lngaussian(xis[:, None], betas[None, :], gammas[None, :]) + \
+    lnlikes = np.log(alphas[None, :]) +\
+        lngaussian(xis[:, None], betas[None, :], gammas[None, :]) + \
         lngaussian(yis[:, None], xis[:, None], sigmais[:, None])
     res = - np.sum(logsumexp(lnlikes, axis=1))
     if ~np.isfinite(res):
@@ -977,7 +1011,9 @@ def sublnprob_withxis(params):
     return res
 
 def lnprob_withxis(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     alphas = zs_to_alphas(zs)
     res = sublnprob_withxis(np.concatenate([alphas, params[n_mixture-1:]]))
     return res
@@ -986,10 +1022,13 @@ sublnprob_withxis_grad = grad(sublnprob_withxis)
 sublnprob_withxis_hessian = hessian(sublnprob_withxis)
 
 def lnprob_withxis_grad(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     alphas = zs_to_alphas(zs)
     jac = alphaszs_jacobian(alphas, zs)
-    subgrads = sublnprob_withxis_grad(np.concatenate([alphas, params[n_mixture-1:]]))
+    subgrads = sublnprob_withxis_grad(
+        np.concatenate([alphas, params[n_mixture-1:]]))
     grads = 1*subgrads[1:]
     grads[0:n_mixture-1] = np.dot(jac, subgrads[0:n_mixture])
     if np.any(~np.isfinite(grads)):
@@ -998,19 +1037,22 @@ def lnprob_withxis_grad(params):
 
 
 def lnprob_withxis_hessian(params):
-    zs, betas, gammas = params[0:n_mixture-1], params[n_mixture-1:2*n_mixture-1], params[2*n_mixture-1:3*n_mixture-1]
+    zs = params[0:n_mixture-1]
+    betas = params[n_mixture-1:2*n_mixture-1]
+    gammas = params[2*n_mixture-1:3*n_mixture-1]
     alphas = zs_to_alphas(zs)
     jac = alphaszs_jacobian(alphas, zs)
-    subhess = sublnprob_withxis_hessian(np.concatenate([alphas, params[n_mixture-1:]]))
+    subhess = sublnprob_withxis_hessian(
+        np.concatenate([alphas, params[n_mixture-1:]]))
     subhessdiag = np.diag(subhess)
     hess = 1*subhessdiag[1:]
-    hess[0:n_mixture-1] = np.diag(np.dot(np.dot(jac, subhess[0:n_mixture, 0:n_mixture]), jac.T))
+    hess[0:n_mixture-1] = np.diag(
+        np.dot(np.dot(jac, subhess[0:n_mixture, 0:n_mixture]), jac.T))
     if np.any(~np.isfinite(hess)):
         print("Infinite likelihood hessian call with", params)
     return hess
 
 params = np.concatenate([zs, betas, gammas, xis])
-#print(lnprob_withxis(params), lnprob_withxis_grad(params), lnprob_withxis_hessian(params))
 
 def fun(params):
     return lnprob_withxis(params)
@@ -1056,30 +1098,6 @@ for i in range(1, num_samples):
 param_samples_withxis = param_samples_withxis[burnin:, :]
 ```
 
-    500 1000 1500 2000 2500 3000 3500 Sample rejected due to small acceptance probability ( 1.026638806e-31 )
-    HMC steps and stepsize: 6 0.08240100630968714
-    Sample rejected due to small acceptance probability ( 1.48503320923e-38 )
-    HMC steps and stepsize: 19 0.07681771334734167
-    Sample rejected due to small acceptance probability ( 3.81204704794e-292 )
-    HMC steps and stepsize: 17 0.08634355907853583
-    Sample rejected due to small acceptance probability ( 1.00305288198e-06 )
-    HMC steps and stepsize: 16 0.07294268667692333
-    Sample rejected due to small acceptance probability ( 1.5948692477e-06 )
-    HMC steps and stepsize: 10 0.09149356689833531
-    Sample rejected due to small acceptance probability ( 2.88921003727e-54 )
-    HMC steps and stepsize: 14 0.07823314798149207
-    Sample rejected due to small acceptance probability ( 4.02022344076e-08 )
-    HMC steps and stepsize: 14 0.09059273245779195
-    Sample rejected due to small acceptance probability ( 2.42530606301e-11 )
-    HMC steps and stepsize: 18 0.09718307753661967
-    Sample rejected due to small acceptance probability ( 9.35051207249e-08 )
-    HMC steps and stepsize: 17 0.08976629640551977
-    Sample rejected due to small acceptance probability ( 0.00135611406203 )
-    HMC steps and stepsize: 15 0.06507615678246792
-    Sample rejected due to small acceptance probability ( 3.97637415423e-05 )
-    HMC steps and stepsize: 14 0.08421273817241129
-    4000 4500 5000 5500 6000 6500 7000 7500 8000 8500 9000 9500 
-
 
 ```python
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
@@ -1090,13 +1108,17 @@ fig, axs = plt.subplots(5, 3, figsize=(12, 12))
 axs = axs.ravel()
 for i in range(axs.size):
     axs[i].set_xlabel(param_names[i])
-    axs[i].hist(param_samples_withxis[:, i], histtype='step', normed=True, label='Full posterior')
+    axs[i].hist(param_samples_withxis[:, i], histtype='step', 
+                normed=True, label='Full posterior')
     if i < 5:
-        axs[i].hist(sampler.flatchain[:, i], histtype='step', normed=True, label='Simplified posterior')    
+        axs[i].hist(sampler.flatchain[:, i], histtype='step', 
+                    normed=True, label='Simplified posterior')    
     axs[i].axvline(params[i], c='b', label='Truth')
     if i >= 5:
-        likedraws = yis[i-5] + np.random.randn(param_samples_withxis[:, i].size) * sigmais[i-5]
-        axs[i].hist(likedraws, histtype='step', normed=True, color='red', label='Likelihood')
+        likedraws = yis[i-5] + \
+            np.random.randn(param_samples_withxis[:, i].size) * sigmais[i-5]
+        axs[i].hist(likedraws, histtype='step', 
+                    normed=True, color='red', label='Likelihood')
     if i == 6 or i == 4:
         axs[i].legend(loc='upper right', frameon=True)
 fig.tight_layout()
@@ -1172,8 +1194,9 @@ for i in np.random.choice(samples.shape[0], 200, replace=False):
     alphas2 /= alphas2.sum()
     betas2 = samples[i, n_mixture2-1:2*n_mixture2-1]
     gammas2 = samples[i, 2*n_mixture2-1:3*n_mixture2-1]
-    p_x_grid2 = alphas2[None, :] * np.exp(-0.5*((x_grid[:, None] - betas2[None, :])/gammas2[None, :])**2)/\
-    np.sqrt(2*np.pi)/gammas2[None, :]
+    p_x_grid2 = alphas2[None, :] *\
+        np.exp(-0.5*((x_grid[:, None] - betas2[None, :])/gammas2[None, :])**2)/\
+        np.sqrt(2*np.pi)/gammas2[None, :]
     p_x_grid2 = np.sum(p_x_grid2, axis=1)
     #p_x_grid2 /= p_x_grid2.max() / p_x_grid.max()
     axs[j].plot(x_grid, p_x_grid2, color='r', alpha=0.2, lw=1)
