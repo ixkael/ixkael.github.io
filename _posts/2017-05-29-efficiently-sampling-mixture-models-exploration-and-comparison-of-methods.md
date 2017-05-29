@@ -33,15 +33,15 @@ If you want to run this notebook, you will need `matplotlib`, `scipy`, `numpy`, 
 
 ### Some useful references 
 
-- Introduction to finite mixture models: https://arxiv.org/abs/1705.01505
-- Extreme deconvolution, an alternative to sampling mixture models: https://arxiv.org/abs/0905.2979
-- M. Betancourt's simplex-hypercube mapping: https://arxiv.org/abs/1010.3436
-- Introduction to HMC: https://arxiv.org/abs/1206.1901
-- Continuously tempered HMC method: https://arxiv.org/abs/1704.03338
-- The Matrix Cookbook: http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=3274 
-- emcee sampler: http://dan.iel.fm/emcee/current
-- Polychord paper: https://arxiv.org/abs/1506.00171
-- Stochastic Gradient HMC: https://arxiv.org/abs/1402.4102
+- [Introduction to finite mixture models](https://arxiv.org/abs/1705.01505)
+- [Extreme deconvolution, an alternative to sampling mixture models](https://arxiv.org/abs/0905.2979)
+- [M. Betancourt's simplex-hypercube mapping](https://arxiv.org/abs/1010.3436)
+- [Introduction to HMC](https://arxiv.org/abs/1206.1901)
+- [Continuously tempered HMC method](https://arxiv.org/abs/1704.03338)
+- [The Matrix Cookbook](http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=3274 )
+- [emcee sampler](http://dan.iel.fm/emcee/current)
+- [Polychord paper](https://arxiv.org/abs/1506.00171)
+- [Stochastic Gradient HMC](https://arxiv.org/abs/1402.4102)
 
 
 ```python
