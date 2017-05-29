@@ -302,19 +302,6 @@ param_names = [r'$$\alpha_'+str(i+1)+'$$' for i in range(n_mixture)] +\
 _ = corner.corner(sampler.flatchain, truths=params, labels=param_names)
 ```
 
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-
-
-
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_12_1.png)
 
 
@@ -524,10 +511,6 @@ for ind in itertools.permutations(range(n_mixture)):
             axs[i, j].plot(truths[j], truths[i], "s", color="#4682b4")
 ```
 
-    WARNING:root:Too few points to create valid contours
-
-
-
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_24_1.png)
 
 
@@ -645,19 +628,6 @@ for ind in itertools.permutations(range(n_mixture2)):
             axs[i, j].plot(truths[j], truths[i], "s", color="#4682b4")
 ```
 
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-
-
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_34_1.png)
 
@@ -695,23 +665,6 @@ param_names = [r'$$\alpha_'+str(i+1)+'$$' for i in range(n_mixture2)] +\
 fig = corner.corner(ordered_samples, labels=param_names, truths=truths)
 ```
 
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-    WARNING:root:Too few points to create valid contours
-
-
-
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_37_1.png)
 
 
@@ -721,7 +674,7 @@ On top of our wish to efficiently sample one single mode of the posterior distri
 
 $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})\propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B \alpha_b \mathcal{N}(x_i|\beta_b,\gamma^2_b)\mathcal{N}(y_i|x_i,\sigma^2_i)$$
 
-By histogramming the samples only in the $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ dimensions, we should recover the previous results (from the simplified posterior distribution $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})$$) since this is equivalent to numerically integrating out the $$x_i$$'s. This is a classic MCMC trick: if one draws samples from a distribution $$p(a,b)$$ and only look at the $$a$$ dimension (by histogramming the $$a$$ values and ignoring $$b$$), one is effectively looking at the marginalized posterior $$p(a) = \int p(a,b) \mathrm{d}b$$.
+By histogramming the samples only in the $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ dimensions, we should recover the previous results ( from the simplified posterior distribution $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} | \{y_i, \sigma_i\})$$ ) since this is equivalent to numerically integrating out the $$x_i$$'s. This is a classic MCMC trick: if one draws samples from a distribution $$p(a,b)$$ and only look at the $$a$$ dimension (by histogramming the $$a$$ values and ignoring $$b$$), one is effectively looking at the marginalized posterior $$p(a) = \int p(a,b) \mathrm{d}b$$.
 
 Since this model has many more parameters ($$3B+N-1$$ instead of $$3B-1$$), standard MCMC methods like emcee will struggle. This is because those have a typical acceptance rate of $$\approx 0.3$$ (at best), which is the cornerstone of standard MCMC algorithms like Metropolis-Hastings. This can only be increased by using extra information such as gradients, which we will do below. Moreover, due to volume effects, the space to explore is very large, so there is a chance the relevant portions of the full posterior distribution will rarely be explored. This is known as the curse of dimensionality.
 
