@@ -73,8 +73,6 @@ code {
 }
 
 pre {
-  margin-left: 0;
-  display: block;
   margin-top: 0;
   margin-bottom: 0rem;
   font-size: 80%;
@@ -95,7 +93,6 @@ pre {
 
 blockquote {
   margin: $spacer 0 $spacer $spacer;
-  margin-left: 0;
   font-size: .85em;
   line-height: 1.6;
 }
