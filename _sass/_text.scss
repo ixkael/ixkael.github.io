@@ -85,8 +85,6 @@ pre {
     color: inherit;
     background-color: transparent;
     border-radius: 0;
-    border-style: solid;
-    border-left: thick double #ff0000;
   }
 }
 
@@ -94,6 +92,8 @@ blockquote {
   margin: $spacer 0 $spacer $spacer;
   font-size: .85em;
   line-height: 1.6;
+  border-style: solid;
+  border-left: thick double #ff0000;
 }
 
 
