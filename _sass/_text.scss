@@ -65,7 +65,7 @@ pre, samp {
 }
 
 code {
-  padding: .2rem .4rem;
+  padding: 0rem .4rem;
   font-size: 90%;
   color: $red;
   background-color: $gray-lightest;
@@ -73,7 +73,9 @@ code {
 }
 
 pre {
+  display: block;
   margin-top: 0;
+  margin-left: 0;
   margin-bottom: 0rem;
   font-size: 80%;
   color: $gray-light;
