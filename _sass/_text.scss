@@ -76,8 +76,9 @@ pre {
   display: block;
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 70%;
-  color: $gray;
+  font-size: 80%;
+  color: $gray-light;
+  border-left:thick solid $gray;
 
   code {
     padding: 0;
