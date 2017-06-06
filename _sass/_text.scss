@@ -94,8 +94,9 @@ blockquote {
   line-height: 1.6;
   border-left: thick;
   border-left-style: solid;
-  border-left-width: 1px;
-  border-left-color: $gray;
+  border-left-width: 2px;
+  border-left-color: $gray-light;
+  outline-offset: 15px;
 }
 
 
