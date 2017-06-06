@@ -92,7 +92,8 @@ blockquote {
   margin: $spacer 0 $spacer $spacer;
   font-size: .85em;
   line-height: 1.6;
-  border-style: solid;
+  border-left-style: solid;
+  border-left-width: 1px;
   border-left: thick double #ff0000;
 }
 
