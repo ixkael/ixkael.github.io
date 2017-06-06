@@ -78,14 +78,14 @@ pre {
   margin-bottom: 0rem;
   font-size: 80%;
   color: $gray-light;
-  border-radius: 0;
-  border-left: thick;
-  border-left-style: solid;
-  border-left-width: 2px;
-  border-left-color: $gray-light;
 
   code {
-    padding: 10;
+    padding: 10px;
+    border-radius: 0;
+    border-left: thick;
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-left-color: $gray-light;
     font-size: inherit;
     color: inherit;
     background-color: transparent;
