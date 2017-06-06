@@ -76,7 +76,7 @@ pre {
   display: block;
   margin-top: 0;
   margin-left: 0;
-  margin-bottom: 0rem;
+  margin-bottom: 1em;
   color: $gray-light;
   padding: 10px;
   border-radius: 0;
@@ -86,8 +86,8 @@ pre {
   border-left-color: $gray-lighter;
 
   code {
-    font-size: 60%;
-    line-height: 0.5;
+    font-size: 70%;
+    line-height: 50%;
     color: inherit;
     background-color: transparent;
   }
