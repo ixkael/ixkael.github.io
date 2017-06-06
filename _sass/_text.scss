@@ -75,16 +75,20 @@ code {
 pre {
   display: block;
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
   font-size: 80%;
   color: $gray-light;
+  border-radius: 0;
+  border-left: thick;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: $gray-light;
 
   code {
-    padding: 0;
+    padding: 10;
     font-size: inherit;
     color: inherit;
     background-color: transparent;
-    border-radius: 0;
   }
 }
 
@@ -92,11 +96,6 @@ blockquote {
   margin: $spacer 0 $spacer $spacer;
   font-size: .85em;
   line-height: 1.6;
-  border-left: thick;
-  border-left-style: solid;
-  border-left-width: 2px;
-  border-left-color: $gray-light;
-  outline-offset: 15px;
 }
 
 
