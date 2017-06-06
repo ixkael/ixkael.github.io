@@ -77,7 +77,6 @@ pre {
   margin-top: 0;
   margin-left: 0;
   margin-bottom: 0rem;
-  font-size: .85em;
   color: $gray-light;
   padding: 10px;
   border-radius: 0;
@@ -87,7 +86,7 @@ pre {
   border-left-color: $gray-lighter;
 
   code {
-    font-size: inherit;
+    font-size: 80%;
     color: inherit;
     background-color: transparent;
   }
