@@ -10,14 +10,14 @@ layout: post
 
 _Thanks to Semyeong Oh, Adrian Price-Whelan, Jo Bovy, and Dan Foreman-Mackey, for very valuable comments._
 
-This notebook is available at [this location on Github](https://github.com/ixkael/Prob-tools/blob/master/notebooks/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods.ipynb). 
+This notebook is available at [this location on Github](https://github.com/ixkael/Prob-tools/blob/master/notebooks/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods.ipynb).
 
 We will consider the problem of efficiently inferring the parameters of mixture models. We will touch upon the following topics:
 - density modelling with Gaussian mixtures
 - first (but incorrect) parameter inference with an ensemble sampler (emcee)
 - degeneracies, re-parametrization, and correct parameter sampling with emcee
 - mapping the full multimodal solution with nested sampling (PolyChord)
-- efficient (but unimodal) sampling with Hamiltonian Monte Carlo (HMC) 
+- efficient (but unimodal) sampling with Hamiltonian Monte Carlo (HMC)
 - gradients and Hessians with automatic differentiation
 - sampling all the latent variables with autodifferientiated HMC
 
@@ -31,7 +31,7 @@ Some basic knowledge of Bayes theorem, parameter inference via MCMC, and hierarc
 
 If you want to run this notebook, you will need `matplotlib`, `scipy`, `numpy`, `autograd`, `emcee`, and `Polychord`.
 
-### Some useful references 
+### Some useful references
 
 - [Introduction to finite mixture models](https://arxiv.org/abs/1705.01505)
 - [Extreme deconvolution, an alternative to sampling mixture models](https://arxiv.org/abs/0905.2979)
@@ -44,9 +44,7 @@ If you want to run this notebook, you will need `matplotlib`, `scipy`, `numpy`, 
 - [Stochastic Gradient HMC](https://arxiv.org/abs/1402.4102)
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 %matplotlib inline
 %config IPython.matplotlib.backend = 'retina'
 %config InlineBackend.figure_format = 'retina'
@@ -74,9 +72,7 @@ matplotlib.rcParams['patch.linewidth'] = 2
 matplotlib.rcParams['axes.prop_cycle'] =\
     cycler("color", ['k', 'c', 'm', 'y'])
 matplotlib.rcParams['axes.labelsize'] = 16
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 ## What are mixture models?
 
@@ -90,9 +86,9 @@ $$\int  K_i(x)\mathrm{d}x = 1 \quad \sum_i \alpha_i = 1$$
 
 The kernels do not have to be identical or even belong to the same family. Also note that the mixture could be infinite. Both of those extensions are the state of the art of modern statistical modeling, but are advanced topics which will not be covered here.
 
-You might have already realized that this loose definition gives a lot of flexibility. As we will see, this creates numerous technical issues, notably in how mixture models are optimized or sampled when fitting data. In particular, there is the infamous **label degeneracy**, which refers to the ability to swap components/kernels and leave the total PDF invariant. There is also the **mode collapse** phenomenon, describing how using too many components might make them describe the data points separately (one component per datum). More generally, the presence components with low amplitudes, infinitely low or high widths, creates various new degeneracies in the posterior distribution. For instance, one can probably add many of those components without changing the quality of the fit to a data set. This is related to model selection, and choosing the number of mixtures. All of those issues are problematic if one attempts to naively sample the mixture parameters with MCMC. Luckily, there are standard tricks to get around them, as we will illustrate below. 
+You might have already realized that this loose definition gives a lot of flexibility. As we will see, this creates numerous technical issues, notably in how mixture models are optimized or sampled when fitting data. In particular, there is the infamous **label degeneracy**, which refers to the ability to swap components/kernels and leave the total PDF invariant. There is also the **mode collapse** phenomenon, describing how using too many components might make them describe the data points separately (one component per datum). More generally, the presence components with low amplitudes, infinitely low or high widths, creates various new degeneracies in the posterior distribution. For instance, one can probably add many of those components without changing the quality of the fit to a data set. This is related to model selection, and choosing the number of mixtures. All of those issues are problematic if one attempts to naively sample the mixture parameters with MCMC. Luckily, there are standard tricks to get around them, as we will illustrate below.
 
-One of the main restrictions of this notebook is to focus on one-dimensional mixtures. However, if $$x$$ were multidimensional, most of the discussion below would be unchanged - but many of the calculations and illustrations would be much more difficult. 
+One of the main restrictions of this notebook is to focus on one-dimensional mixtures. However, if $$x$$ were multidimensional, most of the discussion below would be unchanged - but many of the calculations and illustrations would be much more difficult.
 
 ## Density modeling with Gaussian Mixtures
 
@@ -113,10 +109,8 @@ The variables $$\alpha_b$$ are such that $$0 \leq \alpha_b \leq 1$$ and $$\sum_{
 Let us start by making a simulated data set.
 
 
-<blockquote>
-  <pre>
-    <code>
-# Those two functions establish a mapping between the B-dimensional simplex 
+<pre><code>
+# Those two functions establish a mapping between the B-dimensional simplex
 # and the (B-1)-dimensional unit hypercube. This will be described later on.
 
 def zs_to_alphas(zs):  
@@ -133,7 +127,7 @@ def alphas_to_zs(alphas):
     res = minimize(fun, x0=np.repeat(0.5, alphas.size-1))
     return res.x
 
-nobj = 300 
+nobj = 300
 zs = np.array([0.3])
 n_mixture = zs.size + 1 # the number of mixtures, i.e. B in the text
 alphas = zs_to_alphas(zs)
@@ -143,22 +137,18 @@ gammas = np.array([0.05, 0.05])  # fixed to some small values
 typecounts = np.random.multinomial(nobj, alphas)
 types = np.concatenate([np.repeat(i, ni)
                         for i, ni in enumerate(typecounts)]).astype(int)
-xis = betas[types] + gammas[types] * np.random.randn(nobj) # Gaussian draws 
+xis = betas[types] + gammas[types] * np.random.randn(nobj) # Gaussian draws
 xis = np.array([betas[t] + gammas[t] * np.random.randn() for t in types]) # Gaussian  
-sigmais = np.random.uniform(0.01, 0.15, size=nobj) 
+sigmais = np.random.uniform(0.01, 0.15, size=nobj)
 yis = xis + sigmais * np.random.randn(nobj)  # Gaussian draws from N(x_i, sigma_i)
 x_grid = np.linspace(0, 1, 100)
 p_x_grid = alphas[None, :] *\
     np.exp(-0.5*((x_grid[:, None] - betas[None, :])/gammas[None, :])**2)/\
     np.sqrt(2*np.pi)/gammas[None, :]
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 fig, axs = plt.subplots(1, 2, figsize=(8, 4))
 axs[0].hist(xis, histtype='step', normed=True,
            label=r'Noiseless samples $$x_i$$')
@@ -176,9 +166,7 @@ axs[1].errorbar(yis/sigmais, xis-yis, sigmais, fmt="o", lw=1,
 axs[1].set_xlabel(r'SNR$$=y_i/\sigma_i$$')
 axs[1].set_ylabel(r'$$x_i-y_i$$')
 fig.tight_layout()
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_5_0.png)
@@ -208,16 +196,14 @@ If you are note sure how to do that, please look at the Matrix Cookbook! The ref
 
 This is a very convenient result since we have once and for all removed the latent variables and integrals, and we obtained a simple expression for the posterior distribution of interest. We will refer to this expression as the "simplified" posterior, while the previous one, with the set of latent variables and integrals, is the "full" posterior. Because this analytical elimination of the latent variables is not always possible, and because sometimes one does want to explicitly sample them, the full posterior is of great interest. Below we will see to correctly sample it and deal with the large number of parameters.
 
-Why would we want to explore the full set of parameters, especially if we are able to eliminate a large number of them? This is because we might be interested in recovering the true noiseless values $$x_i$$'s. More precisely, we may want to look at the join posterior distribution on the $$x_i$$'s and the mixture model. We may find that some values are well recovered regardless of the mixture, while some other might not. More generally, this is because of a **shrinkage** property of Bayesian hierarchical models: by simulatenously recovering the population parameters $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ and the object parameters $$x_i$$'s, we will obtain stronger constraints on $$x_i$$ than by using the objects individually (i.e., the likelihood function $$p(y_i\vert x_i, \sigma_i)$$). This is a natural yet powerful consequence of the hierarchical nature of the model and the parameter inference, which we cannot quite access if we analytically marginalize over the latent variables. We will illustrate this shrinkage property below. 
+Why would we want to explore the full set of parameters, especially if we are able to eliminate a large number of them? This is because we might be interested in recovering the true noiseless values $$x_i$$'s. More precisely, we may want to look at the join posterior distribution on the $$x_i$$'s and the mixture model. We may find that some values are well recovered regardless of the mixture, while some other might not. More generally, this is because of a **shrinkage** property of Bayesian hierarchical models: by simulatenously recovering the population parameters $$\vec{\alpha},\vec{\beta}, \vec{\gamma}$$ and the object parameters $$x_i$$'s, we will obtain stronger constraints on $$x_i$$ than by using the objects individually (i.e., the likelihood function $$p(y_i\vert x_i, \sigma_i)$$). This is a natural yet powerful consequence of the hierarchical nature of the model and the parameter inference, which we cannot quite access if we analytically marginalize over the latent variables. We will illustrate this shrinkage property below.
 
 Minor comment: we have integrated each $$x_i$$ in $$[-\infty, \infty]$$, but we will adopt bounded priors $$[0,1]$$ in the other numerical tests below. This difference does not affect our investigations. If we wanted to be very precise, we could easily include truncated gaussians in the simplified posterior distribution.
 
 We will try sampling both of those posterior distributions below. This is because in many real-world problems this analytic simplification is not possible, and one has to work with the full posterior distribution, which might involve many latent variables and integrals. This would be the case if our population model and/or our noise were not Gaussian. We will work with this toy model because we have the simplified posterior distribution to verify our results.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 # Let's first define a few basic functions we will need.
 def alphaszs_jacobian(fs, zs):
     """Jacobian of the simplex-to-hypercube transformation"""
@@ -257,18 +243,14 @@ def test_derivative(x0, fun, fun_grad, relative_accuracy, n=1, lim=0, order=9, d
         if np.abs(grads2) >= lim:
             onp.testing.assert_allclose(grads2, grads[i],
                                        rtol=relative_accuracy)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 ## First MCMC : raw model
 
 Let us sample the simplified posterior distribution (which, for our fake data set, has 6 parameters: the amplitudes, means, and standard deviations of the two Gaussian components) with a very good sampler: emcee. The reasons why emcee is a good sampler are beyond the scope of this tutorial (but scale invariance and speed are two of them!). As mentioned before, we adopt uniform priors in $$[0,1]$$ for all parameters. We will manually impose $$\sum_b \alpha_b = 1$$ by renormalizing them systematically at each random draw.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 # The simplified posterior distribution is easy to code up:
 def lnprob_hyperonly1(params):
     alphas = params[0:n_mixture]
@@ -276,23 +258,19 @@ def lnprob_hyperonly1(params):
     gammas = params[2*n_mixture:3*n_mixture]
     alphas /= np.sum(alphas)  # to enforce the normalization
     likes = np.log(alphas[None, :]) +\
-        lngaussian(yis[:, None], betas[None, :], 
+        lngaussian(yis[:, None], betas[None, :],
                    np.sqrt(gammas[None, :]**2. + sigmais[:, None]**2.))
     return - np.sum(logsumexp(likes, axis=1))
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 def lnprob(params):  # log posterior distribution to be given to emcee
     alphas = params[0:n_mixture]
     betas = params[n_mixture:2*n_mixture]
     gammas = params[2*n_mixture:3*n_mixture]
      # some reasonnable parameter bounds
-    if np.any(params <= 0.0) or np.any(params >= 1.0): 
+    if np.any(params <= 0.0) or np.any(params >= 1.0):
         return -np.inf
     return - lnprob_hyperonly1(params)
 
@@ -305,7 +283,7 @@ p0s = []
 for i in range(nwalkers):
     lnp = -np.inf
     while ~np.isfinite(lnp):
-        p0 = np.random.uniform(0.03, 0.97, ndim) 
+        p0 = np.random.uniform(0.03, 0.97, ndim)
         p0[0:n_mixture] /= np.sum(p0[0:n_mixture])
         lnp = lnprob(p0)
     p0s += [p0]
@@ -314,28 +292,22 @@ sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, threads=4)
 pos, prob, state = sampler.run_mcmc(p0s, 1000)
 sampler.reset()
 _ = sampler.run_mcmc(pos, 1000)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 param_names = [r'$$\alpha_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture)]
 _ = corner.corner(sampler.flatchain, truths=params, labels=param_names)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_12_1.png)
 
 
 As we can see, the result is surprisingly nasty! In fact, running MCMC on this distribution is *incorrect*. The posterior distribution has strong degeneracies and is multimodal, so standard MCMC will not work. As an exercise, you can check that the sampler has not converged. Also, even if it looks like it is finding multiple modes, you can also check that the density of samples is incorrect at those locations, and is not proportional to the posterior distribution.
 
-We briefly mentioned this phenomenon before. The degeneracy between $$\alpha$$'s is due to them being normalized and constrained to sum to one. As a result, the posterior distribution, by construction, lives on a thin slice in $$\alpha$$ space. 
+We briefly mentioned this phenomenon before. The degeneracy between $$\alpha$$'s is due to them being normalized and constrained to sum to one. As a result, the posterior distribution, by construction, lives on a thin slice in $$\alpha$$ space.
 
 There are a few ways one could solve this problem. I like that introduced by M. Betancourt (arxiv:1010.3436) since it is simple to implement and it leads to simple derivatives. It establishes a bijective mapping between the $$(B-1)-$$ hypercube and the $$B-$$simplex, by constructing coefficients $$z_i$$'s with $$0\leq z_i \leq 1$$ for $$i=1, \cdots, B-1$$, and no normalization condition. In simpler terms, this means that we can use the $$z_i$$ coefficients ($$B-1$$ of them, in $$[0,1$$]) instead of the $$\alpha_b$$ coefficients ($$B$$ of them, on the simplex), which is very convenient. For each draw of $$z_i$$'s in the hypercube, the simplex coefficients (the amplitudes of our mixture components) are found with
 
@@ -347,12 +319,10 @@ Moreover, there is an additional complication that made our sampling failed: the
 
 ## Second MCMC run: emcee with reparametrized model
 
-We will now order the component locations and use the hypercube-to-simplex mapping to run the emcee sampler once again. We will also make some tighted assumptions about the component amplitudes and widths. We don't want those to be too small in order to avoid new sources of degeneracies in the posterior distribution, like the mode collapse. (This point will be illustrated in the next section). 
+We will now order the component locations and use the hypercube-to-simplex mapping to run the emcee sampler once again. We will also make some tighted assumptions about the component amplitudes and widths. We don't want those to be too small in order to avoid new sources of degeneracies in the posterior distribution, like the mode collapse. (This point will be illustrated in the next section).
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 def lnprob(params):
     zs = params[0:n_mixture-1]
     betas = params[n_mixture-1:2*n_mixture-1]
@@ -374,7 +344,7 @@ p0s = []
 for i in range(nwalkers):
     lnp = -np.inf
     while ~np.isfinite(lnp):
-        p0 = np.random.uniform(0.03, 0.9, ndim) 
+        p0 = np.random.uniform(0.03, 0.9, ndim)
         p0[n_mixture-1:2*n_mixture-1].sort()
         lnp = lnprob(p0)
     p0s += [p0]
@@ -382,27 +352,21 @@ for i in range(nwalkers):
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, threads=4)
 pos, prob, state = sampler.run_mcmc(p0s, 1000)
 sampler.reset()
-new_pos = emcee.utils.sample_ball(np.median(pos, axis=0), 
-                                  np.full(pos.shape[1], 1e-5), 
+new_pos = emcee.utils.sample_ball(np.median(pos, axis=0),
+                                  np.full(pos.shape[1], 1e-5),
                                   size=nwalkers)
 pos,_,_ = sampler.run_mcmc(new_pos, 1000)
 sampler.reset()
 pos,_,_ = sampler.run_mcmc(pos, 1000)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture)]
 _ = corner.corner(sampler.flatchain, truths=params, labels=param_names)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_16_0.png)
@@ -417,9 +381,7 @@ Note that our sampling procedure is very quick: the two runs merely took a few s
 A nice visualization of the result is in data space, where we evaluate our model for a few hundred samples of the posterior distribution, and see that they are nicely around the truth.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 for i in np.random.choice(sampler.flatchain.shape[0], 1000, replace=False):
     alphas2 = zs_to_alphas(sampler.flatchain[i, 0:n_mixture-1])
@@ -436,9 +398,7 @@ ax.set_ylim([0, axs[0].get_ylim()[1]*1.7])
 ax.set_ylabel(r'$$p(x\vert \vec{\alpha}, \vec{\beta}, \vec{\gamma})$$')
 ax.set_xlabel(r'$$x$$')
 fig.tight_layout()
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_18_0.png)
@@ -455,20 +415,14 @@ There is a cost: nested sampling typically requires many more function evaluatio
 Let us run PolyChord on our data set, with the same posterior, no ordering constraints, and two components only.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 # Save the data to numpy arrays since we will run polychord outside of this notebook.
 np.save("yis", yis)
 np.save("sigmais", sigmais)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 # The code we will write to a file and execute to run PolyChord.
 # the only parameter of this string is the number of components.
 # the second string has a parameter for (de)activating the clustering algorith.
@@ -491,7 +445,7 @@ def prior(cube):
         theta[i] = cube[i]
         theta[n_mixture-1+i] = cube[n_mixture-1+i]
         theta[2*n_mixture-1+i] = 0.03 + 0.97 * cube[2*n_mixture-1+i]
-    return theta 
+    return theta
 
 def mixturemodellnprob(params):
 
@@ -505,7 +459,7 @@ def mixturemodellnprob(params):
         fac[i] = 1. - zs[i]
         zsb[i+1] = zs[i]
     alphas = np.cumprod(zsb) * fac
-    
+
     like = 0.*yis
     for i in range(n_mixture):
         sig = np.sqrt(gammas[i]**2. + sigmais[:]**2.)
@@ -517,20 +471,14 @@ def mixturemodellnprob(params):
 code2 = """
 PolyChord.run_nested_sampling(mixturemodellnprob, ndim, nderived, prior=prior,
                               file_root='mixturemodellnprob', do_clustering=%s,
-                              nlive=100*ndim, update_files=100*ndim, 
+                              nlive=100*ndim, update_files=100*ndim,
                               num_repeats=10*ndim, boost_posterior=5)
 """
 
-    </code>
-  </pre>
-</blockquote>
-</
-span>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 text_file = open("run_PyPolyChord.py", "w")
 text_file.write(code1 % 2 + code2 % True)
 text_file.close()
@@ -539,23 +487,19 @@ text_file.close()
 # rm -rf chains ; mkdir chains ; mkdir chains/clusters ; python run_PyPolyChord.py
 # If you get a segmentation fault, you'll need to compile PolyChord with extra flags
 # to make sure the stack size is sufficient.
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 Let's visualize the posterior distribution. In this figure we will also plot all the ordering permutations of our true parameter values.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture)]
 fig = corner.corner(samples[:, 2:], ranges=[[0, 1]*(3*n_mixture-1)], labels=param_names)
 #samples = np.genfromtxt('chains/mixturemodellnprob_phys_live.txt')
-#fig = corner.corner(samples[:, :-1]) 
+#fig = corner.corner(samples[:, :-1])
 # If you want to plot the live points while PolyChord runs.
 axs = np.array(fig.axes).reshape((3*n_mixture - 1, 3*n_mixture - 1))
 for ind in itertools.permutations(range(n_mixture)):
@@ -567,9 +511,7 @@ for ind in itertools.permutations(range(n_mixture)):
             axs[i, j].axhline(truths[i], c="#4682b4")
             axs[i, j].axvline(truths[j], c="#4682b4")
             axs[i, j].plot(truths[j], truths[i], "s", color="#4682b4")
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_24_1.png)
 
@@ -577,9 +519,7 @@ for ind in itertools.permutations(range(n_mixture)):
 We can now see the two modes caused by the labelling degeneracy! PolyChord nicely finds and map them. Since we have activated the clustering algorithm, we can restrict our attention to one of the modes and plot posterior samples. Indeed, we check that our inference is correct.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/clusters/mixturemodellnprob_1_equal_weights.txt')
 mus = np.mean(samples[:, 2:], axis=0)
 sigs = np.std(samples[:, 2:], axis=0)
@@ -601,9 +541,7 @@ for ind in itertools.permutations(range(n_mixture)):
             axs[i, j].plot(truths[j], truths[i], "s", color="#4682b4")
             axs[i, j].set_xlim(ranges[j])
             axs[i, j].set_ylim(ranges[i])
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_26_0.png)
@@ -616,12 +554,10 @@ You may wonder, since the mapping between the two modes is predictable, why we d
 Note that this trick must be very carefully applied. One cannot just post-processed any MCMC chain to alleviate the multimodality problem (for mixture models only!). This will only work if the MCMC sampler has converged and properly explored the multiple modes it has mapped (though it is insensitive the the relative amplitudes in this exploration, for obvious geometrical reasons). In our case this is valid.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 unordered_samples = samples[:, 2:]
-ordered_samples = np.zeros((unordered_samples.shape[0], 
+ordered_samples = np.zeros((unordered_samples.shape[0],
                             unordered_samples.shape[1]))
 for i in range(unordered_samples.shape[0]):
     thealphas = zs_to_alphas(unordered_samples[i, 0:n_mixture-1])
@@ -631,41 +567,33 @@ for i in range(unordered_samples.shape[0]):
     ordered_samples[i, 0:n_mixture-1] = alphas_to_zs(thealphas[order])
     ordered_samples[i, n_mixture-1:2*n_mixture-1] = thebetas[order]
     ordered_samples[i, 2*n_mixture-1:3*n_mixture-1] = thegammas[order]
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 truths = np.concatenate((zs, betas, gammas))
 param_names = [r'$$\alpha_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture)]
 fig = corner.corner(ordered_samples, labels=param_names, truths=truths)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_29_0.png)
 
 
-Note that this PolyChord run took a few minutes. This is because nested sampling is generally calls the posterior distribution more times than MCMC, and our calls were not parallelized here. We have also tuned the parameters to sample the posterior distribution in a conservative fashion. One could certainly find better parameters that lead to a more efficient sampling. 
+Note that this PolyChord run took a few minutes. This is because nested sampling is generally calls the posterior distribution more times than MCMC, and our calls were not parallelized here. We have also tuned the parameters to sample the posterior distribution in a conservative fashion. One could certainly find better parameters that lead to a more efficient sampling.
 
 ## More components
 
 Let's do a more difficult run: perform the inference via PolyChord and three components instead of two. What will we see? Unfortunately, this run will be even slower and take several minutes, but the comments above apply again: this could be made more efficient if necessary.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 n_mixture2 = 3
 text_file = open("run_PyPolyChord.py", "w")
-text_file.write(code1 % n_mixture2 + code2 % False) 
+text_file.write(code1 % n_mixture2 + code2 % False)
 # run without clustering to speed it up.
 text_file.close()
 
@@ -673,23 +601,19 @@ text_file.close()
 # rm -rf chains ; mkdir chains ; mkdir chains/clusters ; python run_PyPolyChord.py
 # If you get a segmentation fault, you'll need to compile PolyChord with extra flags
 # to make sure the stack size is sufficient.
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 If we plot the posterior distribution, we immediately see that the labeling degeneracy has gotten worse (since it scales as factorial $$B$$), and that the two-component model is clearly preferred (we nicely recover our input parameters). In other words, one of the components is constrained to be zero.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture2-1)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture2)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture2)]
 fig = corner.corner(samples[:, 2:], ranges=[[0, 1]*(3*n_mixture2-1)], labels=param_names)
 #samples = np.genfromtxt('chains/mixturemodellnprob_phys_live.txt')
-#fig = corner.corner(samples[:, :-1]) 
+#fig = corner.corner(samples[:, :-1])
 # If you want to plot the live points while PolyChord runs.
 axs = np.array(fig.axes).reshape((3*n_mixture2 - 1, 3*n_mixture2 - 1))
 alphas2 = np.concatenate((alphas, np.repeat(0.00, n_mixture2-n_mixture)))
@@ -704,25 +628,21 @@ for ind in itertools.permutations(range(n_mixture2)):
             axs[i, j].axhline(truths[i], c="#4682b4")
             axs[i, j].axvline(truths[j], c="#4682b4")
             axs[i, j].plot(truths[j], truths[i], "s", color="#4682b4")
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_34_1.png)
 
 
-If we try the previous trick and post-process the chains to reorder the components, we see that the result is not satisfactory at all! This is because the parameters of the third (small) component are unconstrained because it doesn't fit the data. It ends up interfering with the two others. 
+If we try the previous trick and post-process the chains to reorder the components, we see that the result is not satisfactory at all! This is because the parameters of the third (small) component are unconstrained because it doesn't fit the data. It ends up interfering with the two others.
 
 Unfortunately, we can only conclude that the labeling degeneracy is not that easily killed. We have seen that nested sampling is a natural solution to map out the full posterior distribution. But isn't there another way to do standard MCMC and map a single of the modes? This is what we will do now with HMC.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 unordered_samples = samples[:, 2:]
-ordered_samples = np.zeros((unordered_samples.shape[0], 
+ordered_samples = np.zeros((unordered_samples.shape[0],
                             unordered_samples.shape[1] + 1))
 for i in range(unordered_samples.shape[0]):
     thealphas = zs_to_alphas(unordered_samples[i, 0:n_mixture2-1])
@@ -732,14 +652,10 @@ for i in range(unordered_samples.shape[0]):
     ordered_samples[i, 0:n_mixture2] = thealphas[order]
     ordered_samples[i, n_mixture2:2*n_mixture2] = thebetas[order]
     ordered_samples[i, 2*n_mixture2:3*n_mixture2] = thegammas[order]
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')
 alphas2 = np.concatenate((alphas, np.repeat(0.00, n_mixture2-n_mixture)))
 betas2 = np.concatenate((betas, np.repeat(0.00, n_mixture2-n_mixture)))
@@ -749,16 +665,14 @@ param_names = [r'$$\alpha_'+str(i+1)+'$$' for i in range(n_mixture2)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture2)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture2)]
 fig = corner.corner(ordered_samples, labels=param_names, truths=truths)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_37_1.png)
 
 
 ## HMC with automatic differentiation
 
-On top of our wish to efficiently sample one single mode of the posterior distribution, let's return to a comment we made at the start: there are few real-world situations where the population and likelihood probabilities are Gaussian and one can integrate over the latent variables analytically. Therefore, we would like to see if we can sample from the full posterior distribution. In other words, we will sample from 
+On top of our wish to efficiently sample one single mode of the posterior distribution, let's return to a comment we made at the start: there are few real-world situations where the population and likelihood probabilities are Gaussian and one can integrate over the latent variables analytically. Therefore, we would like to see if we can sample from the full posterior distribution. In other words, we will sample from
 
 $$p(\vec{\alpha},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert  \{y_i, \sigma_i\})\propto p(\vec{\alpha},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B \alpha_b \mathcal{N}(x_i\vert \beta_b,\gamma^2_b)\mathcal{N}(y_i\vert x_i,\sigma^2_i)$$
 
@@ -768,25 +682,19 @@ Since this model has many more parameters ($$3B+N-1$$ instead of $$3B-1$$), stan
 
 A common way to get around this problem is to adopt a more efficient MCMC method: **Hamiltonian or Hybrid Monte Carlo**. It has high acceptance rate (close to 1), and this method is designed to explore large parameter spaces and deal with nasty degenerate distributions. This is exactly what we need. Note that it cannot deal with multimodal distribution - we will come back to this point later in this tutorial.
 
-One of the peculiarities of HMC is that it requires gradients of the posterior with respect to the parameters of interest. In our case, we could write those analytically. But in real world problems this might be cumbersome and error-prone. Thus, we will use a powerful tool: **automatic differentiation**. This originates from the observation that differentiation rules are simple and can be propagated via the chain rule. If one can write the posterior distribution from elementary analytical or numerical operations, then finding the gradients is most likely a mechanical, algorithmic task that doesn't need to be done by hand. And indeed, there are automatic differentiation packages that will go through a piece of code and infer the analytic form of the gradient from elementary functions. Autograd is one of those, and only require that you write your function (here the posterior distribution) with numpy (or rather, its wrapped version of numpy, as you can see from how we have imported numpy and autograd at the start of this notebook). 
+One of the peculiarities of HMC is that it requires gradients of the posterior with respect to the parameters of interest. In our case, we could write those analytically. But in real world problems this might be cumbersome and error-prone. Thus, we will use a powerful tool: **automatic differentiation**. This originates from the observation that differentiation rules are simple and can be propagated via the chain rule. If one can write the posterior distribution from elementary analytical or numerical operations, then finding the gradients is most likely a mechanical, algorithmic task that doesn't need to be done by hand. And indeed, there are automatic differentiation packages that will go through a piece of code and infer the analytic form of the gradient from elementary functions. Autograd is one of those, and only require that you write your function (here the posterior distribution) with numpy (or rather, its wrapped version of numpy, as you can see from how we have imported numpy and autograd at the start of this notebook).
 
 We will now ask autograd to create a function that computes the analytic gradient of our posterior distribution with automatic differentiation! At the moment, we will focus on our simplified posterior distribution and check that the HMC approach works, before moving to the full posterior distribution.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 lnprob_hyperonly1_grad = grad(lnprob_hyperonly1)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
-We can numerically verify that it is indeed the gradient of our function: 
+We can numerically verify that it is indeed the gradient of our function:
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 params = np.concatenate([alphas, betas, gammas])
 
 def fun(params):
@@ -797,9 +705,7 @@ def fun_grad(params):
 relative_accuracy = 0.00001
 test_derivative(params, fun, fun_grad, relative_accuracy)  
 # Will complain if the gradient is incorrect
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 Of course, this gradient works for our original simplified posterior distribution, not the reparametrized one. So it will suffer from the degeneracies and multimodality we've already discussed. We want to avoid that and use our reparametrized posterior with the simplex-to-hypercube mapping.
 
@@ -808,9 +714,7 @@ If you try to apply autograd to the latter, you will get an error message saying
 Note that autograd also allows us to extract the Hessian of our distribution of interest. We will use that to tune our HMC run and make it blazingly efficient. This is explained in arxiv:1206.1901 and also many other HMC papers.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 def sublnprob_hyperonly(params):
     alphas = params[0:n_mixture]
     betas = params[n_mixture:2*n_mixture]
@@ -883,25 +787,21 @@ def fun_hess(params):
 
 relative_accuracy = 0.001
 test_derivative(params, fun, fun_hess, relative_accuracy, superverbose=False, n=2)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 ## Running HMC on the simplified posterior
 
-The code below is an implementation of the classic HMC algorithm with bounds and a mass matrix. It is not parallelized, so we expect it will be slower than emcee. All the HMC runs below will take a few minutes to complete. However, by using analytic derivatives and Hessians, we should hope that it performs well and samples the target distribution very well. We will use random step sizes and lengths, too. Those technical choices are fairly common and discussed in Neal (2006). 
+The code below is an implementation of the classic HMC algorithm with bounds and a mass matrix. It is not parallelized, so we expect it will be slower than emcee. All the HMC runs below will take a few minutes to complete. However, by using analytic derivatives and Hessians, we should hope that it performs well and samples the target distribution very well. We will use random step sizes and lengths, too. Those technical choices are fairly common and discussed in Neal (2006).
 
-The mass matrix is important in HMC, because it informs the sampler of the dimensions of the various parameters, and how constrained they are, so that the random moves are made in the most efficient directions. The most efficient choice for the mass matrix is to use the inverse hessian at the parameter optimum (i.e., the covariance matrix of the parameters). In our case we will also update the Hessian every 500 iterations, evaluated at the posterior mean. This tends to work better (than finding the optimum and computing the Hessian once) for nasty distributions. 
+The mass matrix is important in HMC, because it informs the sampler of the dimensions of the various parameters, and how constrained they are, so that the random moves are made in the most efficient directions. The most efficient choice for the mass matrix is to use the inverse hessian at the parameter optimum (i.e., the covariance matrix of the parameters). In our case we will also update the Hessian every 500 iterations, evaluated at the posterior mean. This tends to work better (than finding the optimum and computing the Hessian once) for nasty distributions.
 
 Because this approach tells the algorithm about the local curvature, it will implicitly restrict the sample to a single mode in the posterior distribution.
 
-Note that our sampler will throw a warning every time it rejects a sample (which is possible due to numerical approximations involved in the HMC algorithm). But this will be very rare; our acceptance rate will be very close to one. 
+Note that our sampler will throw a warning every time it rejects a sample (which is possible due to numerical approximations involved in the HMC algorithm). But this will be very rare; our acceptance rate will be very close to one.
 
 
-<blockquote>
-  <pre>
-    <code>
-# This is the function that performs one HMC sample, 
+<pre><code>
+# This is the function that performs one HMC sample,
 # with num_steps steps of size step_size relative to the gradient.
 # x0 is the initial point, lnprob the posterior distribution, lnprobgrad is gradients.
 def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
@@ -910,7 +810,7 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
         bounds = np.zeros((x0.size, 2))
         bounds[:, 0] = 0.001
         bounds[:, 1] = 0.999
-    if inv_mass_matrix_diag is None: 
+    if inv_mass_matrix_diag is None:
         inv_mass_matrix_diag = np.repeat(1, x0.size)
         inv_mass_matrix_diag_sqrt = np.repeat(1, x0.size)
     else:
@@ -930,10 +830,10 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
     ind_bad = np.logical_or(ind_lower, ind_upper)
     if ind_bad.sum() > 0:
         print('Error: could not confine samples within bounds!')
-        print('Number of problematic parameters:', ind_bad.sum(), 
+        print('Number of problematic parameters:', ind_bad.sum(),
               'out of', ind_bad.size)
         return x0
-                
+
     for i in range(num_steps):
         v = v - step_size * lnprobgrad(x, **kwargs)
         x = x + step_size * v * inv_mass_matrix_diag
@@ -948,7 +848,7 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
         ind_bad = np.logical_or(ind_lower, ind_upper)
         if ind_bad.sum() > 0:
             print('Error: could not confine samples within bounds!')
-            print('Number of problematic parameters:', ind_bad.sum(), 
+            print('Number of problematic parameters:', ind_bad.sum(),
                   'out of', ind_bad.size)
             return x0
 
@@ -961,10 +861,10 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
     else:
         orig += 0.5 * np.sum(inv_mass_matrix_diag * v0**2.)
         current += 0.5 * np.sum(inv_mass_matrix_diag * v**2.)
-        
+
     p_accept = min(1.0, np.exp(orig - current))
     if(np.any(~np.isfinite(x))):
-        print('Error: some parameters are infinite!', 
+        print('Error: some parameters are infinite!',
               np.sum(~np.isfinite(x)), 'out of', x.size)
         print('HMC steps and stepsize:', num_steps, step_size)
         return x0
@@ -976,14 +876,10 @@ def hmc_sampler(x0, lnprob, lnprobgrad, step_size,
             print('HMC steps and stepsize:', num_steps, step_size)
             #stop
         return x0
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 num_samples, burnin = 10000, 2000
 
 params = np.concatenate([zs, betas, gammas])
@@ -991,7 +887,7 @@ bounds = np.zeros((params.size, 2))
 bounds[:, 0] = 0.0
 bounds[:, 1] = 1.0
 param_samples_hyperonly = np.zeros((num_samples, params.size))
-param_samples_hyperonly[0, :] = params 
+param_samples_hyperonly[0, :] = params
 
 hess = np.abs(lnprob_hyperonly_hessian(params))
 for i in range(1, num_samples):
@@ -1007,18 +903,12 @@ for i in range(1, num_samples):
                     step_size, num_steps,
                     bounds=bounds, inv_mass_matrix_diag=1./hess)
 param_samples_hyperonly = param_samples_hyperonly[burnin:, :]
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 _ = corner.corner(param_samples_hyperonly, truths=params, labels=param_names)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_47_0.png)
@@ -1027,24 +917,20 @@ _ = corner.corner(param_samples_hyperonly, truths=params, labels=param_names)
 The marginalized posterior distribution for pairs of parameters looks good. Let's look at the marginalized posterior for the individual parameters and compare with the results we obtained with emcee.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 fig, axs = plt.subplots(2, 3, figsize=(11, 5))
 axs = axs.ravel()
 for i in range(5):
     axs[i].hist(param_samples_hyperonly[:, i], histtype='step', normed=True, label='HMC')
     rr = axs[i].get_xlim()
-    axs[i].hist(sampler.flatchain[:, i], range=rr, 
+    axs[i].hist(sampler.flatchain[:, i], range=rr,
                 histtype='step', normed=True, label='emcee')
     axs[i].axvline(params[i], c='b', label='truth')
     axs[i].set_xlabel(param_names[i])
 axs[-3].legend(frameon=True, loc='upper right')
 plt.delaxes(axs[-1])
 fig.tight_layout()
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_49_0.png)
@@ -1056,16 +942,14 @@ However, we will now sample the full posterior distribution, which emcee cannot 
 
 ## Sampling the full posterior distribution with latent variables
 
-We will now sample 
+We will now sample
 
 $$p(\vec{f},\vec{\beta}, \vec{\gamma}, \{ x_i \} \vert  \{y_i, \sigma_i\})\propto p(\vec{f},\vec{\beta}, \vec{\gamma}) \prod_{i=1}^N  \sum_{b=1}^B f_b \mathcal{N}(x_i\vert \beta_b,\gamma^2_b)\mathcal{N}(y_i\vert x_i,\sigma^2_i)$$
 
 using HMC with the settings described before.
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 def sublnprob_withxis(params):
     alphas = params[0:n_mixture]
     betas = params[n_mixture:2*n_mixture]
@@ -1138,14 +1022,10 @@ def fun_hess(params):
 # Numerically test the hessian
 relative_accuracy = 0.001
 test_derivative(params, fun, fun_hess, relative_accuracy, superverbose=False, n=2)
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 num_samples, burnin = 10000, 2000
 
 params = np.concatenate([zs, betas, gammas, xis])
@@ -1153,7 +1033,7 @@ bounds = np.zeros((params.size, 2))
 bounds[:, 0] = 0.01
 bounds[:, 1] = 0.97
 param_samples_withxis = np.zeros((num_samples, params.size))
-param_samples_withxis[0, :] = params 
+param_samples_withxis[0, :] = params
 
 hess = np.abs(lnprob_withxis_hessian(params))
 for i in range(1, num_samples):
@@ -1169,14 +1049,10 @@ for i in range(1, num_samples):
                     step_size, num_steps,
                     bounds=bounds, inv_mass_matrix_diag=1./hess)
 param_samples_withxis = param_samples_withxis[burnin:, :]
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 param_names = [r'$$z_'+str(i+1)+'$$' for i in range(n_mixture-1)] +\
     [r'$$\beta_'+str(i+1)+'$$' for i in range(n_mixture)] +\
     [r'$$\gamma_'+str(i+1)+'$$' for i in range(n_mixture)]+\
@@ -1185,23 +1061,21 @@ fig, axs = plt.subplots(5, 3, figsize=(12, 12))
 axs = axs.ravel()
 for i in range(axs.size):
     axs[i].set_xlabel(param_names[i])
-    axs[i].hist(param_samples_withxis[:, i], histtype='step', 
+    axs[i].hist(param_samples_withxis[:, i], histtype='step',
                 normed=True, label='Full posterior')
     if i < 5:
-        axs[i].hist(sampler.flatchain[:, i], histtype='step', 
+        axs[i].hist(sampler.flatchain[:, i], histtype='step',
                     normed=True, label='Simplified posterior')    
     axs[i].axvline(params[i], c='b', label='Truth')
     if i >= 5:
         likedraws = yis[i-5] + \
             np.random.randn(param_samples_withxis[:, i].size) * sigmais[i-5]
-        axs[i].hist(likedraws, histtype='step', 
+        axs[i].hist(likedraws, histtype='step',
                     normed=True, color='red', label='Likelihood')
     if i == 6 or i == 4:
         axs[i].legend(loc='upper right', frameon=True)
 fig.tight_layout()
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_54_0.png)
@@ -1209,7 +1083,7 @@ fig.tight_layout()
 
 The marginalized posterior distribution looks good. For the population parameters $$\vec{z}, \vec{\beta}, \vec{\gamma}$$, it matches what we obtained with the simplified posterior distribution. This is remarkable because we have added a ton of parameters to the model, and explored a much bigger parameter volume. Thanks to HMC, this exploration was efficient, and we were able to numerically marginalize over all the latent variables $$x_i$$'s and recover the results from the analytic solution, the simplified posterior distribution.
 
-## Hierarchical uncertainty shrinkage 
+## Hierarchical uncertainty shrinkage
 
 The other panels in the figure above show a comparison of the posterior distribution on each $$x_i$$ versus the likelihood function $$p(y_i \vert  x_i)$$. This is a typical illustration of Bayesian shrinkage: by fitting a model to the population of objects, we in turn improve the individual estimates. It doesn't matter that those parameters are latent - they are connected via a hierarchical probabilistic model, so the information gained in one part of the model might actually affect the rest of the model. This is a theme that we have explored (and will continue to explore) in other tutorials.
 
@@ -1221,7 +1095,7 @@ Indeed, those can create new degeneracies in the posterior distribution, since c
 
 (By tuning, I refer to the parameters of the HMC algorithm: the step size, number of steps, and mass matrix. There is a lot of litterature on how to tune this to make the exploration of complicated posterior distribution more efficient. In particular, one wants an acceptance rate close to one, and the maximum step size and minimum number of steps that yield to a good MCMC chain. A good metric for that is the correlation between samples - we want samples that are as independent as possible, and fully explore the posterior distribution.)
 
-Another related question is how to find a suitable prior to alleviate labelling degeneracies in $$>1$$ dimensions. This is possible, but may require some careful thinking. Again, the key is to order the components in a quasi-unique fashion. 
+Another related question is how to find a suitable prior to alleviate labelling degeneracies in $$>1$$ dimensions. This is possible, but may require some careful thinking. Again, the key is to order the components in a quasi-unique fashion.
 
 But the most critical question we have not  mentioned so far is the choice of number of components. In most real-world problems, one does not know how many components to use. This is a vast, deep question which is addressed in countless papers, many of them beyond the scope of this tutorial. The classical approach boils down to doing multiple runs with different number of components, and performing model selection (in a Bayesian fashion) or cross-validation (in a frequentist fashion) to select the best number of components. Indeed, the denominator of our full posterior distribution (neglected previously) is the evidence
 
@@ -1231,7 +1105,7 @@ In other words, one way or another, a huge multidimensional integral is needed. 
 
 Note that with mixture models, we are in a very particular situation: by fixing one or multiple $$z_i$$ or $$\alpha_i$$ to zero or one, the number of components has effectively changed. We say that the models are **nested**. Nested models are very convenient and are worth learning about. Many physical models are nested, and this hugely simplifies model comparison, via the Savage Dickey density ratio, for example.
 
-Equivalently, one could adopt a **trans-dimensional approach** and explore the space of models with a variable number of components. It is in fact equivalent to multiple-run solution we just discussed. Either way, there are various pieces of technology to achieve that, such as trans-dimensional MCMC (which explicitely adds and removes parameters), which we will not discuss here. But you should immediatly spot that we have already done that: when we ran nested sampling with three components, we found that the posterior distribution was naturaly peaked at two components, with the third one often set to zero. The point is: for nested models, it is not that hard to perform a trans-dimensional sampling. One only needs to write the posterior distribution in a convenient, nested form, and think carefully about what priors would help pinning down (i.e., sampling) the most probably number of components. 
+Equivalently, one could adopt a **trans-dimensional approach** and explore the space of models with a variable number of components. It is in fact equivalent to multiple-run solution we just discussed. Either way, there are various pieces of technology to achieve that, such as trans-dimensional MCMC (which explicitely adds and removes parameters), which we will not discuss here. But you should immediatly spot that we have already done that: when we ran nested sampling with three components, we found that the posterior distribution was naturaly peaked at two components, with the third one often set to zero. The point is: for nested models, it is not that hard to perform a trans-dimensional sampling. One only needs to write the posterior distribution in a convenient, nested form, and think carefully about what priors would help pinning down (i.e., sampling) the most probably number of components.
 
 This brings us to our final point of discussion and experiment.
 
@@ -1240,13 +1114,11 @@ This brings us to our final point of discussion and experiment.
 Let's run PolyChord with more components - say four - and show the result in data space, i.e., plot the true density of objects and that infered with our Gaussian mixture model.  
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 code4 = """
 PolyChord.run_nested_sampling(mixturemodellnprob, ndim, nderived, prior=prior,
                               file_root='mixturemodellnprob', do_clustering=False,
-                              nlive=50*ndim, update_files=50*ndim, 
+                              nlive=50*ndim, update_files=50*ndim,
                               num_repeats=5*ndim, boost_posterior=1)
 """
 
@@ -1260,14 +1132,10 @@ text_file.close()
 # rm -rf chains ; mkdir chains ; mkdir chains/clusters ; python run_PyPolyChord.py
 # If you get a segmentation fault, you'll need to compile PolyChord with extra flags
 # to make sure the stack size is sufficient.
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
 
-<blockquote>
-  <pre>
-    <code>
+<pre><code>
 samples = np.genfromtxt('chains/mixturemodellnprob_equal_weights.txt')[:, 2:]
 print(np.min(samples, axis=0))
 fig, axs = plt.subplots(2, 2, figsize=(10, 6), sharex=True, sharey=True)
@@ -1295,9 +1163,7 @@ axs[0].set_ylim([0, np.max(p_x_grid)*1.3])
 axs[-1].set_xlabel(r'$$x$$')
 axs[-2].set_xlabel(r'$$x$$')
 fig.tight_layout()
-    </code>
-  </pre>
-</blockquote>
+</code></pre>
 
     [  1.86289840e-01   1.74044470e-05   2.52719810e-05   3.81298540e-01
        2.86397260e-01   5.80634280e-04   4.93057490e-04   3.00007840e-02
@@ -1308,7 +1174,7 @@ fig.tight_layout()
 ![png]({{ site.baseurl }}/assets/img/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_files/Efficiently%20sampling%20mixture%20models%20-%20exploration%20and%20comparison%20of%20methods_59_1.png)
 
 
-In this figure, we have separated the models into their number of components (specifically: any component having an amplitude ten times smaller than the largest component is not counted). Since we randomly picked posterior stamples, the number of curves arriving in each subpanel is also telling us something about the most probably number of components. In fact, we could relate those relative densities to Bayes factors for the nest models with 1, 2, 3 and 4 components. What we are doing is much more generic and straightforward: we have implicitly performed a trans-dimensional sampling since we have allowed some of the compoments to be zero. 
+In this figure, we have separated the models into their number of components (specifically: any component having an amplitude ten times smaller than the largest component is not counted). Since we randomly picked posterior stamples, the number of curves arriving in each subpanel is also telling us something about the most probably number of components. In fact, we could relate those relative densities to Bayes factors for the nest models with 1, 2, 3 and 4 components. What we are doing is much more generic and straightforward: we have implicitly performed a trans-dimensional sampling since we have allowed some of the compoments to be zero.
 
 One final comment: you can see that except for the one-component case, most of our model samples indeed capture the true bimodal nature of the density. However, why are some of those models made of three and four components? This happens because we have not restriced the components to overlap. This creates yet another degeneracy on top of the labeling one: the fact that any component can be decomposed into sub-components with lower amplitudes. When considering a larger space of models (i.e., trans-dimensional), this is a complicated problem. This is related to the **interpretability** of mixture models. Luckily for us, it can be solved in two ways: in a fully Bayesian inference setting like we described in this tutorial, one can easily adopt  a prior that mitigates this effect, for instance by forcing the components to be separated by some amount. An alternative which is particularly popular in the realm of empirical Bayesian inference and maximum a-posteriori solutions (i.e., finding the optimum of the posterior distribution only) is a set of "split and merge" methods, allowing to litteraty split and merge some of the components when relevant. The paper about extreme deconvolution by Bovy et al (2009) is a good place to learn about that.
 
