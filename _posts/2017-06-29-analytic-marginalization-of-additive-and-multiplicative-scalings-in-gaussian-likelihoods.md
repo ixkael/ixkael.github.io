@@ -8,12 +8,12 @@ permalink: /analytic-marginalization-of-additive-and-multiplicative-scalings-in-
 layout: post
 ---
  
-Let us consider some data $$\vec{y}$$ (a vector of dimension $$D$$) and try to explain them with a model $$\vec{x}$$ (which may be parameterized in some way, but we don't need to consider those details here). 
+Let us consider some data $$\vec{y}$$ (a vector of dimension $$D$$) and try to explain them with a model $$\vec{x}$$, which may be parameterized in some way (for the purpose of this post we don't need to write it explicitly). 
 We allow for an additive and a multiplicative scaling of the model, described by two scalar parameters $$a$$ and $$s$$, so that the full model with fit $$\vec{y}$$ with is $$a+s\vec{x}$$.
 
 We make the strong  assumption that our data uncertainties are Gaussian and described with a $$D\times D$$ covariance matrix $$\Sigma_y$$. As a result, the likelihood function is
 
- $$ p(\vec{y}|\vec{x}, \Sigma, s, a) = \mathcal{N}(a+s\vec{x} - \vec{y}; \Sigma_y) $$
+ $$ p(\vec{y}|\vec{x}, \Sigma_y, s, a) = \mathcal{N}(a+s\vec{x} - \vec{y}; \Sigma_y) $$
  
  We will also adopt Gaussian priors on the additive and multiplicative scaling parameters:
  
@@ -31,7 +31,7 @@ We make the strong  assumption that our data uncertainties are Gaussian and desc
 
  We will make use of the following identity and analytic marginalization:
  
- $$\int \mathrm{d}x \mathcal{N}(x-a;A)\mathcal{N}(x-b;B) = \int \mathrm{d}x \mathcal{N}(a-b;A+B)\mathcal{N}(x-(A^{-1}+B^{-1})^{-1}(A^{-1}a+B^{-1}b);(A^{-1}+B^{-1})^{-1}) = \mathcal{N}(a-b;A+B)$$ 
+ $$\int \mathrm{d}x \mathcal{N}(x-a;A)\mathcal{N}(x-b;B) =\\ \int \mathrm{d}x \mathcal{N}(a-b;A+B)\mathcal{N}(x-(A^{-1}+B^{-1})^{-1}(A^{-1}a+B^{-1}b);(A^{-1}+B^{-1})^{-1}) =\\ \mathcal{N}(a-b;A+B)$$ 
  
 
 This allows us to perform a first simplification in $$a$$:
