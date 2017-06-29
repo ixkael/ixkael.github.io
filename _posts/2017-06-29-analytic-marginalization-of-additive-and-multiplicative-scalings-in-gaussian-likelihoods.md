@@ -42,7 +42,7 @@ We see that this distribution is Gaussian in $$a$$, and the maximum a posteriori
 
 The second simplification, over $$s$$ this time, is slightly less trivial, but leads us to something like
  
- $$\mathcal{N}(s-\hat{s};\sigma^2_s)  \mathcal{N}(s\vec{x} + \vec{y}_a; \Sigma_{ya}) \\ = \Bigl( (2\pi)^D \ F_\mathrm{TT}  \ \sigma^2_s \ |\Sigma_{ya}|  \Bigr)^{-1/2} \exp\left( - \frac{1}{2} F_\mathrm{OO}   + \frac{1}{2} \frac{F_\mathrm{OT} ^2}{F_\mathrm{TT} } \right) \mathcal{N}\Bigl(s- \underbrace{\frac{F_\mathrm{OT} }{F_\mathrm{TT} }}_{s^\mathrm{MAP}}; \dots\Bigr)$$
+ $$\mathcal{N}(s-\hat{s};\sigma^2_s)  \mathcal{N}(s\vec{x} + \vec{y}_a; \Sigma_{ya}) \\ = \Bigl( (2\pi)^D \ F_\mathrm{TT}  \ \sigma^2_s \ |\Sigma_{ya}|  \Bigr)^{-1/2} \exp\left( - \frac{1}{2} F_\mathrm{OO}   + \frac{1}{2} \frac{F_\mathrm{OT} ^2}{F_\mathrm{TT} } \right) \ \mathcal{N}\Bigl(s- \underbrace{\frac{F_\mathrm{OT} }{F_\mathrm{TT} }}_{s^\mathrm{MAP}}; \dots\Bigr)$$
  
  with the terms
  
@@ -56,7 +56,7 @@ The second simplification, over $$s$$ this time, is slightly less trivial, but l
  
  What does it tell us? We have re-written our target distribution $$L$$ as
  
- $$L =  \mathcal{N}(s-{s}^\mathrm{MAP}; \dots)  \mathcal{N}(a-{a}^\mathrm{MAP}; \dots)  \Bigl( (2\pi)^D  F_\mathrm{TT}   \sigma^2_s \ |\Sigma_{ya}|  \Bigr)^{-1/2} \exp\left( - \frac{1}{2} F_\mathrm{OO}   + \frac{1}{2} \frac{F_\mathrm{OT} ^2}{F_\mathrm{TT} } \right)  $$
+ $$\mathcal{N}(s-{s}^\mathrm{MAP}; \dots) \ \mathcal{N}(a-{a}^\mathrm{MAP}; \dots) \ \Bigl( (2\pi)^D  F_\mathrm{TT}   \sigma^2_s \ |\Sigma_{ya}|  \Bigr)^{-1/2} \exp\left( - \frac{1}{2} F_\mathrm{OO}   + \frac{1}{2} \frac{F_\mathrm{OT} ^2}{F_\mathrm{TT} } \right)  $$
  
 
  This is great, because we have two elegant solutions to deal with our nuisance parameters $$a$$ and $$s$$. First, we can __set them to their maximum a posteriori solutions__ $$a^{\mathrm{MAP}}$$ and $$s^{\mathrm{MAP}}$$, and compute $$L$$ with those values. This is equivalent to directly fitting for $$a$$ and $$s$$ at fixed $$\vec{x}$$, which is useful. (In this case, one needs to compute the covariance terms which I have omitted above).
@@ -67,6 +67,3 @@ Second, we can __marginalize__ over $$a$$ and $$s$$, since we have isolated ther
  This is very useful; as I said previously, those terms unavoidably appear in any Bayesian analysis, hierarchical or not, We can now focus on $$\vec{x}$$ and analytically marginalize over $$a$$ and $$s$$ when fitting $$\vec{y}$$, for example in each step of an MCMC algorithm constraining the parameters of $$\vec{x}$$. Sweet!
  
 
- %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\end{document}
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
