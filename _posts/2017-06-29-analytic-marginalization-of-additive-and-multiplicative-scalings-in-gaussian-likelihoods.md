@@ -48,9 +48,9 @@ The second simplification, over $$s$$ this time, is slightly less trivial, but l
  
  $$F_\mathrm{OO} = \vec{y}_a \  \Sigma_{ya}^{-1}\ \vec{y}_a \ +\  \hat{s}^2/\sigma^2_s $$
  
- $$F_\mathrm{TT}  = \vec{x}^T_{t}\  \Sigma_{ya}^{-1}\ \vec{x}_{t} \ + \ 1/\sigma^2_s$$
+ $$F_\mathrm{TT}  = \vec{x}^T\  \Sigma_{ya}^{-1}\ \vec{x} \ + \ 1/\sigma^2_s$$
  
- $$F_\mathrm{OT}  = \vec{x}^T_{t} \ \Sigma_{ya}^{-1}\ \vec{y}_a \ + \ \hat{s}/\sigma^2_s$$
+ $$F_\mathrm{OT}  = \vec{x}^T \ \Sigma_{ya}^{-1}\ \vec{y}_a \ + \ \hat{s}/\sigma^2_s$$
  
  Again, we see that this distribution is Gaussian in $$s$$, and the maximum a posteriori value is $$s^{\mathrm{MAP}}$$. Similarly to $$a$$, I didn't write the covariance in $$s$$ but it is easy to derive and it is not needed if we want to marginalize over $$s$$.
  
