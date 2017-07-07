@@ -44,6 +44,6 @@ $$\frac{E_1}{E_2} = \frac{p(\phi^* \vert  D, M_2)}{p(\phi^* \vert  M_2)}$$
 
 In other words the ratio between the marginalized posterior and prior on $$\phi$$ evaluated at $$\phi^*$$ in the extended model $$M_2$$.
 This is the famous Savage-Dickey Density Ratio (SDDR). 
-Another pedagogical derivation can be found in [this paper](https://arxiv.org/abs/1307.2904), and some useful remarks at [here](https://xianblog.wordpress.com/2009/09/24/is-the-dickey-savage-ratio-any-valid/).
+Another pedagogical derivation can be found in [this paper](https://arxiv.org/abs/1307.2904), and some useful remarks [here](https://xianblog.wordpress.com/2009/09/24/is-the-dickey-savage-ratio-any-valid/).
 
 __We now go back to our original question: we add one or multiple parameters $$\phi$$ to a model $$M_1$$, with prior $$p(\phi \vert  M_2)$$. If those parameters come out truly unconstrained by our data, then the marginalized posterior distribution $$p(\phi \vert  D, M_2)$$ will reduce to the prior, regardless of $$\phi^*$$. Hence, the evidence ratio $$E_1/E_2$$ is equal to one, and _this parameter has no effect on our inference or interpretation of the data_. 
