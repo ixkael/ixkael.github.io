@@ -1,14 +1,12 @@
 ---
 id: 242
-title: Fitting a line to data - a quick tutorial example?
+title: Fitting a line to data - a quick tutorial
 author: admin
 guid:
 desc:  
-permalink: /fitting-a-line-to-data-a-quick-tutorial-example/
+permalink: /fitting-a-line-to-data-a-quick-tutorial/
 layout: post
 ---
-
-# Fitting a line to data - a quick tutorial example
 
 _Boris Leistedt, August 2017_
 
@@ -30,9 +28,7 @@ This is a tutorial session.
 Don't be like
 
 
-<pre><code>
-HTML('<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/monkey.gif" width=600>')
-</code></pre>
+![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/monkey.gif)
 
 
 
