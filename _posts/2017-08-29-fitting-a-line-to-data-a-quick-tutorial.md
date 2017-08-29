@@ -48,11 +48,6 @@ start a jupyter kernel: ``jupyter notebook``
 
 and open a copy of this notebook.
 
-For the day 2 tutorial, please download the notebook and try to run it! The three ways to obtain it are:
-- download or clone my fork of the AHW repo: `git clone https://github.com/ixkael/AstroHackWeek2017`
-- use the AHW repo you used for day one (https://github.com/AstroHackWeek/AstroHackWeek2017) and update it with `git pull`. You might have to resolve conflicts… with `git reset --hard`?
-- Download the notebook directly here: https://www.dropbox.com/s/m8431yjw4rangv1/day2.zip?dl=0
-
 
 <pre><code>
 import matplotlib
