@@ -28,12 +28,7 @@ This is a tutorial session.
 Don't be like
 
 
-![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/monkey.gif)
-
-
-
-
-<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/monkey.gif" width=600>
+![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/monkey.gif =600x)
 
 
 
@@ -75,15 +70,7 @@ import numpy as np
 # Why Bayesian inference?
 
 
-<pre><code>
-HTML('<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/data.jpg" width=500>')
-</code></pre>
-
-
-
-
-<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/data.jpg" width=500>
-
+![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/data.jpg =500x)
 
 
 ## Road map and Poll
@@ -379,16 +366,8 @@ plt.ylim([y_min, y_max])
 
 
 
-<pre><code>
-HTML('<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/hoggmograph.gif" width=500>')
+![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/hoggmograph.gif =500x)
 # Copyright Daniela Huppenkothen, Astrohackweek 2015 in NYC
-</code></pre>
-
-
-
-
-<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/hoggmograph.gif" width=500>
-
 
 
 ##  Bayes' theorem 
@@ -1035,16 +1014,7 @@ with flat uninformative priors on $$x_i$$'s $$p\bigl(x_i)$$.
 
 We have eliminated the $$x_i$$'s!
 
-
-<pre><code>
-HTML('<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/magic.gif" width=500>')
-</code></pre>
-
-
-
-
-<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/magic.gif" width=500>
-
+![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/magic.gif =500x)
 
 
 
@@ -1157,15 +1127,7 @@ Let me know if you are interested and we will organize a session. A few notebook
 # Final thoughts
 With the right method you can solve problems/models that seem intractable. Don't underestimate yourself! Start small, but be ambitious.
 
-
-<pre><code>
-HTML('<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/dreams.jpg" width=500>')
-</code></pre>
-
-
-
-
-<img src="{{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/dreams.jpg" width=500>
+![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/dreams.jpg =500x)
 
 
 
