@@ -14,6 +14,8 @@ This notebook is available at [this location on Github](https://github.com/ixkae
 
 It is the material presented at a tutorial session at [AstroHackWeek 2017](astrohackweek.org). It assumes some basic knowledge about Bayesian inference and data analysis. Some good resources are https://github.com/jakevdp/BayesianAstronomy (Jake give the theory part of the tutorial at AstroHackWeek 2017 and covered the first notebook of that repository).
 
+Good sources of information are https://arxiv.org/abs/1008.4686  and http://dan.iel.fm/posts/fitting-a-plane.
+
 
 <pre><code>
 %matplotlib inline
