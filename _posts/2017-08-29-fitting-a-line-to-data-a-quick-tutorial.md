@@ -12,9 +12,7 @@ _Boris Leistedt, August 2017_
 
 This notebook is available at [this location on Github](https://github.com/ixkael/Prob-tools/blob/master/notebooks/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example.ipynb). 
 
-It is the material presented at a tutorial session at [AstroHackWeek 2017](astrohackweek.org). It assumes some basic knowledge about Bayesian inference and data analysis. Some good resources are https://github.com/jakevdp/BayesianAstronomy (Jake give the theory part of the tutorial at AstroHackWeek 2017 and covered the first notebook of that repository).
-
-Good sources of information are https://arxiv.org/abs/1008.4686  and http://dan.iel.fm/posts/fitting-a-plane.
+It is the material presented at a tutorial session at [AstroHackWeek 2017](astrohackweek.org). It assumes some basic knowledge about Bayesian inference and data analysis. It is not meant to be standalone since there isn't much text and it was accompanied by a theory lecture led by Jake Vanderplas. Some good resources on this topic are [here](https://github.com/jakevdp/BayesianAstronomy), [here](https://arxiv.org/abs/1008.4686)  and [here](http://dan.iel.fm/posts/fitting-a-plane). 
 
 
 <pre><code>
@@ -364,7 +362,7 @@ plt.ylim([y_min, y_max])
 
 
 ![png]({{ site.baseurl }}/assets/img/Fitting%20a%20line%20to%20data%20-%20a%20quick%20tutorial%20example_files/pics/hoggmograph.gif)
-# Copyright Daniela Huppenkothen, Astrohackweek 2015 in NYC
+Copyright Daniela Huppenkothen, Astrohackweek 2015 in NYC
 
 
 ##  Bayes' theorem 
