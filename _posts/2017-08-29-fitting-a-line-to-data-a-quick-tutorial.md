@@ -15,8 +15,7 @@ This notebook is available at [this location on Github](https://github.com/ixkae
 It is the material presented at a tutorial session at [AstroHackWeek 2017](astrohackweek.org). It assumes some basic knowledge about Bayesian inference and data analysis. It is not meant to be standalone since there isn't much text and it was accompanied by a theory lecture led by Jake Vanderplas. Some good resources on this topic are [here](https://github.com/jakevdp/BayesianAstronomy), [here](https://arxiv.org/abs/1008.4686)  and [here](http://dan.iel.fm/posts/fitting-a-plane). 
 
 
-<pre><code>
-%matplotlib inline
+<pre><code>%matplotlib inline
 %config IPython.matplotlib.backend = 'retina'
 %config InlineBackend.figure_format = 'retina'
 
@@ -49,8 +48,7 @@ start a jupyter kernel: ``jupyter notebook``
 and open a copy of this notebook.
 
 
-<pre><code>
-import matplotlib
+<pre><code>import matplotlib
 import matplotlib.pyplot as plt
 from cycler import cycler
 matplotlib.rc("font", family="serif", size=14)
@@ -88,8 +86,7 @@ See Hogg, Bovy and Lang (2010): https://arxiv.org/abs/1008.4686
 Let's generate a model:
 
 
-<pre><code>
-ncomponents = 1
+<pre><code>ncomponents = 1
 slopes_true = np.random.uniform(0, 1, ncomponents)
 intercepts_true = np.random.uniform(0, 1, ncomponents)
 component_fractionalprobs = np.random.dirichlet(np.arange(1., ncomponents+1.))
@@ -107,8 +104,7 @@ print('Fractional probabilities:', component_fractionalprobs)
 Let's generate some data drawn from that model:
 
 
-<pre><code>
-ndatapoints = 20
+<pre><code>ndatapoints = 20
 xis_true = np.random.uniform(0, 1, ndatapoints)
 x_grid = np.linspace(0, 1, 100)
 
@@ -128,22 +124,19 @@ yis_true = model_linear(xis_true, slopes_true[allocations], intercepts_true[allo
 
 
 
-<pre><code>
-sigma_yis = np.repeat(0.1, ndatapoints) * np.random.uniform(0.5, 2.0, ndatapoints)
+<pre><code>sigma_yis = np.repeat(0.1, ndatapoints) * np.random.uniform(0.5, 2.0, ndatapoints)
 yis_noisy = yis_true + np.random.randn(ndatapoints) * sigma_yis
 </code></pre>
 
 
-<pre><code>
-y_min, y_max = np.min(yis_noisy - sigma_yis), np.max(yis_noisy + sigma_yis)
+<pre><code>y_min, y_max = np.min(yis_noisy - sigma_yis), np.max(yis_noisy + sigma_yis)
 for i in range(ncomponents):
     y_min = np.min([y_min, np.min(model_linear(x_grid, slopes_true[i], intercepts_true[i]))])
     y_max = np.max([y_max, np.max(model_linear(x_grid, slopes_true[i], intercepts_true[i]))])
 </code></pre>
 
 
-<pre><code>
-for i in range(ncomponents):
+<pre><code>for i in range(ncomponents):
     plt.plot(x_grid, model_linear(x_grid, slopes_true[i], intercepts_true[i]), c=colors[i])
     ind = allocations == i
     plt.errorbar(xis_true[ind], yis_noisy[ind], sigma_yis[ind], fmt='o', c=colors[i])
@@ -168,8 +161,7 @@ Forget what you saw (please).
 Here is the noisy data to be analyzed. Can you (mentally) fit a line through it?
 
 
-<pre><code>
-plt.errorbar(xis_true, yis_noisy, sigma_yis, fmt='o')
+<pre><code>plt.errorbar(xis_true, yis_noisy, sigma_yis, fmt='o')
 plt.xlabel('$$x$$'); plt.ylabel('$$y$$'); plt.ylim([y_min, y_max])
 </code></pre>
 
@@ -188,8 +180,7 @@ Let's define a loss/cost function: the total weighted squared error, also called
 $$ \chi^2 = \sum_i \left( \frac{ \hat{y}_i - y_i^\mathrm{mod}(x_i, s, m) }{\sigma_i} \right)^2 $$
 
 
-<pre><code>
-def loss(observed_yis, yi_uncertainties, model_yis):
+<pre><code>def loss(observed_yis, yi_uncertainties, model_yis):
     scaled_differences = (observed_yis - model_yis) / yi_uncertainties
     return np.sum(scaled_differences**2, axis=0)
 </code></pre>
@@ -199,14 +190,12 @@ We want to minimize this chi-squared to obtain the best possible fit to the data
 Let us look at the fit for a couple of (random) sets of parameters.
 
 
-<pre><code>
-random_slopes = np.array([0.25, 0.25, 0.75, 0.75])
+<pre><code>random_slopes = np.array([0.25, 0.25, 0.75, 0.75])
 random_intercepts = np.array([0.25, 0.75, 0.25, 0.75])
 </code></pre>
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True)
 axs[0].errorbar(xis_true, yis_noisy, sigma_yis, fmt='o')
 for i, (slope, intercept) in enumerate(zip(random_slopes, random_intercepts)):
     axs[0].plot(x_grid, model_linear(x_grid, slope, intercept), c=colors[i])
@@ -236,8 +225,7 @@ Evaluate the loss function on the grid, and plot exp(-0.5*loss).
 Also find the point that has the minimal loss value.
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 slope_grid, intercept_grid = np.meshgrid(np.linspace(0, 1, 100), 
                                          np.linspace(0, 1, 100))
 #np.mgrid[0:1:100j, 0:1:100j]
@@ -253,8 +241,7 @@ loss_grid = loss_grid.reshape(slope_grid.shape)
 </code></pre>
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=False, sharey=False)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=False, sharey=False)
 axs[0].errorbar(xis_true, yis_noisy, sigma_yis, fmt='o')
 axs[0].plot(x_grid, model_linear(x_grid, slope_ml, intercept_ml))
 axs[0].set_xlabel('$$x$$'); axs[0].set_ylabel('$$y$$')
@@ -288,14 +275,12 @@ Since the data points are independent and the noise is Gaussian.
 Let's visualize the $$\chi^2$$ for individual objects
 
 
-<pre><code>
-model_yis = model_linear(xis_true, slope_ml, intercept_ml)
+<pre><code>model_yis = model_linear(xis_true, slope_ml, intercept_ml)
 object_chi2s = 0.5*((yis_noisy - model_yis) / sigma_yis)**2
 </code></pre>
 
 
-<pre><code>
-fig, ax = plt.subplots(1, 1)
+<pre><code>fig, ax = plt.subplots(1, 1)
 ax.plot(x_grid, model_linear(x_grid, slope_ml, intercept_ml))
 v = ax.scatter(xis_true, yis_noisy, c=object_chi2s, cmap='coolwarm', zorder=0)
 ax.errorbar(xis_true, yis_noisy, sigma_yis, fmt='o', zorder=-1)
@@ -326,8 +311,7 @@ HINT: numpy has good infrastructure for constructing and fitting polynomials... 
 If you pick a more complicated model you might need to use `scipy.optimize.minimize`. 
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 degree = 150
 bestfit_polynomial_coefs = np.polyfit(xis_true, yis_noisy, degree)
 bestfit_polynomial = np.poly1d(bestfit_polynomial_coefs)
@@ -343,8 +327,7 @@ print('The chi2 is', chi2)
 
 
 
-<pre><code>
-plt.plot(x_grid, bestfit_polynomial(x_grid))
+<pre><code>plt.plot(x_grid, bestfit_polynomial(x_grid))
 plt.errorbar(xis_true, yis_noisy, sigma_yis, fmt='o')
 plt.ylim([y_min, y_max])
 </code></pre>
@@ -375,8 +358,7 @@ In our case, if we omit the explicit dependence on a linear model:
 $$p\bigl(m, s \ \bigl\vert \ \{ \hat{y}_i, \sigma_i, x_i\} \bigr) \ \propto \ p\bigl(\{ \hat{y}_i \} \ \bigl\vert \ m, s, \{\sigma_i, x_i\}\bigr) \  p\bigl(m, s\bigr) \ = \ \exp\bigl(-\frac{1}{2}\chi^2\bigr)\ p\bigl(m, s\bigr) $$
 
 
-<pre><code>
-# Let us play with Bayes theorem and pick some un-motivated prior:
+<pre><code># Let us play with Bayes theorem and pick some un-motivated prior:
 prior_grid = np.exp(-slope_grid**-1) * np.exp(-intercept_grid**-1)
 likelihood_grid = np.exp(-0.5*loss_grid)
 posterior_grid = likelihood_grid * prior_grid
@@ -387,8 +369,7 @@ posterior_grid = likelihood_grid * prior_grid
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 3)
+<pre><code>fig, axs = plt.subplots(1, 3)
 for i in range(3):
     axs[i].set_ylabel('intercept'); axs[i].set_xlabel('slope'); 
 axs[0].set_title('Prior'); axs[1].set_title('Likelihood'); axs[2].set_title('Posterior')
@@ -416,8 +397,7 @@ Three common types of priors are:
 Problems with 'gridding': number of likelihood evaluations, resolution of the grids, etc
 
 
-<pre><code>
-fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+<pre><code>fig, ax = plt.subplots(1, 1, figsize=(5, 4))
 ax.set_xlabel('slope'); ax.set_ylabel('intercept');
 ax.scatter(slope_grid.ravel(), intercept_grid.ravel(), marker='.', s=1)
 ax.set_ylim([0, 1])
@@ -455,8 +435,7 @@ The prior should return `-np.inf` outside of our parameter space of interest. At
 Think about what other priors could be used. Include the correct normalization in the prior and the likelihood if possible. 
 
 
-<pre><code>
-def ln_like(params, xs, observed_yis, yi_uncertainties):
+<pre><code>def ln_like(params, xs, observed_yis, yi_uncertainties):
     model_yis = model_linear(xs, params[0], params[1])
     chi2s = ((observed_yis - model_yis) / yi_uncertainties)**2
     return np.sum(-0.5 * chi2s - 0.5*np.log(2*np.pi) - np.log(yi_uncertainties))
@@ -476,8 +455,7 @@ def ln_post(params, xs, observed_yis, yi_uncertainties):
 </code></pre>
 
 
-<pre><code>
-x0 = np.array([0.5, 0.5])
+<pre><code>x0 = np.array([0.5, 0.5])
 print('Likelihood:', ln_like(x0, xis_true, yis_noisy, sigma_yis))
 print('Prior:', ln_prior(x0))
 print('Posterior:', ln_post(x0, xis_true, yis_noisy, sigma_yis))
@@ -493,8 +471,7 @@ EXERCISE (2 min)
 Find the maximum of the log posterior. Try different optimizers in `scipy.optimize.minimize`. Be careful about the sign of the objective function (is it plus or minus the log posterior?)
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 def fun(p0):
     return - ln_post(p0, xis_true, yis_noisy, sigma_yis)
 
@@ -529,8 +506,7 @@ Implement rejection sampling. Randomly draw points in our 2D parameter space. Ke
 HINT: you will find that you need to normalize the posterior distribution in some way to make the sampling possible. Use the MAP solution we just found!
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 normalization = ln_post(best_parmas, xis_true, yis_noisy, sigma_yis)
 print(normalization)
 num_draws = 10000
@@ -555,8 +531,7 @@ print(num_tot, num_draws)
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].pcolormesh(slope_grid, intercept_grid, likelihood_grid, cmap='ocean_r')
 axs[1].hist2d(params_drawn[:, 0], params_drawn[:, 1], 30, cmap="ocean_r");
 axs[0].set_title('Gridding'); axs[1].set_title('Rejection sampling'); 
@@ -589,8 +564,7 @@ Compare the sampling to our previous gridded version.
 Estimate the mean and standard deviation of the distribution from the samples. Are they accurate? 
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 num_draws = 1000
 params_drawn = np.zeros((num_draws, 2))
 i_draw = 1
@@ -611,8 +585,7 @@ print('Acceptance rate:', num_draws/num_draws_tot)
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].pcolormesh(slope_grid, intercept_grid, likelihood_grid, cmap='ocean_r')
 axs[1].hist2d(params_drawn[:, 0], params_drawn[:, 1], 30, cmap="ocean_r");
 axs[0].set_xlabel('slope'); axs[0].set_ylabel('intercept'); axs[1].set_xlabel('slope'); 
@@ -623,8 +596,7 @@ axs[0].set_xlabel('slope'); axs[0].set_ylabel('intercept'); axs[1].set_xlabel('s
 
 
 
-<pre><code>
-fig, ax = plt.subplots(2, sharex=True)
+<pre><code>fig, ax = plt.subplots(2, sharex=True)
 for i in range(2):
     ax[i].plot(params_drawn[:, i]);
 </code></pre>
@@ -650,8 +622,7 @@ EXERCISE
 Visualize chains, autocorrelation time, etc, for short and long chains with different proposal distributions in the Metropolis Hastings algorithm.
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 def autocorr_naive(chain, cutoff):
     auto_corr = np.zeros(cutoff-1)
     mu = np.mean(chain, axis=0)
@@ -662,8 +633,7 @@ def autocorr_naive(chain, cutoff):
 </code></pre>
 
 
-<pre><code>
-for i in range(2):
+<pre><code>for i in range(2):
     plt.plot(autocorr_naive(params_drawn[:, i], 500))
 plt.xscale('log'); plt.xlabel('$$\Delta$$'); plt.ylabel('Autocorrelation'); 
 </code></pre>
@@ -679,8 +649,7 @@ EXERCISE
 Let's use a more advanced sampler. Look at the documentation of the `emcee` package and use it to (again) draw samples from our 2D posterior distribution of interest. Make 2D plots with both `plt.hist2d` or `plt.contourf`. For the latter, add 68% and 95% confidence contours.
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 import emcee
 
 ndim = 2
@@ -695,8 +664,7 @@ pos, prob, state = sampler.run_mcmc(starting_params, num_steps)
 </code></pre>
 
 
-<pre><code>
-fig, ax = plt.subplots(2, sharex=True)
+<pre><code>fig, ax = plt.subplots(2, sharex=True)
 for i in range(2):
     ax[i].plot(sampler.chain[:, :, i].T, '-k', alpha=0.2);
 </code></pre>
@@ -706,8 +674,7 @@ for i in range(2):
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 3, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 3, sharex=True, sharey=True)
 for i in range(axs.size):
     axs[i].errorbar(sampler.chain[:, i, 0], sampler.chain[:, i, 1], fmt="-o", alpha=0.5, c='k');
 </code></pre>
@@ -717,15 +684,13 @@ for i in range(axs.size):
 
 
 
-<pre><code>
-num_steps = 1000
+<pre><code>num_steps = 1000
 sampler.reset()
 pos, prob, state = sampler.run_mcmc(pos, num_steps)
 </code></pre>
 
 
-<pre><code>
-fig, ax = plt.subplots(2, sharex=True)
+<pre><code>fig, ax = plt.subplots(2, sharex=True)
 for i in range(2):
     ax[i].plot(sampler.chain[:, :, i].T, '-k', alpha=0.2);
 </code></pre>
@@ -735,8 +700,7 @@ for i in range(2):
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 3, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 3, sharex=True, sharey=True)
 for i in range(axs.size):
     axs[i].errorbar(sampler.chain[:, i, 0], sampler.chain[:, i, 1], fmt="-o", alpha=0.5, c='k');
 </code></pre>
@@ -746,8 +710,7 @@ for i in range(axs.size):
 
 
 
-<pre><code>
-from corner import hist2d
+<pre><code>from corner import hist2d
 fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].hist2d(sampler.flatchain[:, 0], sampler.flatchain[:, 1], 30, cmap="ocean_r");
 hist2d(sampler.flatchain[:, 0], sampler.flatchain[:, 1], ax=axs[1])
@@ -760,8 +723,7 @@ fig.tight_layout()
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].hist(sampler.flatchain[:, 0], histtype='step');
 axs[1].hist(sampler.flatchain[:, 1], histtype='step');
 axs[0].set_xlabel('slope'); axs[1].set_xlabel('intercept'); axs[0].set_ylabel('Marginal distribution'); 
@@ -779,8 +741,7 @@ EXERCISE
 Loop through the posterior samples (a random subset of them?) and over-plot them with the data, with some transparency.
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].set_xlabel('$$x$$'); axs[1].set_xlabel('$$x$$'); axs[0].set_ylabel('$$y$$');
 num = 1000
@@ -807,8 +768,7 @@ axs[1].errorbar(xis_true, yis_noisy, sigma_yis, fmt='o', zorder=1)
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].hist(sampler.flatchain[:, 0], histtype='step');
 axs[1].hist(sampler.flatchain[:, 1], histtype='step');
 axs[0].set_xlabel('slope'); axs[1].set_xlabel('intercept'); axs[0].set_ylabel('Marginal distribution'); 
@@ -828,8 +788,7 @@ EXERCISE
 Compute some useful summary statistics for our two parameters from the MCMC chains: mean, confidence intervals, etc
 
 
-<pre><code>
-# SOLUTION
+<pre><code># SOLUTION
 thechain = sampler.flatchain
 print('Mean values:', np.mean(thechain, axis=0))
 print('Standard deviation:', np.std(thechain, axis=0))
@@ -854,14 +813,12 @@ CONTROVERSIAL: if you are only ever going to report and use the mean of a parame
 We observe a set of $$\hat{x}_i$$ which are noisified versions of the true $$x_i$$, with Gaussian noise $$\gamma_i$$. 
 
 
-<pre><code>
-sigma_xis = np.repeat(0.1, ndatapoints) * np.random.uniform(0.2, 1.0, ndatapoints)
+<pre><code>sigma_xis = np.repeat(0.1, ndatapoints) * np.random.uniform(0.2, 1.0, ndatapoints)
 xis_noisy = xis_true + sigma_xis * np.random.randn(xis_true.size)
 </code></pre>
 
 
-<pre><code>
-plt.errorbar(xis_noisy, yis_noisy, xerr=sigma_xis, yerr=sigma_yis, fmt='o')
+<pre><code>plt.errorbar(xis_noisy, yis_noisy, xerr=sigma_xis, yerr=sigma_yis, fmt='o')
 plt.xlabel('$$x$$'); plt.ylabel('$$y$$'); plt.ylim([y_min, y_max])
 </code></pre>
 
@@ -895,8 +852,7 @@ p\bigl(\{ \hat{y}_i, \hat{x}_i \} \bigl\vert \{\sigma_i, \gamma_i, x_i\}, m, s\b
 ## This is the Curse of Dimensionality v2!
 
 
-<pre><code>
-import autograd.numpy as onp
+<pre><code>import autograd.numpy as onp
 
 def ln_like(params, observed_yis, observed_xis, yi_uncertainties, xi_uncertainties):
     model_yis = model_linear(params[2:], params[0], params[1])
@@ -936,16 +892,14 @@ Always try auto-diff first (e.g., with `autograd`).
 Large-scale inference (gazilion parameters): try `tensorflow`
 
 
-<pre><code>
-from autograd import grad, hessian
+<pre><code>from autograd import grad, hessian
 
 ln_post_gradient = grad(ln_post)
 ln_post_hessian = hessian(ln_post)
 </code></pre>
 
 
-<pre><code>
-x0 = np.repeat(0.5, ndatapoints + 2)
+<pre><code>x0 = np.repeat(0.5, ndatapoints + 2)
 print('Likelihood:', ln_like(x0, yis_noisy, xis_noisy, sigma_yis, sigma_xis))
 print('Prior:', ln_prior(x0))
 print('Posterior:', ln_post(x0, yis_noisy, xis_noisy, sigma_yis, sigma_xis))
@@ -969,8 +923,7 @@ print('Posterior hessian (diagonal):', np.diag(ln_post_hessian(x0, yis_noisy, xi
 
 
 
-<pre><code>
-# Simplest implementation of HMC
+<pre><code># Simplest implementation of HMC
 def hmc_sampler(x0, lnprob, lnprobgrad, step_size, num_steps, args):
     v0 = np.random.randn(x0.size)
     v = v0 - 0.5 * step_size * lnprobgrad(x0, *args)
@@ -1013,8 +966,7 @@ We have eliminated the $$x_i$$'s!
 
 
 
-<pre><code>
-def ln_like(params, observed_yis, observed_xis, yi_uncertainties, xi_uncertainties):
+<pre><code>def ln_like(params, observed_yis, observed_xis, yi_uncertainties, xi_uncertainties):
     xyi_uncertainties = np.sqrt(xi_uncertainties**2. + yi_uncertainties**2.)
     model_yis = model_linear(observed_xis, params[0], params[1])
     return onp.sum(-0.5 * ((observed_yis - model_yis) / xyi_uncertainties)**2
@@ -1035,8 +987,7 @@ def ln_post(params, observed_yis, observed_xis, yi_uncertainties, xi_uncertainti
 </code></pre>
 
 
-<pre><code>
-x0 = np.repeat(0.5, 2)
+<pre><code>x0 = np.repeat(0.5, 2)
 print('Likelihood:', ln_like(x0, yis_noisy, xis_noisy, sigma_yis, sigma_xis))
 print('Prior:', ln_prior(x0))
 print('Posterior:', ln_post(x0, yis_noisy, xis_noisy, sigma_yis, sigma_xis))
@@ -1048,8 +999,7 @@ print('Posterior:', ln_post(x0, yis_noisy, xis_noisy, sigma_yis, sigma_xis))
 
 
 
-<pre><code>
-ndim = 2
+<pre><code>ndim = 2
 nwalkers = 50
 
 starting_params = np.random.uniform(0, 1, ndim*nwalkers).reshape((nwalkers, ndim))
@@ -1064,8 +1014,7 @@ pos, prob, state = sampler2.run_mcmc(pos, num_steps)
 </code></pre>
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].hist2d(sampler.flatchain[:, 0], sampler.flatchain[:, 1], 30, cmap="ocean_r");
 axs[1].hist2d(sampler2.flatchain[:, 0], sampler2.flatchain[:, 1], 30, cmap="ocean_r");
 axs[0].set_title('y errors'); axs[1].set_title('x and y errors');
@@ -1078,8 +1027,7 @@ fig.tight_layout()
 
 
 
-<pre><code>
-fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
+<pre><code>fig, axs = plt.subplots(1, 2, sharex=True, sharey=True)
 axs[0].set_xlabel('$$x$$'); axs[1].set_xlabel('$$x$$'); axs[0].set_ylabel('$$y$$');
 num = 1000
 y_models = np.zeros((x_grid.size, num))
