@@ -4,7 +4,7 @@ title: TIARA lectures on Hierarchical Probabilistic Models
 author: admin
 guid:
 desc:  
-permalink: /tiara-lectures/
+permalink: /tiara-lectures-on-hierarchical-probabilistic-models/
 layout: post
 ---
 
