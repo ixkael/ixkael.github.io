@@ -1,4 +1,3 @@
-
 ---
 id: 241
 title: TIARA lectures on Hierarchical Probabilistic Models
