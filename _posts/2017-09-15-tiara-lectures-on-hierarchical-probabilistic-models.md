@@ -19,4 +19,4 @@ The organizers were kind enough to record the lectures and put them on Youtube. 
 
 I should emphasize that it is the first time I formally teach this material, and the group was extremely heterogeneous, so there are lots of things that I want to improve for my next lectures (at the CosmoAndes school in Chile in January 2018). And unfortunately I didn't get to talk much about the actual connections between Hierarchical Probabilistic Models and Deep Learning, and why they are so exciting and revolutionary. My next lectures will cover that extensively. Needless to say: feedback and comments are welcome!
 
-![png]({{ site.baseurl }}/assets/img/frontpage.jpg)
+![png]({{ site.baseurl }}/assets/img/frontpage.png)
