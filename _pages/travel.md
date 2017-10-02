@@ -15,6 +15,10 @@ I am currently based in New York University and I frequently visit University Co
 
 | Dates & locations       |            |
 |: ------------- |:-------------|
+|Nov 29-1 | Visit and seminar @ University of Toronto (USA)|
+|Nov 27-29 | Visit and seminar @ University of Michigan (USA)|
+|Oct 15-17|DES workshop @ SLAC/Stanford University (USA)|
+|Oct 11-13|Einstein Symposium @ Harvard University (USA)|
 |Sep 4-9 |Lecturing @ TIARA (Taiwan)|
 |Aug 29-Se 2|Astro-hack week @  Univ. Washington, Seattle (USA)|
 |July 10-14 |LSST DESC collab. meeting @ Brookhaven Laboratory (USA)|
