@@ -14,8 +14,7 @@ permalink: /about/
 
 {::nomarkdown}
 <figure class="site-profile">
-    <img src="{{ site.baseurl }}/assets/img/me2.jpg">
-    <figcaption class="small">In a good mood at Astro Hack Week 2016 in Berkeley. </br>Credit: D. Huppenkothen</figcaption>
+    <img src="{{ site.baseurl }}/assets/img/me9.jpg">
 </figure>
 {:/}
 
