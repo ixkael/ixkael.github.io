@@ -6,7 +6,7 @@ layout: default
 
 {::nomarkdown}
 <figure class="site-profile">
-    <img src="{{ site.baseurl }}/assets/img/me8.jpg">
+    <img src="{{ site.baseurl }}/assets/img/me11.jpg">
 </figure>
 {:/}
 Hi there! I am **Boris Leistedt**, I'm a researcher in New York University working in the fields of astronomy, cosmology, and statistics. Broadly speaking, I test models of the universe using data collected with satellites and telescopes.
