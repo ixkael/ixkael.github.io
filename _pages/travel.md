@@ -10,6 +10,20 @@ I am currently based in New York University and I frequently visit University Co
 
 <div class="pretty-links">
 
+### 2018
+
+| Dates & locations       |            |
+|: ------------- |:-------------|
+|Nov 15| Visit @ Brookhaven National Lab (USA)|
+|Oct 26-30| Astro-statistics conference @  IHP, Paris (France)|
+|Sep 24-28|Photo-z conference @  Lorentz Center Leiden (NL)|
+|Sep 10-21|Visit @ Institut Henry Poincaré, Paris (France)|
+|Aug 6-10|Astro-hack week @  Lorentz Center Leiden (NL)|
+|Jul 1-15|Retreat @ Aspen Center for Physics(USA)|
+|Jun 4-8|Gaia Sprint @ Flatiron Institute NYC (USA)|
+|May 28-31|Tensions workship @ KICC Cambridge (UK)|
+|April 18-21|Statistical challenges of LSS @ Oxford (UK)|
+|Jan 15-19|CosmoAndes school & Conference @ Santiago (Chile)|
 
 ### 2017
 
