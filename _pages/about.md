@@ -18,8 +18,9 @@ permalink: /about/
 </figure>
 {:/}
 
-
-I am currently a postdoctoral fellow in the [Center of Cosmology and Particle Physics at New York University](http://www.ccpp.nyu.edu/). I moved to New York in 2015 and was funded by the [Simons Foundation](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) for a year before switching to a [NASA/CXC Einstein Fellowship](http://cxc.harvard.edu/fellows/fellowslist.html) grant. Prior to that I completed my PhD in [University College London](http://www.ucl.ac.uk/star) (UCL) with Prof. Hiranya Peiris. My background is in physics and engineering: in 2011 I received a “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France), as well as a M.Sc. in Physics from the [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html). I am originally from [Belgium](http://www.visitbelgium.com/).
+I am currently a Royal Society University Research fellow  at Imperial College, in the [Imperial Centre for Inference and Cosmology (ICIC)
+](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/).
+Before that I was a postdoctoral fellow in the [Center of Cosmology and Particle Physics at New York University](http://www.ccpp.nyu.edu/), first funded by the [Simons Foundation](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) and then by a [NASA/CXC Einstein Fellowship](http://cxc.harvard.edu/fellows/fellowslist.html) grant. Prior to that I completed my PhD in [University College London](http://www.ucl.ac.uk/star) (UCL) with Prof. Hiranya Peiris. My background is in physics and engineering: in 2011 I received a “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France), as well as a M.Sc. in Physics from the [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html). I am originally from [Belgium](http://www.visitbelgium.com/).
 
 [My CV]({{ site.baseurl }}/assets/cv_bleistedt_long.pdf) contains a more formal description of my background and research record.
 
