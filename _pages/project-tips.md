@@ -2,7 +2,7 @@
 layout: page
 title: Picking projects and honing your taste
 subtitle: Picking projects and honing your taste
-permalink: /project-tips/
+permalink: advice/project-tips/
 ---
 
 In my opinion there are two things that you want to optimise as a researcher: **Impact** and **Fun**.
