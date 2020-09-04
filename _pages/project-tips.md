@@ -30,5 +30,5 @@ How enjoyable and impactful the project will be depends on many subjective and f
 For each project, it helps to have (predicted) answers to those questions, and to revise that frequently.
 
 ### Resources I like
-* http://michaelnielsen.org/blog/principles-of-effective-research/
-* http://joschu.net/blog/opinionated-guide-ml-research.html
+* <http://michaelnielsen.org/blog/principles-of-effective-research/>
+* <http://joschu.net/blog/opinionated-guide-ml-research.html>
