@@ -11,11 +11,11 @@ layout: default
 {:/}
 Hi there! I am **Boris Leistedt**, a researcher in Imperial College London, working in the fields of astronomy, cosmology, and statistics. Broadly speaking, I test models of the universe using data collected with satellites and telescopes. I also care a lot about diversity, inclusivity, and equity in sciences and society.
 
-<a href="https://scholar.google.com/citations?user=wBd3KzgAAAAJ">Publications<a>
+Publications: <a href="https://scholar.google.com/citations?user=wBd3KzgAAAAJ">Google Scholar<a>
 
- <u>Email</u>: b.leistedt@imperial.ac.uk
+Email: <a href="mailto:b.leistedt@imperial.ac.uk">b.leistedt@imperial.ac.uk</a>
 
- <u>Office</u>: 1003B, Blackett Building, South Kensington campus
+Office: <a href="https://www.imperial.ac.uk/events-and-hospitality/venues/blackett-building/">1003B, Blackett Building, South Kensington campus</a>
 
 <i>Note that I currently work from home on most days.</i>
 
