@@ -10,6 +10,15 @@ I am currently based in Imperial College London. Below is a quasi-exhaustive li
 
 <div class="pretty-links">
 
+
+### 2020
+
+No professional travel. I'm staying home.
+
+### 2019
+
+One day I'll upload the list.
+
 ### 2018
 
 | Dates & locations       |            |
