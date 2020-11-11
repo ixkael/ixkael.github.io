@@ -18,13 +18,19 @@ permalink: /about/
 </figure>
 {:/}
 
-I am currently a Royal Society University Research fellow  at Imperial College London, in the [Imperial Centre for Inference and Cosmology (ICIC)
-](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/).
-Before that I was a postdoctoral fellow in the [Center of Cosmology and Particle Physics at New York University](http://www.ccpp.nyu.edu/), first funded by the [Simons Foundation](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) and then by a [NASA/CXC Einstein Fellowship](http://cxc.harvard.edu/fellows/fellowslist.html) grant. Prior to that I completed my PhD in [University College London](http://www.ucl.ac.uk/star) (UCL) with Prof. Hiranya Peiris. My background is in physics and engineering: in 2011 I received a “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France), as well as a M.Sc. in Physics from the [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html). I am originally from [Belgium](http://www.visitbelgium.com/).
+Since 2020: Royal Society University Research fellow Imperial College London, in the [Imperial Centre for Inference and Cosmology (ICIC)
+](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/)
 
-[My CV]({{ site.baseurl }}/assets/cv_bleistedt_long.pdf) contains a more formal description of my background and research record.
+2015-2019: [Simons Foundation Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) then [NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html), [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/)
 
-I also contribute to the nice group website [earlyuniverse.org](http://www.earlyuniverse.org/).
+2011-2015: PhD student in [University College London](http://www.ucl.ac.uk/star)  
+
+2006-2011: “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France)
+2008-2011: M.Sc. in Physics, [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html)
+
+I am originally from [Belgium](http://www.visitbelgium.com/).
+
+For a more formal, complete description of my background and research record, see [M=my CV]({{ site.baseurl }}/assets/cv_bleistedt_long.pdf)
 
 ## Research
 
