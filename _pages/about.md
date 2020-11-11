@@ -18,19 +18,16 @@ permalink: /about/
 </figure>
 {:/}
 
-Since 2020: Royal Society University Research fellow Imperial College London, in the [Imperial Centre for Inference and Cosmology (ICIC)
-](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/)
+**Since 2020**: Royal Society University Research fellow, [Department of Physics, Imperial College London](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/) (UK)
 
-2015-2019: [Simons Foundation Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) then [NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html), [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/)
+**2015-2019**: [Simons Foundation Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) then [NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html), [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/) (USA)
 
-2011-2015: PhD student in [University College London](http://www.ucl.ac.uk/star)  
+**2011-2015**: PhD student, [Department of Physics & Astronomy, University College London](http://www.ucl.ac.uk/star), under the supervision of Hiranya Peiris.
 
-2006-2011: “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France)
-2008-2011: M.Sc. in Physics, [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html)
+**2006-2011**: “Diplome d’Ingénieur” (M.Eng.) from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France)
+**2008-2011**: M.Sc. in Physics, [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html) (France)
 
 I am originally from [Belgium](http://www.visitbelgium.com/).
-
-For a more formal, complete description of my background and research record, see [M=my CV]({{ site.baseurl }}/assets/cv_bleistedt_long.pdf)
 
 ## Research
 
