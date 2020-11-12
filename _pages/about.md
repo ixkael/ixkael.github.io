@@ -18,11 +18,13 @@ permalink: /about/
 </figure>
 {:/}
 
-**Since 2020**: Royal Society University Research fellow, [Department of Physics, Imperial College London](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/) (UK)
+**Since 2020**: _[Royal Society University Research fellow](https://royalsociety.org/grants-schemes-awards/grants/university-research/)_,
+[Department of Physics, Imperial College London](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/) (UK)
 
-**2015-2019**: [Simons Foundation Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) then [NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html), [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/) (USA)
+**2015-2019**: _[NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html)_, and _[Simons Foundation Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/)_,
+ [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/) (USA)
 
-**2011-2015**: PhD student, [Department of Physics & Astronomy, University College London](http://www.ucl.ac.uk/star), under the supervision of Hiranya Peiris.
+**2011-2015**: _PhD student_ (advisor: Hiranya Peiris), [Department of Physics & Astronomy, University College London](http://www.ucl.ac.uk/star) (UK).
 
 **2006-2011**: “Diplome d’Ingénieur” (M.Eng.) from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France)
 **2008-2011**: M.Sc. in Physics, [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html) (France)
