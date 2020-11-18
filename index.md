@@ -17,6 +17,8 @@ Email: <a href="mailto:b.leistedt@imperial.ac.uk">b.leistedt@imperial.ac.uk</a>
 
 Office: <a href="https://www.imperial.ac.uk/events-and-hospitality/venues/blackett-building/">1003B, Blackett Building, South Kensington campus</a>
 
+Some of my past presentations: [SpeakerDeck](https://speakerdeck.com/ixkael).
+
 <i>Note that I currently work from home on most days.</i>
 
 For urgent matters please indicate "urgent" in the email subject line in order to get my attention immediately.
