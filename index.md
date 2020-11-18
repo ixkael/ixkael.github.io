@@ -13,17 +13,17 @@ Hi there! I am **Boris Leistedt**, a researcher in Imperial College London, work
 
 Publications: <a href="https://scholar.google.com/citations?user=wBd3KzgAAAAJ">Google Scholar<a>
 
+Some of my talks are available on [SpeakerDeck](https://speakerdeck.com/ixkael)
+
 Email: <a href="mailto:b.leistedt@imperial.ac.uk">b.leistedt@imperial.ac.uk</a>
 
-Office: <a href="https://www.imperial.ac.uk/events-and-hospitality/venues/blackett-building/">1003B, Blackett Building, South Kensington campus</a>
-
-Some of my past presentations: [SpeakerDeck](https://speakerdeck.com/ixkael).
+Office: <a href="https://www.imperial.ac.uk/events-and-hospitality/venues/blackett-building/">1003B, Blackett Building, South Kensington campus</a>.
 
 <i>Note that I currently work from home on most days.</i>
 
 For urgent matters please indicate "urgent" in the email subject line in order to get my attention immediately.
 
-Please also feel free to make suggestions of possible time to meet/call. Here is a calendar of (most of) my unavailabilities:
+Please also feel free to make suggestions of possible time to meet/call. Here is a calendar of (most of) my un-availabilities:
 
 {::nomarkdown}
 <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Europe%2FLondon&amp;src=bWE3bTNkMWNvNXBwbHNya2FjbjNzdmViN3NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23F4511E&amp;showCalendars=0&amp;showDate=1&amp;mode=WEEK&amp;showTabs=0&amp;showPrint=0&amp;showNav=1&amp;showTitle=0" style="border:solid 1px #777" width="700" height="700" frameborder="0" scrolling="no"></iframe></iframe>
