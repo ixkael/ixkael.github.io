@@ -49,6 +49,6 @@ You will see that having a set of collaborators converge onto a project raises t
 
 It's ok to make mistakes. But it is unacceptable to maliciously hide them and, for example, fabricate results. I will never blame you if something does not work or is not ready. Research takes time and is difficult. Scientific integrity and honesty are of the highest importance. As you will see I make mistakes and I quickly admit them and do my best to correct them.
 
-**give me sufficient time when you need something from me**
+**Give me sufficient time**
 
 Sometimes you will need something from me (a paper reference, a piece of data or code, a letter of recommendation, etc). Please be mindful that those take time to prepare, so it is critical that you give me enough warning. A short, informal email will suffice. And I do not mind reminders.
