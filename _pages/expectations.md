@@ -5,6 +5,8 @@ subtitle:
 permalink: advice/expectations/
 ---
 
+# Working with me: what to expect?
+<br/>
 _This page describes the typical expectations I have for working with students. They are of course negotiable, so if you feel like you don't understand or agree with some of it, please do not hesitate to bring it up._
 
 ## Some external references
@@ -15,7 +17,7 @@ _This page describes the typical expectations I have for working with students. 
 
 I commit to doing my best to guide you through your studies (MSc, PhD, etc) and helping you achieving your career goals and your potential. This can include acquiring research skills such as reading and writing papers, analysing data, writing good code, learning data science or theoretical skills, etc. I will also offer you a confidential ear if you ever need one, and will do my best to help you through difficult times, including orienting you to get professional help.
 
-Sometimes I will seem very involved (by sending long follow up emails, clarifications, etc). I do that in your interest, in order to provide you with the tools, ideas, and support your need to complete the project at hand. It is _never_ because I want to micro-manage you or police you in any way. My strategy is to give you as much guidance and advice as possible, so that you can make use of what suits you the most. And if I ever inadvertently make you uncomfortable or hurt you in any way, please let me know, and I will apologise and we will adjust our interactions.
+Sometimes I will seem very involved (by sending long follow up emails, etc) or excited. I do that in your interest, in order to provide you with the tools, ideas, and support your need to complete the project at hand. It is _never_ because I want to micro-manage you or police you in any way. My strategy is to give you as much guidance and advice as possible, so that you can make use of what suits you the most. And if I ever inadvertently make you uncomfortable or hurt you in any way, please let me know, and I will apologise and we will adjust our interactions.
 
 ## Your part
 

@@ -11,6 +11,8 @@ For the projects and jobs below: _all educational backgrounds will be considered
 
 However, experience in programming and data analysis will be **required** (no constraints on the specific coding languages or fields of research, however). Knowledge in astronomy, cosmology, or theoretical physics will not be formally required but is obviously an advantage. Interest in statistics, machine learning, or general computational data analysis is strongly recommended too.
 
+Please also carefully read <a href="../expectations/"> this page</a> on what to expect when working with me.
+
 ## PhD students
 
 Do not hesitate to reach out if you would like to discuss projects and opportunities. However, for more efficient discussions please first research the PhD admission process in the Astrophysics group, as well as possible funding sources (STFC, President's scholarship, etc). I am not describing specific projects here, but it will most likely be in observational cosmology, and involve analysis of real data with sophisticated statistical techniques theoretical modelling.
