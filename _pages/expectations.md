@@ -48,3 +48,7 @@ It's ok to make mistakes. But it is not acceptable to maliciously hide them and,
 **Give me sufficient time**
 
 Sometimes you will need something from me (a paper reference, a piece of data or code, a letter of recommendation, etc). Please be mindful that those take time to prepare, so please give me enough warning. A short, informal email will suffice. And I do not mind reminders.
+
+**Have fun**
+
+Make sure you have fun doing research - at least some fraction of your time (like all jobs, there are numerous unavoidable duties and unpleasant activities). If you are having satisfaction or motivation issues, do get in touch, with me or any other person of the department you feel uncomfortable talking to. I personally adapted my research style and routine to make sure I enjoy my job - for example this includes allocating time for reading, writing, coding, mathematical derivations, etc.
