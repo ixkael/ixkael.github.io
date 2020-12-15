@@ -15,7 +15,7 @@ Please also carefully read <a href="../expectations/"> this page</a> on what to 
 
 ## PhD students
 
-Do not hesitate to reach out if you would like to discuss projects and opportunities. However, for more efficient discussions please first research the PhD admission process in the Astrophysics group, as well as possible funding sources (STFC, President's scholarship, etc). I am not describing specific projects here, but it will most likely be in observational cosmology, and involve analysis of real data with sophisticated statistical techniques theoretical modelling.
+Do not hesitate to reach out if you would like to discuss projects and opportunities. However, for more efficient discussions please first research the PhD admission process in the Astrophysics group, as well as possible funding sources (STFC, President's scholarship, etc). I am not describing specific projects here, but it will most likely be in observational cosmology, and involve analysis of real data with sophisticated statistical techniques theoretical modelling. For 2021 the list of available projects in the department <a href="https://www.imperial.ac.uk/astrophysics/students-and-prospective-students/phd-projects/">is available here</a>.
 
 ## MSc/MSci students
 
