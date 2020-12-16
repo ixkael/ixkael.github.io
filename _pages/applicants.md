@@ -7,9 +7,9 @@ subtitle:
 
 # Information for prospective applicants
 <br/>
-For the projects and jobs below: _all educational backgrounds will be considered._
+For the projects below, _all scientific backgrounds will be considered._
 
-However, experience in scientific programming and data analysis (preferably in python) will be required. Knowledge in astronomy, cosmology, or theoretical physics will not be formally required but is obviously an advantage. Interest in statistics, machine learning, or general computational data analysis is strongly recommended too.
+However, most (if not all) of the projects I propose involve some analysis and modeling of astronomical data, with a focus on either cosmology or Galactic astrophysics. Therefore, some experience in scientific programming and data analysis is very strongly recommended (for example in python, which is currently the language of choice in astrophysics). No specific experience is required in astronomy, cosmology, or theoretical physics, or even statistics or machine learning. But some experience or interest in at least some of those fields is strongly recommended.
 
 Please also carefully read <a href="../expectations/"> this page</a> on what to expect when working with me.
 
@@ -19,7 +19,7 @@ Do not hesitate to reach out if you would like to discuss projects and opportuni
 
 ## MSc/MSci students
 
-Every year I offer projects that last between 3 and 9 months, depending on the degree, and can be carried out alone or in pairs (but you will be responsible for splitting the work). _All degrees are welcome_. Typically, the projects attract data-minded students in the following MSc/MSci programs: Physics, Data Science, Computer Science, Artificial Intelligence, Electrical Engineering, etc. For the requirements, see the message on top of this page.
+Every year I offer projects that last between 3 and 9 months, depending on the degree, and can be carried out alone or in pairs (but you will be responsible for splitting the work). _All degrees are welcome_. Typically, I expect the projects to attract data-minded students in the following MSc/MSci programs: Physics, Data Science, Computer Science, Artificial Intelligence, Electrical Engineering, etc. For the requirements, see the message on top of this page.
 
 ### List of possible projects (last update Dec 2020):
 _Some of the projects below are complementary, so that we may have more vibrant and collaborative weekly group meetings, and students may help each other more, both directly and indirectly._
