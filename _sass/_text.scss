@@ -65,7 +65,7 @@ pre, samp {
 }
 
 code {
-  padding: .2rem .4rem;
+  padding: 0rem .4rem;
   font-size: 90%;
   color: $red;
   background-color: $gray-lightest;
@@ -75,16 +75,21 @@ code {
 pre {
   display: block;
   margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 90%;
-  color: $gray-dark;
+  margin-left: 0;
+  margin-bottom: 1em;
+  color: $gray-light;
+  padding: 10px;
+  border-radius: 0;
+  border-left: thick;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: $gray-lighter;
+  line-height: 1;
 
   code {
-    padding: 0;
-    font-size: inherit;
+    font-size: 70%;
     color: inherit;
     background-color: transparent;
-    border-radius: 0;
   }
 }
 
@@ -94,6 +99,13 @@ blockquote {
   line-height: 1.6;
 }
 
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: inherit
+}
 
 .squareimg {
   float: right;
