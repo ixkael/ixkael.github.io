@@ -19,7 +19,7 @@ For urgent matters please indicate "urgent" in the email subject line in order t
 
 **Office**: <a href="https://www.imperial.ac.uk/events-and-hospitality/venues/blackett-building/">1008, Blackett Building, South Kensington campus</a>.
 
-By appointment only, except for emergencies.
+By appointment only (email me), except for emergencies.
 
 **Prospective students & postdocs**: <a href="advice/applicants/"> information and projects.</a>
 
