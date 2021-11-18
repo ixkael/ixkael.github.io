@@ -23,7 +23,7 @@ permalink: /about/
 
 I am also involved in the <a href="https://www.ucl.ac.uk/cosmoparticle/">UCL Cosmoparticle Initiative</a>.
 
-**2015-2019**: _[NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html)_, and _[Simons Foundation Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/)_,
+**2015-2019**: _[NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html)_, and _[Simons Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/)_,
  [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/) (USA)
 
 **2011-2015**: _PhD student_ (advisor: Hiranya Peiris), [Department of Physics & Astronomy, University College London](http://www.ucl.ac.uk/star) (UK).
