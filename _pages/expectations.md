@@ -9,7 +9,7 @@ permalink: advice/expectations/
 <br/>
 _This page describes the typical expectations I have for working with students. They are of course negotiable, so if you feel like you don't understand or agree with some of it, please do not hesitate to bring it up._
 
-Recommended reading: [Imperial advice on effective-partnerships](https://www.imperial.ac.uk/study/pg/graduate-school/staff/supervisors-guidebook/effective-partnerships/)
+Recommended reading: [Imperial advice on effective-partnerships](https://www.imperial.ac.uk/study/pg/graduate-school/staff/supervisors-guidebook/effective-partnerships/) and [Astrobetter blogpost on expectations](https://www.astrobetter.com/blog/2021/09/21/setting-expectations-for-research-students).
 
 Now my own suggestions:
 
