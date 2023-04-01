@@ -63,3 +63,16 @@ by Matthieu Ricard</a>
 **Learn to be productive, your way**
 
 Being productive and disciplined is extremely hard. On the topic, I recommend the following books, which give some mechanical advice that works for a lot of people: <a href="https://www.goodreads.com/book/show/40540502-atomic-habits">_Atomic Habits_ by James Clear</a>, and <a href="https://www.goodreads.com/book/show/25744928-deep-work">_Deep Work_ by Cal Newport</a>.
+
+
+# Monthly reports
+
+I will ask you for a report at the beginning of each month. The goals are not at all to police you, but rather to get you to track your progress, goals, time, and todos a little more closely, so that to get better at assessing priorities and allocating your time. As you get more senior you will see that more tasks arrive on your plate, and thus you need to organise your time more carefully (estimate how much a task takes and allocate time for it in busy weeks). Most people use some kind of tracking method (weekly or monthly) and in research this is particularly useful since our goals are long term and it is easy to get lost. Fundamentally you will also see that you achieve more than you think, so looking back at those reports will help you be proud of your progress!
+
+The report should be a page or two, with enough details to be understood. But it can be fairly concise and not include much introduction or context. After all, this is mostly for yourself. It should contain three parts:
+- **"What I have achieved or dealt with last month"**: what you have achieved this past month (research, reading, code, admin, conferences, teaching, etc), were things harder or easier than you thought, did you plan too much or too little time. Include time off due to holidays or illness or any other factors if necessary.
+- **"On my plate next month"**: what are your goals and todos for this coming month (research, code, admin, conferences, teaching, etc) and how long you think they will take or you need to allocate. 
+- **"Milestones on the horizon"**: what are your next coming deadlines or goals (approximately six-month timescale), such as paper draft, conference, any admin or research deadlines.
+
+I suggest you do that in a google doc so I can add comments or questions. Putting this report together should not take more than 30min! 
+
