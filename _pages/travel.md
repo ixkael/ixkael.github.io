@@ -6,15 +6,48 @@ desc: Travel schedule
 permalink: /travel/
 ---
 
-I am currently based in New York University and I frequently visit University College London. So your best chances to catch me are in New York City or London. Below is a quasi-exhaustive list of past and upcoming (professional) travel plans.
+I am currently based in Imperial College London. Below is a quasi-exhaustive list of past and upcoming (professional) travel plans.
 
 <div class="pretty-links">
 
+
+### 2020 and 2021
+
+No professional travel. I'm staying home.
+
+### 2019
+
+One day I'll upload the list.
+
+### 2018
+
+| Dates & locations       |            |
+|: ------------- |:-------------|
+|Nov 15| Visit @ Brookhaven National Lab (USA)|
+|Oct 26-30| Astro-statistics conference @  IHP, Paris (France)|
+|Sep 24-28|Photo-z conference @  Lorentz Center Leiden (NL)|
+|Sep 10-21|Visit @ Institut Henry Poincaré, Paris (France)|
+|Aug 6-10|Astro-hack week @  Lorentz Center Leiden (NL)|
+|Jul 1-15|Retreat @ Aspen Center for Physics(USA)|
+|Jun 4-8|Gaia Sprint @ Flatiron Institute NYC (USA)|
+|May 28-31|Tensions workship @ KICC Cambridge (UK)|
+|April 18-21|Statistical challenges of LSS @ Oxford (UK)|
+|Jan 15-19|CosmoAndes school & Conference @ Santiago (Chile)|
 
 ### 2017
 
 | Dates & locations       |            |
 |: ------------- |:-------------|
+|Nov 29-1 | Visit and seminar @ University of Toronto (USA)|
+|Nov 27-29 | Visit and seminar @ University of Michigan (USA)|
+|Oct 15-17|DES workshop @ SLAC/Stanford University (USA)|
+|Oct 11-13|Einstein Symposium @ Harvard University (USA)|
+|Sep 4-9 |Lecturing @ TIARA (Taiwan)|
+|Aug 29-Se 2|Astro-hack week @  Univ. Washington, Seattle (USA)|
+|July 10-14 |LSST DESC collab. meeting @ Brookhaven Laboratory (USA)|
+|June 10-20 |Retreat @ KITP, Santa Barbara (USA)|
+|Apr 10-13 |Visit and seminar @ IPMU Tokyo (Japan)|
+|Ma 26-Ap 7 |Annual leave |
 |Feb 13-18 |LSST DESC collab. meeting @ SLAC/Stanford University (USA)|
 |Jan 26-31|BASP Frontiers workshop @ Villars (Switzerland)|
 

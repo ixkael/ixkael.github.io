@@ -9,7 +9,7 @@ permalink: /lutz-kelker-correction-for-low-snr-parallax/
 categories:
   - News, Papers, Press
 ---
-As advertised in [David Hogg's recent tweets](https://twitter.com/davidwhogg/status/782193328318185473), Hogg and I re-derived a [Lutz-Kelker correction](http://adsabs.harvard.edu/abs/1973PASP...85..573L) for low SNR parallax during one of our recent group meetings (now held at the Simons Center for Computational Astronomy in NYC). I am including the derivation here for my records. The idea is the following: standard parallax measurements (estimates and their Gaussian errors) can be improved by including prior information. Specifically, the prior for distances in 3D space is $p(d) = d^2$, and we aim to compute a maximum a posteriori estimate of the parallax given the initial estimate, its error, and the prior.
+As advertised in [David Hogg's recent tweets](https://twitter.com/davidwhogg/status/782193328318185473), Hogg and I re-derived a [Lutz-Kelker correction](http://adsabs.harvard.edu/abs/1973PASP...85..573L) for low SNR parallax during one of our recent group meetings (now held at the Simons Center for Computational Astronomy in NYC). I am including the derivation here for my records. The idea is the following: standard parallax measurements (estimates and their Gaussian errors) can be improved by including prior information. Specifically, the prior for distances in 3D space is $$p(d) = d^2$$, and we aim to compute a maximum a posteriori estimate of the parallax given the initial estimate, its error, and the prior.
 
 The full posterior distribution given the parallax estimate and its error is
 
