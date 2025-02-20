@@ -24,11 +24,9 @@ Every year I offer projects that last between 3 and 9 months, depending on the d
 ### List of possible undergraduate projects (last update Jan 2025):
 _The list below describes topics of possible projects for undergraduate research. They are directly connected with my research. If you are interested in a topic, please contact me._
 
-- Immersive visualizations of asteroids and supernovae detected by the Rubin Observatory
-- Modeling synthetic galaxy injections in the Dark Energy Survey images
-- Lyman Break Galaxies in the Hyper-Supreme Cam survey
-- New neural network emulators for galaxy photometric data
+All of my UROP projects have been allocated this year.
 
+Guidance: Please send me a CV, and ask for a time to meet for a chat. When we meet, please be ready to explain why you are interested in the project(s), and what your relevant skills are. This will be an opportunity for you to emphasize your enthusiasm and experience at: 1) reading and summarizing journal papers, 2) coding, debugging, implementing algorithms, manipulating large data sets, visualizing data, 3) explaining and presenting physics and astronomy concepts. I will ask you questions to try and assess these aspects. Our chat is not a formal interview, but it is a wonderful opportunity for you to shine and speak about what excites you in physics research and what you are capable of!
 
 ## Postdocs
 
