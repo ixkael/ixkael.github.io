@@ -18,6 +18,7 @@ permalink: /about/
 </figure>
 {:/}
 
+**Since 2025**: Assistant Professor in Physics.
 **Since 2020**: _[Royal Society University Research fellow](https://royalsociety.org/grants-schemes-awards/grants/university-research/)_,
 [Department of Physics, Imperial College London](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/) (UK)
 

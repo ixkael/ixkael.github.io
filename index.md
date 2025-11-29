@@ -22,6 +22,7 @@ For urgent matters please indicate "urgent" in the email subject line in order t
 By appointment only (email me), except for emergencies.
 
 **Prospective students & postdocs**: <a href="advice/applicants/"> information and projects.</a>
-
+ 
+ <a href="https://docs.google.com/document/d/1dwJ_jK96svUVWblBTAOBceBeTynCLmuy5hQYSVxWKQI/edit?tab=t.0">PhD projects offered for 2026</a>.
 
 </div>
