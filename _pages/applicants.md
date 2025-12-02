@@ -5,6 +5,8 @@ permalink: advice/applicants/
 subtitle:
 ---
 
+<a href="https://docs.google.com/document/d/1dwJ_jK96svUVWblBTAOBceBeTynCLmuy5hQYSVxWKQI/edit?tab=t.0">PhD projects offered for 2026 are described here</a>.
+
 # Information for prospective applicants
 <br/>
 Reach out if you would like to discuss projects and opportunities. For the projects and positions below, _all scientific backgrounds will be considered._ Candidates from minorities and under-represented backgrounds are particularly encouraged to apply.
