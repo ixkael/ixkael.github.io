@@ -18,3 +18,5 @@ Would you like it if someone critisized a core part of your identity and didn't 
 ## If you hurt someone's feeling, apologize
 
 ## Avoid physical contact
+
+Sometimes you should use Comic Sans: https://theestablishment.co/hating-comic-sans-is-ableist-bc4a4de87093#.r47r53hoq
