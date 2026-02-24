@@ -14,17 +14,25 @@ permalink: /about/
 
 {::nomarkdown}
 <figure class="site-profile">
-    <img src="{{ site.baseurl }}/assets/img/me2.jpg">
-    <figcaption class="small">In a good mood at Astro Hack Week 2016 in Berkeley. </br>Credit: D. Huppenkothen</figcaption>
+    <img src="{{ site.baseurl }}/assets/img/ImperialHeadshots_0514.jpg">
 </figure>
 {:/}
 
+**Since 2025**: Assistant Professor in Physics.
+**Since 2020**: _[Royal Society University Research fellow](https://royalsociety.org/grants-schemes-awards/grants/university-research/)_,
+[Department of Physics, Imperial College London](https://www.imperial.ac.uk/astrophysics/centre-for-inference-and-cosmology/) (UK)
 
-I am currently a postdoctoral fellow in the [Center of Cosmology and Particle Physics at New York University](http://www.ccpp.nyu.edu/). I moved to New York in 2015 and was funded by a the [Simons Foundation](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/) for a year before switching to a [NASA/CXC Einstein Fellowship](http://cxc.harvard.edu/fellows/fellowslist.html) grant. Prior to that I completed my PhD in [University College London](http://www.ucl.ac.uk/star) (UCL) with Prof. Hiranya Peiris. My background is in physics and engineering: in 2011 I received a “Diplome d’Ingénieur” jointly from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France), as well as a M.Sc. in Physics from the [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html). I am originally from [Belgium](http://www.visitbelgium.com/).
+I am also involved in the <a href="https://www.ucl.ac.uk/cosmoparticle/">UCL Cosmoparticle Initiative</a>.
 
-[My CV]({{ site.baseurl }}/assets/cv_bleistedt_long.pdf) contains a more formal description of my background and research record.
+**2015-2019**: _[NASA Einstein Fellow](http://cxc.harvard.edu/fellows/fellowslist.html)_, and _[Simons Junior Fellow](https://www.simonsfoundation.org/simons-society-of-fellows/junior-fellows/2015-junior-fellows/)_,
+ [Center of Cosmology and Particle Physics, New York University](http://www.ccpp.nyu.edu/) (USA)
 
-I also contribute to the nice group website [earlyuniverse.org](http://www.earlyuniverse.org/).
+**2011-2015**: _PhD student_ (advisor: Hiranya Peiris), [Department of Physics & Astronomy, University College London](http://www.ucl.ac.uk/star) (UK).
+
+**2006-2011**: “Diplome d’Ingénieur” (M.Eng.) from [University of Mons](https://portail.umons.ac.be/en2/universite/facultes/fpms/pages/default.aspx) (Belgium) and [Supélec](http://www.supelec.fr/) (France)
+**2008-2011**: M.Sc. in Physics, [University Orsay Paris Sud](http://www.u-psud.fr/en/university/schools/faculty-of-sciences.html) (France)
+
+I am originally from [Belgium](http://www.visitbelgium.com/).
 
 ## Research
 
@@ -35,11 +43,10 @@ I also contribute to the nice group website [earlyuniverse.org](http://www.early
 </figure>
 {:/}
 
-I am an **astro-statistician**. I use the latest research in mathematics, data science, and statistics to extract information from astronomical data sets.
-I am particularly interested in testing fundamental and high-energy physics using large surveys of stars, galaxies and quasars.
-My research interests span **observational cosmology**, **astrophysics**, and **statistics**. In particular, I develop innovative methods to optimally use cosmological dat sets and address topical fundamental questions like the properties of dark matter, dark energy, and neutrinos.
+I am an **astro-statistician**: I use the latest techniques in data science and statistics to extract information from astronomical data sets.
+My research interests span **observational cosmology** and **astrophysics**: I develop innovative methods to optimally use cosmological data sets and address fundamental questions like measuring the properties of dark matter, dark energy, neutrinos, the structure and dynamics of the Milky Way, etc.
 
-You can look at [my publications on ArXiv](https://arxiv.org/find/all/1/all:+AND+boris+leistedt/0/1/0/all/0/1) if you like to know about my exact research projects.
+If you'd like to know more about my exact research projects, you can check out [my publications on ArXiv](https://arxiv.org/find/all/1/all:+AND+boris+leistedt/0/1/0/all/0/1) and <a href="https://scholar.google.com/citations?user=wBd3KzgAAAAJ">Google Scholar<a>.
 
 Some of my talks/presentations are available on [SpeakerDeck](https://speakerdeck.com/ixkael).
 
