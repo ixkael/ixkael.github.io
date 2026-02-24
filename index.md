@@ -6,7 +6,7 @@ layout: default
 
 {::nomarkdown}
 <figure class="site-profile">
-    <img src="{{ site.baseurl }}/assets/img/me.jpg">
+    <img src="{{ site.baseurl }}/assets/img/ImperialHeadshots_0514.jpg">
 </figure>
 {:/}
 Hi there! I am **Boris Leistedt**, a researcher in Imperial College London, working in the fields of astronomy, cosmology, and statistics. Broadly speaking, I test models of the universe using data collected with satellites and telescopes. I also care a lot about diversity, inclusivity, and equity in sciences and society.
